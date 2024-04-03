@@ -3,15 +3,20 @@
 - 리뷰가 필요한 사람(Reviewers)을 추가했는지
 - Assignees를 추가했는지
 - 아래와 같이 작성
-  - feat: 
-  - docs: 
-  - chore: 
-  - refactor: 
-  - fix: 
+  - feat:
+  - docs:
+  - chore:
+  - refactor:
+  - fix:
 - Labels에는 해당 PR의 성향을 잘 나타내나요?
  -->
+
 # Describe your changes
-- 
+
+-
+
+<!-- 연결된 이슈가 있다면 close 해주기 -->
 
 # Issue number and link
-- 
+
+-
