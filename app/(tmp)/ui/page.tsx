@@ -4,6 +4,7 @@ import CardSection from '@/app/(tmp)/_components/sections/CardSection';
 import InputSection from '@/app/(tmp)/_components/sections/InputSection';
 import LabelSection from '@/app/(tmp)/_components/sections/LabelSection';
 import RadioGroupSection from '@/app/(tmp)/_components/sections/RadioGroupSection';
+import DialogSection from '@/app/(tmp)/_components/sections/DialogSection';
 
 const UIPage = () => {
   return (
@@ -14,6 +15,7 @@ const UIPage = () => {
       <InputSection />
       <LabelSection />
       <RadioGroupSection />
+      <DialogSection />
     </main>
   );
 };
