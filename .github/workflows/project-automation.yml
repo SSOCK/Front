@@ -27,7 +27,7 @@ jobs:
       - name: Move issue to ${{ env.ready }}
         uses: leonsteinhaeuser/project-beta-automations@v2.1.0
         with:
-          gh_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          gh_token: ${{ secrets.WRITE_PROJECT_TOKEN }}
           organization: SSOCK
           project_id: 1
           resource_node_id: ${{ github.event.issue.node_id }}
@@ -40,7 +40,7 @@ jobs:
       - name: Moved issue to ${{ env.done }}
         uses: leonsteinhaeuser/project-beta-automations@v2.1.0
         with:
-          gh_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          gh_token: ${{ secrets.WRITE_PROJECT_TOKEN }}
           organization: SSOCK
           project_id: 1
           resource_node_id: ${{ github.event.issue.node_id }}
@@ -53,7 +53,7 @@ jobs:
       - name: Move PR to ${{ env.in_progress }}
         uses: leonsteinhaeuser/project-beta-automations@v2.1.0
         with:
-          gh_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          gh_token: ${{ secrets.WRITE_PROJECT_TOKEN }}
           organization: SSOCK
           project_id: 1
           resource_node_id: ${{ github.event.pull_request.node_id }}
@@ -66,7 +66,7 @@ jobs:
       - name: Move PR to ${{ env.done }}
         uses: leonsteinhaeuser/project-beta-automations@v2.1.0
         with:
-          gh_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          gh_token: ${{ secrets.WRITE_PROJECT_TOKEN }}
           organization: SSOCK
           project_id: 1
           resource_node_id: ${{ github.event.pull_request.node_id }}
