@@ -20,7 +20,7 @@ const ToastButtonSection = () => {
   };
 
   return (
-    <Section title="Button">
+    <Section title="Toast">
       <div className="flex justify-center items-center gap-4">
         <Button onClick={onClickDefault}>Button</Button>
         <Button onClick={onClickSuccess}>Toast Success</Button>

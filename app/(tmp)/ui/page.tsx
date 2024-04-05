@@ -9,6 +9,7 @@ import RadioGroupSection from '@/app/(tmp)/_components/sections/RadioGroupSectio
 import DialogSection from '@/app/(tmp)/_components/sections/DialogSection';
 import FormSection from '@/app/(tmp)/_components/sections/FormSection';
 import ToastButtonSection from '@/app/(tmp)/_components/sections/ToastButtonSection';
+import SkeletonSection from '@/app/(tmp)/_components/sections/SkeletonSection';
 
 const UIPage = () => {
   return (
@@ -22,6 +23,7 @@ const UIPage = () => {
       <DialogSection />
       <FormSection />
       <ToastButtonSection />
+      <SkeletonSection />
       <Toaster />
     </main>
   );
