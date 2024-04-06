@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## SSOCK FrontEnd Team
+<table align="center" width="100%">
+  <th width="20%">FrontEnd</th>
+  <th width="20%">FrontEnd</th>
+  <th width="20%">FrontEnd</th>
+  <tr>
+    <td><img src="https://avatars.githubusercontent.com/u/98443541?v=5"/></td>
+    <td><img src="https://avatars.githubusercontent.com/u/96722691?v=5"/></td>
+    <td><img src="https://avatars.githubusercontent.com/u/62386148?v=5"/></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/kcwww">김찬우</a>
+    </td>
+    <td align="center"><a href="https://github.com/esthel7">서민아</a>
+    </td>
+    <td align="center"><a href="https://github.com/5nxtnxtnxt">오승엽
+  </tr>
+  
 
-## Getting Started
+</table>
 
-First, run the development server:
+## 기술스택
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+<table>
+    <thead>
+        <tr>
+            <th>분류</th>
+            <th>기술 스택</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                  <p>프론트엔드</p>
+            </td>
+            <td>
+                  <img src="https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=ffffff">
+                  <img src="https://img.shields.io/badge/Next.js-000000?logo=Next.js&logoColor=white">
+                  <img src="https://img.shields.io/badge/React-000000?logo=React&logoColor=61DAFB">
+                  <img src="https://img.shields.io/badge/tailwindcss-ffffff?logo=tailwindcss&logoColor=06B6D4">
+                  <img src="https://img.shields.io/badge/@shadcn/ui-ffffff?logo=shadcnui&logoColor=000000">
+<!--                   <img src="https://img.shields.io/badge/Recoil-3578E5?logo=Recoil&logoColor=white"> -->
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>패키지 매니저</p>
+            </td>
+            <td>
+              <img src="https://img.shields.io/badge/pnpm-F69220?logo=pnpm&logoColor=white">
+            </td>
+        </tr>
+                <tr>
+            <td>
+                <p>배포</p>
+            </td>
+            <td>
+                <img src="https://img.shields.io/badge/AWS Amplify-000000?logo=awsamplify&logoColor=FF9900"> Vercel 이 무료라 버셀로 할수도
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>협업</p>
+            </td>
+            <td>
+                <img src="https://img.shields.io/badge/Notion-000000?logo=Notion">
+                <img src="https://img.shields.io/badge/Figma-F24E1E?logo=Figma&logoColor=ffffff">
+                <img src="https://img.shields.io/badge/Discord-5865F2?logo=Discord&logoColor=ffffff">
+                <img src="https://img.shields.io/badge/slack-4A154B?logo=slack&logoColor=white"/>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
