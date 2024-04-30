@@ -10,11 +10,11 @@
     <td><img src="https://avatars.githubusercontent.com/u/62386148?v=5"/></td>
   </tr>
   <tr>
-    <td align="center"><a href="https://github.com/kcwww">김찬우</a>
+    <td align="center"><a href="https://github.com/kcwww">1️⃣김찬우</a>
     </td>
-    <td align="center"><a href="https://github.com/esthel7">서민아</a>
+    <td align="center"><a href="https://github.com/esthel7">2️⃣서민아</a>
     </td>
-    <td align="center"><a href="https://github.com/5nxtnxtnxt">오승엽
+    <td align="center"><a href="https://github.com/5nxtnxtnxt">3️⃣오승엽
   </tr>
 
 </table>
