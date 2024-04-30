@@ -15,6 +15,14 @@
 
 -
 
+<!-- 사진 있다면 첨부 -->
+
+# Photo
+
+<div align="center">
+  <img src="">
+</div>
+
 <!-- 연결된 이슈가 있다면 close 해주기 -->
 
 # Issue number and link

@@ -1,7 +1,7 @@
 ---
 name: Bug report
 about: 버그 이슈
-title: 'bug:'
+title: 'bug: '
 labels: bug
 assignees: ''
 ---
@@ -16,6 +16,14 @@ assignees: ''
 # Description
 
 -
+
+<!-- 사진 있다면 첨부 -->
+
+# Photo
+
+<div align="center">
+  <img src="">
+</div>
 
 # To do
 
