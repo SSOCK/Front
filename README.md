@@ -1,4 +1,5 @@
 ## SSOCK FrontEnd Team
+
 <table align="center" width="100%">
   <th width="20%">FrontEnd</th>
   <th width="20%">FrontEnd</th>
@@ -15,7 +16,6 @@
     </td>
     <td align="center"><a href="https://github.com/5nxtnxtnxt">오승엽
   </tr>
-  
 
 </table>
 
@@ -39,7 +39,7 @@
                   <img src="https://img.shields.io/badge/React-000000?logo=React&logoColor=61DAFB">
                   <img src="https://img.shields.io/badge/tailwindcss-ffffff?logo=tailwindcss&logoColor=06B6D4">
                   <img src="https://img.shields.io/badge/@shadcn/ui-ffffff?logo=shadcnui&logoColor=000000">
-<!--                   <img src="https://img.shields.io/badge/Recoil-3578E5?logo=Recoil&logoColor=white"> -->
+                  <!-- <img src="https://img.shields.io/badge/Recoil-3578E5?logo=Recoil&logoColor=white"> -->
             </td>
         </tr>
         <tr>
@@ -55,7 +55,7 @@
                 <p>배포</p>
             </td>
             <td>
-                <img src="https://img.shields.io/badge/AWS Amplify-000000?logo=awsamplify&logoColor=FF9900"> Vercel 이 무료라 버셀로 할수도
+                <img src="https://img.shields.io/badge/Vercel-ffffff?logo=Vercel&logoColor=000000"> 
             </td>
         </tr>
         <tr>
@@ -66,10 +66,7 @@
                 <img src="https://img.shields.io/badge/Notion-000000?logo=Notion">
                 <img src="https://img.shields.io/badge/Figma-F24E1E?logo=Figma&logoColor=ffffff">
                 <img src="https://img.shields.io/badge/Discord-5865F2?logo=Discord&logoColor=ffffff">
-                <img src="https://img.shields.io/badge/slack-4A154B?logo=slack&logoColor=white"/>
             </td>
         </tr>
     </tbody>
 </table>
-
-

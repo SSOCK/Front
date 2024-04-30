@@ -1,4 +1,6 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+# Find commit files
+FILES=$(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g')
+[ -z "$FILES" ] && exit 0
 
-npx lint-staged
+echo "$FILES"
+echo "✨ Prettier, ESLint Before Commit" && npx lint-staged

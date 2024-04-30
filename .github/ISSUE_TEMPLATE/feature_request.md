@@ -1,10 +1,9 @@
 ---
 name: Feature request
 about: 구현 및 설계
-title: 'feat:'
+title: 'feat: '
 labels: enhancement
 assignees: ''
-
 ---
 
 <!-- (주석) 모두가 보는 이슈입니다. 다른 사람도 이해 할 수 있는 언어로 작성해주시길 바래요~
@@ -15,7 +14,17 @@ assignees: ''
  -->
 
 # Description
-- 
+
+-
 
 # To do
+
 - [ ]
+
+<!-- 사진 있다면 첨부 -->
+
+# Photo
+
+<div align="center">
+  <img src="">
+</div>
