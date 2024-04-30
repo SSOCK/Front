@@ -9,10 +9,18 @@
     "format": "prettier --write .",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "prepare": "husky install",
-    "mobile": "next dev -H 0.0.0.0 -p 3000"
+    "mobile": "next dev -H 0.0.0.0 -p 3000",
+    "preinstall": "npx only-allow pnpm"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{css,md}": "prettier --write"
   },
   "dependencies": {
+    "@typescript-eslint/parser": "^7.8.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "lucide-react": "^0.364.0",
@@ -33,18 +41,11 @@
     "eslint-config-next": "14.1.4",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-no-relative-import-paths": "^1.5.3",
-    "husky": ">=7",
+    "husky": "^9.0.11",
     "lint-staged": ">=10",
     "postcss": "^8",
     "prettier": "^3.2.5",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --cache --fix",
-      "prettier --write"
-    ],
-    "*.{css,md}": "prettier --write"
   }
 }
