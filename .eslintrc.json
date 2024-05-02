@@ -13,11 +13,11 @@
         ],
         "pathGroups": [
           {
-            "pattern": "next",
+            "pattern": "next*",
             "group": "builtin"
           },
           {
-            "pattern": "react",
+            "pattern": "react*",
             "group": "builtin"
           },
           {
@@ -30,8 +30,7 @@
             "group": "internal"
           }
         ],
-        "pathGroupsExcludedImportTypes": ["builtin", "object"],
-        "newlines-between": "always"
+        "pathGroupsExcludedImportTypes": ["object"]
       }
     ],
     "no-relative-import-paths/no-relative-import-paths": [
