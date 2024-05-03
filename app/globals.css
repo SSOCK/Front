@@ -70,10 +70,14 @@
   }
 
   body {
-    @apply bg-background text-foreground w-screen h-screen;
+    @apply bg-background text-foreground w-screen h-screen overflow-x-hidden;
   }
 
   li {
     @apply inline-block;
   }
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
