@@ -70,6 +70,10 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground w-screen h-screen;
+  }
+
+  li {
+    @apply inline-block;
   }
 }
