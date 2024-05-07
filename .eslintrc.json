@@ -14,11 +14,13 @@
         "pathGroups": [
           {
             "pattern": "next*",
-            "group": "builtin"
+            "group": "builtin",
+            "position":"before"
           },
           {
             "pattern": "react*",
-            "group": "builtin"
+            "group": "builtin",
+            "position": "before"
           },
           {
             "pattern": "@/app/**",

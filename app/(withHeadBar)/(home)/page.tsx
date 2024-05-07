@@ -48,7 +48,7 @@ export default function Home() {
             date={d.date}
             description={d.description}
             image={d.img}
-          ></Post>
+          />
         );
       })}
     </main>
