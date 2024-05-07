@@ -14,8 +14,8 @@ interface ClickLatLng {
 }
 
 export default function Map() {
-  const [lat, setLat] = useState<number>(0);
-  const [lng, setLng] = useState<number>(0);
+  const [lat, setLat] = useState<number>(33.450701);
+  const [lng, setLng] = useState<number>(126.570667);
 
   useEffect(() => {
     if (navigator.geolocation) {
