@@ -1,6 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import Heart from '@/public/heart.svg';
 import { Button } from './ui/button';
 
 interface PostProps {
@@ -18,7 +19,6 @@ export default function Post({
   description,
   image = undefined,
 }: PostProps) {
-  console.log(image);
   return (
     <div className="w-full p-5">
       <div className="flex flex-col bg-slate-300 p-5 rounded-xl shadow-xl">
@@ -45,7 +45,9 @@ export default function Post({
           <h6>{description}</h6>
         </div>
         <div className="flex-auto flex justify-between pl-5 pr-5">
-          <Button>좋아요</Button>
+          <Button variant={'ghost'}>
+            <Heart className="size-6" />
+          </Button>
           <Button>댓글</Button>
           <Button>공유</Button>
         </div>

@@ -17,10 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="kr">
-      <body className={inter.className}>
-        {children}
-        <Navigation />
-      </body>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }

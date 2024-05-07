@@ -12,8 +12,8 @@ const items: { title: string; href: string; icons: string }[] = [
 
 export default function Home() {
   return (
-    <div className="fixed bottom-0 bg-primary w-screen h-20 z-50">
-      <ul className="flex flex-row justify-around h-full items-center">
+    <div className="bg-primary w-full">
+      <ul className="flex flex-row justify-around h-20 items-center">
         {items.map((item) => {
           return (
             <Button
