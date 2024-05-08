@@ -10,7 +10,7 @@ const items: { title: string; href: string; icons: string }[] = [
   { title: 'MyPage', href: '/mypage', icons: '' },
 ];
 
-export default function Home() {
+export default function Navigation() {
   return (
     <div className="bg-primary w-full">
       <ul className="flex flex-row justify-around h-20 items-center">
