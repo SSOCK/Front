@@ -19,8 +19,10 @@
     ],
     "baseUrl": "./",
     "paths": {
-      "@components":["components/index"],
-      "@components/*":["components/*"],
+      "@components": ["components/index"],
+      "@components/*": ["components/*"],
+      "@shadcn": ["components/ui/index"],
+      "@shadcn/*": ["components/ui/*"],
       "@/*": ["./*"],
     }
   },
