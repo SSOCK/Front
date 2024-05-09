@@ -38,7 +38,7 @@ const data: {
 
 export default function Home() {
   return (
-    <main className="flex flex-col items-center justify-between">
+    <main className="flex flex-col items-center justify-between pb-20">
       {data.map((d, index) => {
         return (
           <Post
@@ -48,7 +48,7 @@ export default function Home() {
             date={d.date}
             description={d.description}
             image={d.img}
-          ></Post>
+          />
         );
       })}
     </main>

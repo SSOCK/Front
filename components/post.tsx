@@ -1,4 +1,5 @@
 'use client';
+
 import Image from 'next/image';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Heart from '@/public/heart.svg';
@@ -29,11 +30,13 @@ export default function Post({
               <h6 className="text-xs">{id}</h6>
             </AvatarFallback>
           </Avatar>
+
           <div>
             <h1 className="text-sm">{id}</h1>
             <h2 className="text-sm">{date}</h2>
           </div>
         </div>
+
         <div className="flex-auto p-5">
           {image
             ? image.map((img, index) => {
@@ -44,6 +47,7 @@ export default function Post({
             : null}
           <h6>{description}</h6>
         </div>
+
         <div className="flex-auto flex justify-between pl-5 pr-5">
           <Button variant={'ghost'}>
             <Heart className="size-6" />

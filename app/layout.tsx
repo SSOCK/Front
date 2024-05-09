@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import './globals.css';
+import Script from 'next/script';
 import Navigation from '@/components/navigation';
+import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -16,8 +17,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="kr">
-      <body className={inter.className}>{children}</body>
+    <html lang="ko">
+      <body className={inter.className}>
+        <Script
+          type="text/javascript"
+          strategy="beforeInteractive"
+          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_MAP_KEY}&autoload=false`}
+        />
+        {children}
+        <Navigation />
+      </body>
     </html>
   );
 }
