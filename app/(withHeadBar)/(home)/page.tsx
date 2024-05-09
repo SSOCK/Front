@@ -38,7 +38,7 @@ const data: {
 
 export default function Home() {
   return (
-    <main className="flex flex-col items-center justify-between pb-20">
+    <main className="flex flex-col items-center justify-between">
       {data.map((d, index) => {
         return (
           <Post
