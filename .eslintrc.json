@@ -33,6 +33,11 @@
             "position": "before"
           },
           {
+            "pattern": "recoil",
+            "group": "builtin",
+            "position": "before"
+          },
+          {
             "pattern": "@/app/**",
             "group": "internal",
             "position": "after"
