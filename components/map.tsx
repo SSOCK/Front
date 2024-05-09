@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { MapRecoil } from '@atoms';
 
@@ -15,7 +15,13 @@ interface ClickLatLng {
   Ma: number;
 }
 
+interface ChangeMapCenter {
+  (lat: number, lng: number): void;
+}
+
 export default function Map() {
+  const [loadMap, setLoadMap] = useState(false);
+  const changeMapCenterRef = useRef<ChangeMapCenter>();
   const { centerLat, centerLng } = useRecoilValue(MapRecoil);
   const resetMapRecoil = useResetRecoilState(MapRecoil);
 
@@ -36,6 +42,14 @@ export default function Map() {
           const map = new KakaoMaps.Map(container, options);
           const mapDom = map.a as Document; // 이벤트 다루기위함
 
+          if (!loadMap) {
+            changeMapCenterRef.current = (lat: number, lng: number) => {
+              const moveLatLng = new window.kakao.maps.LatLng(lat, lng);
+              map.setCenter(moveLatLng);
+            };
+            setLoadMap(true);
+          }
+
           const linePath1 = [
             new KakaoMaps.LatLng(33.452344169439975, 126.56878163224233),
             new KakaoMaps.LatLng(33.452739313807456, 126.5709308145358),
@@ -55,7 +69,6 @@ export default function Map() {
           // 카카오 api에서는 line에 이벤트는 따로 없어서 직접 구현해야할듯??
 
           const paths = mapDom.querySelectorAll('path');
-
           paths.forEach((a) => {
             a.addEventListener('mouseover', () => (a.style.strokeWidth = '20'));
             a.addEventListener('mouseout', () => (a.style.strokeWidth = '10'));
@@ -83,19 +96,16 @@ export default function Map() {
             mapImg.forEach((img) => {
               img.classList.add('grayscale');
             });
-
-            if (centerLat !== 0) {
-              const moveLatLng = new window.kakao.maps.LatLng(
-                centerLat,
-                centerLng
-              );
-              map.setCenter(moveLatLng);
-              resetMapRecoil();
-            }
           });
         });
       });
     }
+  }, []);
+
+  useEffect(() => {
+    if (!loadMap || centerLat === 0) return;
+    changeMapCenterRef.current!(centerLat, centerLng);
+    resetMapRecoil();
   }, [centerLat]);
 
   return <div id="map" className="w-full h-full" />;
