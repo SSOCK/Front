@@ -1,21 +1,34 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { MapRecoil } from '@atoms';
 import { Avatar, AvatarFallback, AvatarImage } from '@shadcn';
 
 export default function MapMenu() {
   const layerRef = useRef<HTMLDivElement>(null);
   const locRef = useRef<HTMLDivElement>(null);
   const pencilRef = useRef<HTMLDivElement>(null);
+  const setMap = useSetRecoilState(MapRecoil);
 
   const handleLayer = () => {
     console.log('layer!');
     //지도 속성 바꾸기
   };
+
   const handleLoc = () => {
-    console.log('loc!');
-    // 현 위치로 이동
+    if (navigator.geolocation) {
+      // 현위치 위도, 경도 가져오기
+      navigator.geolocation.getCurrentPosition((position) => {
+        setMap((prev) => ({
+          ...prev,
+          centerLat: position.coords.latitude,
+          centerLng: position.coords.longitude,
+        }));
+      });
+    }
   };
+
   const handlePencil = () => {
     console.log('pencil');
     // 경로 그리기
