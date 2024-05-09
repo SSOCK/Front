@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import Heart from '@/public/heart.svg';
 import { Button } from './ui/button';
 
 interface PostProps {
@@ -48,7 +49,9 @@ export default function Post({
         </div>
 
         <div className="flex-auto flex justify-between pl-5 pr-5">
-          <Button>좋아요</Button>
+          <Button variant={'ghost'}>
+            <Heart className="size-6" />
+          </Button>
           <Button>댓글</Button>
           <Button>공유</Button>
         </div>

@@ -1,4 +1,5 @@
 import HeadBar from '@/components/headBar';
+import Navigation from '@/components/navigation';
 
 export default function HeaderRayout({
   children,
@@ -6,9 +7,10 @@ export default function HeaderRayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full flex flex-col">
       <HeadBar />
-      {children}
+      <div className="flex-grow overflow-y-scroll">{children}</div>
+      <Navigation />
     </div>
   );
 }
