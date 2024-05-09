@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
+import RecoilRootWrapper from './RecoilRootWrapper';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -23,7 +24,9 @@ export default function RootLayout({
           strategy="beforeInteractive"
           src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_MAP_KEY}&autoload=false`}
         />
-        {children}
+        <main className="w-full h-full flex flex-col">
+          <RecoilRootWrapper>{children}</RecoilRootWrapper>
+        </main>
       </body>
     </html>
   );

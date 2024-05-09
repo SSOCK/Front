@@ -23,6 +23,7 @@
       "@components/*": ["components/*"],
       "@shadcn": ["components/ui/index"],
       "@shadcn/*": ["components/ui/*"],
+      "@atoms": ["states/index"],
       "@/*": ["./*"],
     }
   },
