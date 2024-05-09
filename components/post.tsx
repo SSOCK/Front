@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@shadcn';
 import Heart from '@/public/heart.svg';
 import { Button } from './ui/button';
 
