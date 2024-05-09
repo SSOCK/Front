@@ -76,6 +76,10 @@
   li {
     @apply inline-block;
   }
+
+  .mainPart {
+    @apply flex-grow overflow-y-scroll;
+  }
 }
 
 *::-webkit-scrollbar {
