@@ -1,4 +1,4 @@
-import Post from '@/components/post';
+import { HeadBar, Navigation, Post } from '@components';
 
 const data: {
   id: string;
@@ -38,19 +38,23 @@ const data: {
 
 export default function Home() {
   return (
-    <main className="flex flex-col items-center justify-between">
-      {data.map((d, index) => {
-        return (
-          <Post
-            key={index}
-            photo={d.photo}
-            id={d.id}
-            date={d.date}
-            description={d.description}
-            image={d.img}
-          />
-        );
-      })}
-    </main>
+    <>
+      <HeadBar />
+      <main className="mainPart flex flex-col items-center justify-between">
+        {data.map((d, index) => {
+          return (
+            <Post
+              key={index}
+              photo={d.photo}
+              id={d.id}
+              date={d.date}
+              description={d.description}
+              image={d.img}
+            />
+          );
+        })}
+      </main>
+      <Navigation />
+    </>
   );
 }

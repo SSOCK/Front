@@ -1,4 +1,4 @@
-import Map from '@/components/map';
+import { Map } from '@components';
 import MapMenu from './mapMenu';
 
 export default function Home() {
