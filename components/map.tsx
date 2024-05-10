@@ -15,13 +15,14 @@ interface ClickLatLng {
   Ma: number;
 }
 
-interface ChangeMapCenter {
+interface KakaoLatLng {
   (lat: number, lng: number): void;
 }
 
 export default function Map() {
   const [loadMap, setLoadMap] = useState(false);
-  const changeMapCenterRef = useRef<ChangeMapCenter>();
+  const changeMapCenterRef = useRef<KakaoLatLng>();
+  const makeMapMarkerRef = useRef<KakaoLatLng>();
   const { centerLat, centerLng } = useRecoilValue(MapRecoil);
   const resetMapRecoil = useResetRecoilState(MapRecoil);
 
@@ -42,12 +43,17 @@ export default function Map() {
 
         const map = new KakaoMaps.Map(container, options);
         const mapDom = map.a as Document; // 이벤트 다루기위함
-
-        changeMapCenterRef.current = (lat: number, lng: number) => {
-          const moveLatLng = new window.kakao.maps.LatLng(lat, lng);
-          map.setCenter(moveLatLng);
-        };
         setLoadMap(true);
+
+        changeMapCenterRef.current = (lat: number, lng: number) =>
+          map.setCenter(new KakaoMaps.LatLng(lat, lng));
+
+        makeMapMarkerRef.current = (lat: number, lng: number) => {
+          const marker = new KakaoMaps.Marker({
+            position: new KakaoMaps.LatLng(lat, lng),
+          });
+          marker.setMap(map);
+        };
 
         // 지도 흑백
         const mapImg = mapDom.querySelectorAll('img');
@@ -103,6 +109,7 @@ export default function Map() {
   useEffect(() => {
     if (!loadMap || centerLat === 0) return;
     changeMapCenterRef.current!(centerLat, centerLng);
+    makeMapMarkerRef.current!(centerLat, centerLng);
     resetMapRecoil();
   }, [centerLat]);
 
