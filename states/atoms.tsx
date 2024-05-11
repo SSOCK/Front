@@ -12,3 +12,11 @@ export const MapRecoil = atom<MapInfo>({
     centerLng: 0,
   },
 });
+
+export const DrawLineRecoil = atom({
+  key: 'DrawLine',
+  default: {
+    drawFlag: false,
+    paths: [],
+  },
+});
