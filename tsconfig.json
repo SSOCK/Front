@@ -19,12 +19,12 @@
     ],
     "baseUrl": "./",
     "paths": {
-      "@components": ["components/index"],
-      "@components/*": ["components/*"],
       "@shadcn": ["components/ui/index"],
       "@shadcn/*": ["components/ui/*"],
+      "@components": ["components/index"],
+      "@components/*": ["components/*"],
       "@atoms": ["states/index"],
-      "@/*": ["./*"],
+      "@/*": ["./*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
