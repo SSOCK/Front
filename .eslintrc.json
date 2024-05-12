@@ -38,9 +38,39 @@
             "position": "before"
           },
           {
+            "pattern": "@components",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "@components*",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "@shadcn",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "@shadcn*",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "@atoms",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "@atoms*",
+            "group": "internal",
+            "position": "before"
+          },
+          {
             "pattern": "@/app/**",
             "group": "internal",
-            "position": "after"
+            "position": "before"
           },
           {
             "pattern": "@/**",
