@@ -1,6 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button, Checkbox, Input, Label } from '@shadcn';
+import { Button } from '@components/ui/button';
+import { Checkbox } from '@components/ui/checkbox';
+import { Input } from '@components/ui/input';
+import { Label } from '@components/ui/label';
 
 export default function LoginPage() {
   return (
