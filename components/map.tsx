@@ -84,6 +84,7 @@ export default function Map() {
         });
       });
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -187,6 +188,7 @@ export default function Map() {
         }
       }
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [drawFlag]);
 
   useEffect(() => {
@@ -194,6 +196,7 @@ export default function Map() {
     changeMapCenterRef.current!(centerLat, centerLng);
     makeMapMarkerRef.current!(centerLat, centerLng);
     resetMapRecoil();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [centerLat]);
 
   return <div id="map" className="w-full h-full" />;
