@@ -28,7 +28,6 @@ export default function Map() {
   const makeMapMarkerRef = useRef<KakaoLatLng>();
   const clickEventRef = useRef<any>();
   const drawStartRef = useRef(false);
-  const drawFlagRef = useRef(false);
   let lineRef = useRef<any>(null);
   let dotsRef = useRef<any>([]);
 
@@ -133,34 +132,14 @@ export default function Map() {
       dotsRef.current.push({ dot: dotOverlay, distance: distanceOverlay });
     };
 
-    const checkingDrawFlag = () => {
-      if (!drawFlag) {
-        drawStartRef.current = false;
-        drawFlagRef.current = false;
-        deleteDrawLine();
-        deleteLineDot();
-        return true;
-      }
-      return false;
-    };
-
     const mapImg = mapDomRef.current!.querySelectorAll('img');
-    if (drawFlag) {
-      drawFlagRef.current = true;
-
-      mapImg.forEach((img) => {
-        img.classList.add('grayscale');
-      });
-    } else {
+    if (drawFlag) mapImg.forEach((img) => img.classList.add('grayscale'));
+    else {
       drawStartRef.current = false;
-      drawFlagRef.current = false;
       deleteDrawLine();
       deleteLineDot();
 
-      mapImg.forEach((img) => {
-        img.classList.remove('grayscale');
-      });
-
+      mapImg.forEach((img) => img.classList.remove('grayscale'));
       KakaoMaps.event.removeListener(
         mapRef.current,
         'click',
@@ -171,8 +150,6 @@ export default function Map() {
 
     clickEventRef.current = (mouseEvent: { latLng: ClickLatLng }) => {
       const latlng = mouseEvent.latLng;
-
-      if (checkingDrawFlag() || !drawFlagRef.current) return;
 
       if (!drawStartRef.current) {
         drawStartRef.current = true;
