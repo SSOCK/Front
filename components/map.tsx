@@ -27,6 +27,7 @@ export default function Map() {
   const changeMapCenterRef = useRef<KakaoLatLng>();
   const makeMapMarkerRef = useRef<KakaoLatLng>();
   const clickEventRef = useRef<any>();
+  const grayEventRef = useRef<any>();
   const drawStartRef = useRef(false);
   let lineRef = useRef<any>(null);
   let dotsRef = useRef<any>([]);
@@ -145,6 +146,11 @@ export default function Map() {
         'click',
         clickEventRef.current
       );
+      KakaoMaps.event.removeListener(
+        mapRef.current,
+        'bounds_changed',
+        grayEventRef.current
+      );
       return;
     }
 
@@ -176,7 +182,17 @@ export default function Map() {
       }
     };
 
+    grayEventRef.current = () => {
+      const mapImg = mapDomRef.current!.querySelectorAll('img');
+      mapImg.forEach((img) => img.classList.add('grayscale'));
+    };
+
     KakaoMaps.event.addListener(mapRef.current, 'click', clickEventRef.current);
+    KakaoMaps.event.addListener(
+      mapRef.current,
+      'bounds_changed',
+      grayEventRef.current
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [drawFlag]);
 
