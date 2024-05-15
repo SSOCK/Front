@@ -26,6 +26,7 @@ export default function Map() {
   const mapDomRef = useRef<Document>();
   const changeMapCenterRef = useRef<KakaoLatLng>();
   const makeMapMarkerRef = useRef<KakaoLatLng>();
+  const clickEventRef = useRef<any>();
   const drawStartRef = useRef(false);
   const drawFlagRef = useRef(false);
   let lineRef = useRef<any>(null);
@@ -78,17 +79,15 @@ export default function Map() {
   }, []);
 
   useEffect(() => {
-    if (!loadMap) return;
+    if (!loadMap || centerLat === 0) return;
+    changeMapCenterRef.current!(centerLat, centerLng);
+    makeMapMarkerRef.current!(centerLat, centerLng);
+    resetMapRecoil();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [centerLat]);
 
-    const mapImg = mapDomRef.current!.querySelectorAll('img');
-    if (drawFlag)
-      mapImg.forEach((img) => {
-        img.classList.add('grayscale');
-      });
-    else
-      mapImg.forEach((img) => {
-        img.classList.remove('grayscale');
-      });
+  useEffect(() => {
+    if (!loadMap) return;
 
     const KakaoMaps = window.kakao.maps;
     const deleteDrawLine = () => {
@@ -145,58 +144,64 @@ export default function Map() {
       return false;
     };
 
-    if (drawFlag) drawFlagRef.current = true;
-    else {
+    const mapImg = mapDomRef.current!.querySelectorAll('img');
+    if (drawFlag) {
+      drawFlagRef.current = true;
+
+      mapImg.forEach((img) => {
+        img.classList.add('grayscale');
+      });
+    } else {
       drawStartRef.current = false;
       drawFlagRef.current = false;
       deleteDrawLine();
       deleteLineDot();
+
+      mapImg.forEach((img) => {
+        img.classList.remove('grayscale');
+      });
+
+      KakaoMaps.event.removeListener(
+        mapRef.current,
+        'click',
+        clickEventRef.current
+      );
       return;
     }
 
-    KakaoMaps.event.addListener(
-      mapRef.current,
-      'click',
-      (mouseEvent: { latLng: ClickLatLng }) => {
-        const latlng = mouseEvent.latLng;
+    clickEventRef.current = (mouseEvent: { latLng: ClickLatLng }) => {
+      const latlng = mouseEvent.latLng;
 
-        if (checkingDrawFlag() || !drawFlagRef.current) return;
+      if (checkingDrawFlag() || !drawFlagRef.current) return;
 
-        if (!drawStartRef.current) {
-          drawStartRef.current = true;
-          deleteDrawLine();
-          deleteLineDot();
+      if (!drawStartRef.current) {
+        drawStartRef.current = true;
+        deleteDrawLine();
+        deleteLineDot();
 
-          lineRef.current = new KakaoMaps.Polyline({
-            map: mapRef.current,
-            path: [latlng],
-            strokeWeight: 10,
-            strokeColor: '#FFAE00',
-            strokeOpacity: 0.7,
-            strokeStyle: 'solid',
-            clickable: true,
-          });
-          displayLineDot(latlng, 0);
-        } else {
-          const path = lineRef.current.getPath();
-          path.push(latlng);
-          lineRef.current.setPath(path);
+        lineRef.current = new KakaoMaps.Polyline({
+          map: mapRef.current,
+          path: [latlng],
+          strokeWeight: 10,
+          strokeColor: '#FFAE00',
+          strokeOpacity: 0.7,
+          strokeStyle: 'solid',
+          clickable: true,
+        });
+        displayLineDot(latlng, 0);
+      } else {
+        const path = lineRef.current.getPath();
+        path.push(latlng);
+        lineRef.current.setPath(path);
 
-          const distance = Math.round(lineRef.current.getLength());
-          displayLineDot(latlng, distance);
-        }
+        const distance = Math.round(lineRef.current.getLength());
+        displayLineDot(latlng, distance);
       }
-    );
+    };
+
+    KakaoMaps.event.addListener(mapRef.current, 'click', clickEventRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [drawFlag]);
-
-  useEffect(() => {
-    if (!loadMap || centerLat === 0) return;
-    changeMapCenterRef.current!(centerLat, centerLng);
-    makeMapMarkerRef.current!(centerLat, centerLng);
-    resetMapRecoil();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [centerLat]);
 
   return <div id="map" className="w-full h-full" />;
 }
