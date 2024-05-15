@@ -21,13 +21,16 @@ interface KakaoLatLng {
 
 export default function Map() {
   const [loadMap, setLoadMap] = useState(false);
+
   const mapRef = useRef();
+  const mapDomRef = useRef<Document>();
   const changeMapCenterRef = useRef<KakaoLatLng>();
   const makeMapMarkerRef = useRef<KakaoLatLng>();
   const drawStartRef = useRef(false);
   const drawFlagRef = useRef(false);
   let lineRef = useRef<any>(null);
   let dotsRef = useRef<any>([]);
+
   const [{ drawFlag }, setDrawLine] = useRecoilState(DrawLineRecoil);
   const { centerLat, centerLng } = useRecoilValue(MapRecoil);
   const resetMapRecoil = useResetRecoilState(MapRecoil);
@@ -50,6 +53,7 @@ export default function Map() {
         const map = new KakaoMaps.Map(container, options);
         mapRef.current = map;
         const mapDom = map.a as Document; // 이벤트 다루기위함
+        mapDomRef.current = mapDom;
         setLoadMap(true);
 
         changeMapCenterRef.current = (lat: number, lng: number) =>
@@ -62,26 +66,12 @@ export default function Map() {
           marker.setMap(map);
         };
 
-        // 지도 흑백
-        const mapImg = mapDom.querySelectorAll('img');
-        mapImg.forEach((img) => {
-          img.classList.add('grayscale');
-        });
-
         // 카카오 api에서는 line에 이벤트는 따로 없어서 직접 구현해야할듯??
         // const paths = mapDom.querySelectorAll('path');
         // paths.forEach((a) => {
         //   a.addEventListener('mouseover', () => (a.style.strokeWidth = '20'));
         //   a.addEventListener('mouseout', () => (a.style.strokeWidth = '10'));
         // });
-
-        // bounds_changed (지도 확대축소, 중심 이동 등)
-        KakaoMaps.event.addListener(map, 'bounds_changed', () => {
-          const mapImg = mapDom.querySelectorAll('img');
-          mapImg.forEach((img) => {
-            img.classList.add('grayscale');
-          });
-        });
       });
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -90,8 +80,17 @@ export default function Map() {
   useEffect(() => {
     if (!loadMap) return;
 
-    const KakaoMaps = window.kakao.maps;
+    const mapImg = mapDomRef.current!.querySelectorAll('img');
+    if (drawFlag)
+      mapImg.forEach((img) => {
+        img.classList.add('grayscale');
+      });
+    else
+      mapImg.forEach((img) => {
+        img.classList.remove('grayscale');
+      });
 
+    const KakaoMaps = window.kakao.maps;
     const deleteDrawLine = () => {
       if (lineRef.current) {
         lineRef.current.setMap(null);
