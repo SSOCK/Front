@@ -24,8 +24,8 @@ export default function Map() {
 
   const mapRef = useRef();
   const mapDomRef = useRef<Document>();
+  const markerRef = useRef<any>();
   const changeMapCenterRef = useRef<KakaoLatLng>();
-  const makeMapMarkerRef = useRef<KakaoLatLng>();
   const clickEventRef = useRef<any>();
   const grayEventRef = useRef<any>();
   const drawStartRef = useRef(false);
@@ -57,15 +57,13 @@ export default function Map() {
         mapDomRef.current = mapDom;
         setLoadMap(true);
 
+        markerRef.current = new KakaoMaps.Marker({
+          position: new KakaoMaps.LatLng(0, 0),
+        });
+        markerRef.current.setMap(map);
+
         changeMapCenterRef.current = (lat: number, lng: number) =>
           map.setCenter(new KakaoMaps.LatLng(lat, lng));
-
-        makeMapMarkerRef.current = (lat: number, lng: number) => {
-          const marker = new KakaoMaps.Marker({
-            position: new KakaoMaps.LatLng(lat, lng),
-          });
-          marker.setMap(map);
-        };
 
         // 카카오 api에서는 line에 이벤트는 따로 없어서 직접 구현해야할듯??
         // const paths = mapDom.querySelectorAll('path');
@@ -81,7 +79,9 @@ export default function Map() {
   useEffect(() => {
     if (!loadMap || centerLat === 0) return;
     changeMapCenterRef.current!(centerLat, centerLng);
-    makeMapMarkerRef.current!(centerLat, centerLng);
+    markerRef.current.setPosition(
+      new window.kakao.maps.LatLng(centerLat, centerLng)
+    );
     resetMapRecoil();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [centerLat]);
