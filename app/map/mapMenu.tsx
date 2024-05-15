@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useSetRecoilState, useRecoilState } from 'recoil';
 import { Avatar, AvatarFallback, AvatarImage } from '@shadcn';
 import { DrawLineRecoil, MapRecoil } from '@atoms';
@@ -9,7 +9,6 @@ export default function MapMenu() {
   const [renew, setRenew] = useState(false);
   const setMap = useSetRecoilState(MapRecoil);
   const [{ drawFlag }, setDrawLine] = useRecoilState(DrawLineRecoil);
-  const drawFlagRef = useRef(drawFlag);
 
   const handleLayer = () => {
     //지도 속성 바꾸기
@@ -29,11 +28,8 @@ export default function MapMenu() {
     }
   };
 
-  const handlePencil = () => {
-    // 경로 그리기
-    setDrawLine((prev) => ({ ...prev, drawFlag: !drawFlagRef.current }));
-    drawFlagRef.current! = !drawFlagRef.current;
-  };
+  const handlePencil = () =>
+    setDrawLine((prev) => ({ ...prev, drawFlag: !drawFlag }));
 
   const handelRefresh = () => {
     // 경로 없애기
@@ -43,7 +39,7 @@ export default function MapMenu() {
     <div className="fixed right-4 top-24 z-50">
       <Avatar
         className="bg-white flex items-center justify-center"
-        onClick={() => handleLayer()}
+        onClick={handleLayer}
       >
         <AvatarImage src={'/icons/layer.svg'} className="w-2/3 h-2/3" />
         <AvatarFallback>
@@ -54,7 +50,7 @@ export default function MapMenu() {
       <div className="py-4">
         <Avatar
           className="bg-white flex items-center justify-center"
-          onClick={() => handleLoc()}
+          onClick={handleLoc}
         >
           <AvatarImage src={'/icons/location.svg'} className="w-2/3 h-2/3" />
           <AvatarFallback>
@@ -66,7 +62,7 @@ export default function MapMenu() {
       <div className="pb-4">
         <Avatar
           className="bg-white flex items-center justify-center"
-          onClick={() => handlePencil()}
+          onClick={handlePencil}
         >
           <AvatarImage src={'/icons/pencil.svg'} className="w-3/5 h-3/5" />
           <AvatarFallback>
@@ -78,7 +74,7 @@ export default function MapMenu() {
       {renew ? (
         <Avatar
           className="bg-white flex items-center justify-center"
-          onClick={() => handelRefresh()}
+          onClick={handelRefresh}
         >
           <AvatarImage src={'/icons/refresh.svg'} className="w-3/5 h-3/5" />
           <AvatarFallback>
