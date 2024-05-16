@@ -28,7 +28,6 @@ export default function Map() {
   const changeMapCenterRef = useRef<KakaoLatLng>();
   const clickEventRef = useRef<any>();
   const grayEventRef = useRef<any>();
-  const drawStartRef = useRef(false);
   let lineRef = useRef<any>(null);
   let dotsRef = useRef<any>([]);
 
@@ -136,7 +135,6 @@ export default function Map() {
     const mapImg = mapDomRef.current!.querySelectorAll('img');
     if (drawFlag) mapImg.forEach((img) => img.classList.add('grayscale'));
     else {
-      drawStartRef.current = false;
       deleteDrawLine();
       deleteLineDot();
 
@@ -157,8 +155,7 @@ export default function Map() {
     clickEventRef.current = (mouseEvent: { latLng: ClickLatLng }) => {
       const latlng = mouseEvent.latLng;
 
-      if (!drawStartRef.current) {
-        drawStartRef.current = true;
+      if (!dotsRef.current.length) {
         deleteDrawLine();
         deleteLineDot();
 
