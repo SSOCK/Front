@@ -19,14 +19,13 @@ interface clickEvent {
   point: { x: number; y: number };
   latLng: latLng;
 }
+interface MapProps {
+  mode: React.MutableRefObject<boolean>;
+}
 
-export default function Map() {
+export default function Map({ mode }: MapProps) {
   const dots: latLng[] = [];
   const dotMarkers = [];
-  let drawMode = false;
-  const flipDrawMode = () => {
-    drawMode = !drawMode;
-  };
 
   useEffect(() => {
     console.log('effect');
@@ -69,18 +68,15 @@ export default function Map() {
       };
 
       kakaoMap.event.addListener(map, 'click', ({ latLng }: clickEvent) => {
-        if (drawMode) addMarker(latLng);
+        console.log(mode.current);
+        if (mode.current) addMarker(latLng);
       });
     });
-  });
+  }, []);
 
   return (
     <>
-      <div id="map" className="w-full h-full" ref={flipDrawMode}>
-        <div className="fixed right-0 z-50 p-5 flex flex-col gap-5">
-          <Button onClick={flipDrawMode}>그리기</Button>
-        </div>
-      </div>
+      <div id="map" className="w-full h-full"></div>
     </>
   );
 }
