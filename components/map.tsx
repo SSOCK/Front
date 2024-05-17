@@ -26,6 +26,7 @@ interface MapProps {
 export default function Map({ mode }: MapProps) {
   const dots: latLng[] = [];
   const dotMarkers = [];
+  console.log('map render');
 
   useEffect(() => {
     console.log('effect');
