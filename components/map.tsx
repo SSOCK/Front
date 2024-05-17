@@ -1,8 +1,7 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
-import { DrawLineRecoil, MapRecoil } from '@atoms';
+import { useRef, useEffect } from 'react';
+import { Button } from '@shadcn';
 
 declare global {
   interface Window {
@@ -10,188 +9,58 @@ declare global {
   }
 }
 
-interface ClickLatLng {
-  La: number;
-  Ma: number;
-}
-
-interface KakaoLatLng {
-  (lat: number, lng: number): void;
-}
-
 export default function Map() {
-  const [loadMap, setLoadMap] = useState(false);
-
-  const mapRef = useRef();
-  const mapDomRef = useRef<Document>();
-  const markerRef = useRef<any>();
-  const changeMapCenterRef = useRef<KakaoLatLng>();
-  const clickEventRef = useRef<any>();
-  const grayEventRef = useRef<any>();
-  let lineRef = useRef<any>(null);
-  let dotsRef = useRef<any>([]);
-
-  const [{ drawFlag }, setDrawLine] = useRecoilState(DrawLineRecoil);
-  const { centerLat, centerLng } = useRecoilValue(MapRecoil);
-  const resetMapRecoil = useResetRecoilState(MapRecoil);
-
+  const kakaoRef = useRef<any>();
+  const managerRef = useRef<any>();
+  const flipMode = (type: string) => {
+    if (!kakaoRef.current || !managerRef.current) return;
+    managerRef.current.select(kakaoRef.current.maps.Drawing.OverlayType[type]);
+  };
   useEffect(() => {
-    if (loadMap) return;
+    const kakao = window.kakao;
+    kakaoRef.current = kakao;
+    kakao.maps.load(() => {
+      const container = document.getElementById('map');
+      const mapOptions = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667),
+        level: 3,
+      };
+      const map = new kakao.maps.Map(container, mapOptions);
 
-    navigator.geolocation.getCurrentPosition((position) => {
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
+      //Drawing manager options
+      const drawingManagerOpt = {
+        map: map,
+        drawingMode: [kakao.maps.Drawing.OverlayType.POLYLINE],
+        guideTooltip: ['draw', 'drag', 'edit'],
+        markerOptions: {
+          // 마커 옵션입니다
+          draggable: true, // 마커를 그리고 나서 드래그 가능하게 합니다
+          removable: true, // 마커를 삭제 할 수 있도록 x 버튼이 표시됩니다
+        },
+        polylineOptions: {
+          // 선 옵션입니다
+          draggable: true, // 그린 후 드래그가 가능하도록 설정합니다
+          removable: true, // 그린 후 삭제 할 수 있도록 x 버튼이 표시됩니다
+          editable: true, // 그린 후 수정할 수 있도록 설정합니다
+          strokeColor: '#39f', // 선 색
+          hintStrokeStyle: 'dash', // 그리중 마우스를 따라다니는 보조선의 선 스타일
+          hintStrokeOpacity: 0.5, // 그리중 마우스를 따라다니는 보조선의 투명도
+        },
+      };
 
-      const KakaoMaps = window.kakao.maps;
-      KakaoMaps.load(() => {
-        const container = document.getElementById('map');
-        const options = {
-          center: new KakaoMaps.LatLng(lat, lng),
-          level: 3,
-        };
-
-        const map = new KakaoMaps.Map(container, options);
-        mapRef.current = map;
-        const mapDom = map.a as Document; // 이벤트 다루기위함
-        mapDomRef.current = mapDom;
-        setLoadMap(true);
-
-        markerRef.current = new KakaoMaps.Marker({
-          position: new KakaoMaps.LatLng(0, 0),
-        });
-        markerRef.current.setMap(map);
-
-        changeMapCenterRef.current = (lat: number, lng: number) =>
-          map.setCenter(new KakaoMaps.LatLng(lat, lng));
-
-        // 카카오 api에서는 line에 이벤트는 따로 없어서 직접 구현해야할듯??
-        // const paths = mapDom.querySelectorAll('path');
-        // paths.forEach((a) => {
-        //   a.addEventListener('mouseover', () => (a.style.strokeWidth = '20'));
-        //   a.addEventListener('mouseout', () => (a.style.strokeWidth = '10'));
-        // });
-      });
+      const manager = new kakao.maps.Drawing.DrawingManager(drawingManagerOpt);
+      manager.addListener('state_changed', () => {});
+      managerRef.current = manager;
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    if (!loadMap || centerLat === 0) return;
-    changeMapCenterRef.current!(centerLat, centerLng);
-    markerRef.current.setPosition(
-      new window.kakao.maps.LatLng(centerLat, centerLng)
-    );
-    resetMapRecoil();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [centerLat]);
-
-  useEffect(() => {
-    if (!loadMap) return;
-
-    const KakaoMaps = window.kakao.maps;
-    const deleteDrawLine = () => {
-      if (lineRef.current) {
-        lineRef.current.setMap(null);
-        lineRef.current = null;
-      }
-    };
-
-    const deleteLineDot = () => {
-      dotsRef.current.forEach((dot: any) => {
-        if (dot.dot) dot.dot.setMap(null);
-        if (dot.distance) dot.distance.setMap(null);
-      });
-      dotsRef.current = [];
-    };
-
-    const displayLineDot = (position: ClickLatLng, distance: number) => {
-      const dotOverlay = new KakaoMaps.CustomOverlay({
-        content: '<span class="dot"></span>',
-        position: position,
-        zIndex: 1,
-      });
-      dotOverlay.setMap(mapRef.current);
-
-      let distanceOverlay = new KakaoMaps.CustomOverlay({
-        position: position,
-        yAnchor: 1,
-        zIndex: 2,
-      });
-      if (distance > 0) {
-        distanceOverlay = new KakaoMaps.CustomOverlay({
-          content:
-            '<div class="dotOverlay">거리 <span class="number">' +
-            distance +
-            '</span>m</div>',
-          position: position,
-          yAnchor: 1,
-          zIndex: 2,
-        });
-        distanceOverlay.setMap(mapRef.current);
-      }
-      dotsRef.current.push({ dot: dotOverlay, distance: distanceOverlay });
-    };
-
-    const mapImg = mapDomRef.current!.querySelectorAll('img');
-    if (drawFlag) mapImg.forEach((img) => img.classList.add('grayscale'));
-    else {
-      deleteDrawLine();
-      deleteLineDot();
-
-      mapImg.forEach((img) => img.classList.remove('grayscale'));
-      KakaoMaps.event.removeListener(
-        mapRef.current,
-        'click',
-        clickEventRef.current
-      );
-      KakaoMaps.event.removeListener(
-        mapRef.current,
-        'bounds_changed',
-        grayEventRef.current
-      );
-      return;
-    }
-
-    clickEventRef.current = (mouseEvent: { latLng: ClickLatLng }) => {
-      const latlng = mouseEvent.latLng;
-
-      if (!dotsRef.current.length) {
-        deleteDrawLine();
-        deleteLineDot();
-
-        lineRef.current = new KakaoMaps.Polyline({
-          map: mapRef.current,
-          path: [latlng],
-          strokeWeight: 10,
-          strokeColor: '#FFAE00',
-          strokeOpacity: 0.7,
-          strokeStyle: 'solid',
-          clickable: true,
-        });
-        displayLineDot(latlng, 0);
-      } else {
-        const path = lineRef.current.getPath();
-        path.push(latlng);
-        lineRef.current.setPath(path);
-
-        const distance = Math.round(lineRef.current.getLength());
-        displayLineDot(latlng, distance);
-      }
-    };
-
-    grayEventRef.current = () => {
-      const mapImg = mapDomRef.current!.querySelectorAll('img');
-      mapImg.forEach((img) => img.classList.add('grayscale'));
-    };
-
-    KakaoMaps.event.addListener(mapRef.current, 'click', clickEventRef.current);
-    KakaoMaps.event.addListener(
-      mapRef.current,
-      'bounds_changed',
-      grayEventRef.current
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [drawFlag]);
-
-  return <div id="map" className="w-full h-full" />;
+  return (
+    <>
+      <div id="map" className="w-full h-full">
+        <div className="fixed right-0 z-50 p-5 flex flex-col gap-5">
+          <Button onClick={() => flipMode('POLYLINE')}>그리기</Button>
+        </div>
+      </div>
+    </>
+  );
 }
