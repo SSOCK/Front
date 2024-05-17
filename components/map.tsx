@@ -20,16 +20,14 @@ interface clickEvent {
   latLng: latLng;
 }
 interface MapProps {
-  mode: React.MutableRefObject<boolean>;
+  modeRef?: React.MutableRefObject<boolean>;
 }
 
-export default function Map({ mode }: MapProps) {
+export default function Map({ modeRef }: MapProps) {
   const dots: latLng[] = [];
   const dotMarkers = [];
-  console.log('map render');
 
   useEffect(() => {
-    console.log('effect');
     const kakaoMap = window.kakao.maps;
     kakaoMap.load(() => {
       const container = document.getElementById('map');
@@ -69,8 +67,7 @@ export default function Map({ mode }: MapProps) {
       };
 
       kakaoMap.event.addListener(map, 'click', ({ latLng }: clickEvent) => {
-        console.log(mode.current);
-        if (mode.current) addMarker(latLng);
+        if (!modeRef || modeRef.current) addMarker(latLng);
       });
     });
   }, []);

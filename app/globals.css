@@ -70,7 +70,7 @@
   }
 
   body {
-    @apply bg-background text-foreground w-screen h-screen overflow-x-hidden;
+    @apply bg-background text-foreground w-screen overflow-x-hidden h-dvh;
   }
 
   li {
