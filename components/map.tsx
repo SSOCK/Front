@@ -42,10 +42,10 @@ export default function Map() {
       const polyline = new kakaoMap.Polyline({
         map: map,
         path: dots,
-        strokeWeight: 2,
-        strokeColor: '#FF00FF',
+        strokeWeight: 5,
+        strokeColor: '#ff6600',
         strokeOpacity: 0.8,
-        strokeStyle: 'dashed',
+        strokeStyle: 'solid',
       });
 
       const addMarker = (latLng: latLng) => {
