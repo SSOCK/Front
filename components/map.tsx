@@ -76,7 +76,7 @@ export default function Map() {
 
   return (
     <>
-      <div id="map" className="w-full h-full">
+      <div id="map" className="w-full h-full" ref={flipDrawMode}>
         <div className="fixed right-0 z-50 p-5 flex flex-col gap-5">
           <Button onClick={flipDrawMode}>그리기</Button>
         </div>
