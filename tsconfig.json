@@ -19,8 +19,6 @@
     ],
     "baseUrl": "./",
     "paths": {
-      "@shadcn": ["components/ui/index"],
-      "@shadcn/*": ["components/ui/*"],
       "@components": ["components/index"],
       "@components/*": ["components/*"],
       "@atoms": ["states/index"],

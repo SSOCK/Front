@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useSetRecoilState, useRecoilState } from 'recoil';
-import { Avatar, AvatarFallback, AvatarImage } from '@shadcn';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { DrawLineRecoil, MapRecoil } from '@atoms';
 
 export default function MapMenu() {
