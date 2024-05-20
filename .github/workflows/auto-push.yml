@@ -6,17 +6,16 @@ on:
       - main
 
 jobs:
-  push-to-personal:
+  sync:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Push to personal repository
-        env:
-          PERSONAL_REPO: https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/5nxtnxtnxt/RunningMate.git
-        run: |
-          echo "PERSONAL_REPO: $PERSONAL_REPO"
-          git remote add personal $PERSONAL_REPO
-          git push personal main
+      - name: Push to Personal Repo
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          branch: main
+          repository: 5nxtnxtnxt/RunningMate
