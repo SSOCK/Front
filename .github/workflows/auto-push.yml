@@ -15,7 +15,7 @@ jobs:
 
       - name: Push to personal repository
         env:
-          PERSONAL_REPO: https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/<YOUR_USERNAME>/<YOUR_PERSONAL_REPO>.git
+          PERSONAL_REPO: https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/5nxtnxtnxt/RunningMate.git
         run: |
           git remote add personal $PERSONAL_REPO
           git push personal main
