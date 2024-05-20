@@ -3,9 +3,9 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { Button } from '@components/ui/button';
+import { Input } from '@components/ui/input';
 import {
-  Button,
-  Input,
   Form,
   FormControl,
   FormDescription,
@@ -13,7 +13,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@shadcn';
+} from '@components/ui/form';
 
 const UserNameFormSchema = z.object({
   username: z

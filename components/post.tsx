@@ -1,8 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import { Avatar, AvatarFallback, AvatarImage } from '@shadcn';
 import Heart from '@/public/heart.svg';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
 
 interface PostProps {

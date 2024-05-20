@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react';
 import { HeadBar, Map, Navigation } from '@components';
-import { Button } from '@shadcn';
+import { Button } from '@components/ui/button';
 
 export default function Home() {
   const [mode, setMode] = useState(false);

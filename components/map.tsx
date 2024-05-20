@@ -1,7 +1,6 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
-import { Button } from '@shadcn';
+import { useEffect } from 'react';
 
 declare global {
   interface Window {
@@ -72,9 +71,5 @@ export default function Map({ modeRef }: MapProps) {
     });
   }, []);
 
-  return (
-    <>
-      <div id="map" className="w-full h-full"></div>
-    </>
-  );
+  return <div id="map" className="w-full h-full" />;
 }
