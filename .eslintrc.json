@@ -72,7 +72,11 @@
             "group": "internal"
           }
         ],
-        "pathGroupsExcludedImportTypes": ["object"]
+        "pathGroupsExcludedImportTypes": ["object"],
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
       }
     ],
     "no-relative-import-paths/no-relative-import-paths": [
