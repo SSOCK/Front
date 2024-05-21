@@ -59,6 +59,7 @@ export default function SignUpPage() {
   const [name, setName] = useState<string>('');
   const [empty, setEmpty] = useState(false);
   const [warning, setWarning] = useState(false);
+  const [duplicate, setDuplicate] = useState(false);
 
   const emailForm = useForm<z.infer<typeof EmailFormSchema>>({
     resolver: zodResolver(EmailFormSchema),
@@ -108,31 +109,37 @@ export default function SignUpPage() {
   const reset = () => {
     setEmpty(false);
     setWarning(false);
+    setDuplicate(false);
   };
 
-  const signUp = () => {
+  const signUp = async () => {
     if (email === '' || password === '' || userName === '' || name === '') {
       setEmpty(true);
       return;
     }
 
-    fetch('/api/signup', {
-      method: 'post',
-      headers: {
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: userName,
-        email,
-        password,
-        name,
-      }),
-    }).then((res) => {
+    try {
+      const res = await fetch('/api/signup', {
+        method: 'post',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: userName,
+          email,
+          password,
+          name,
+        }),
+      });
+
       if (res.status === 200) {
         alert('회원가입이 완료되었습니다. 로그인 창으로 이동합니다.');
         router.push('/signIn');
-      } else if (res.status === 400 || res.status === 409) setWarning(true);
-    });
+      } else if (res.status === 409) setDuplicate(true);
+      else setWarning(true);
+    } catch (error) {
+      setWarning(true);
+    }
   };
 
   return (
@@ -266,6 +273,9 @@ export default function SignUpPage() {
       ) : null}
       {warning ? (
         <div className="text-red-500">회원가입을 다시 시도해주십시오.</div>
+      ) : null}
+      {duplicate ? (
+        <div className="text-red-500">이미 존재하는 사용자입니다.</div>
       ) : null}
     </div>
   );
