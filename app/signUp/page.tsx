@@ -1,5 +1,7 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -14,13 +16,6 @@ import {
   FormMessage,
 } from '@components/ui/form';
 import { Input } from '@components/ui/input';
-
-const UserNameFormSchema = z.object({
-  username: z
-    .string()
-    .min(3, { message: '3자이상 20자이하로 입력해주세요.' })
-    .max(20, { message: '3자이상 20자이하로 입력해주세요.' }),
-});
 
 const EmailFormSchema = z.object({
   email: z
@@ -45,19 +40,33 @@ const PasswordFormSchema = z
     message: '비밀번호가 일치하지 않습니다.',
   });
 
+const UserNameFormSchema = z.object({
+  userName: z
+    .string()
+    .min(3, { message: '3자이상 20자이하로 입력해주세요.' })
+    .max(20, { message: '3자이상 20자이하로 입력해주세요.' }),
+});
+
+const NameFormSchema = z.object({
+  name: z.string().max(30, { message: '30자이하로 입력해주세요.' }),
+});
+
 export default function SignUpPage() {
-  const userNameForm = useForm<z.infer<typeof UserNameFormSchema>>({
-    resolver: zodResolver(UserNameFormSchema),
-    defaultValues: {
-      username: '',
-    },
-  });
+  const router = useRouter();
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [userName, setUserName] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [empty, setEmpty] = useState(false);
+  const [warning, setWarning] = useState(false);
+
   const emailForm = useForm<z.infer<typeof EmailFormSchema>>({
     resolver: zodResolver(EmailFormSchema),
     defaultValues: {
       email: '',
     },
   });
+
   const passwordForm = useForm<z.infer<typeof PasswordFormSchema>>({
     resolver: zodResolver(PasswordFormSchema),
     defaultValues: {
@@ -66,20 +75,75 @@ export default function SignUpPage() {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof UserNameFormSchema>) => {
-    alert(JSON.stringify(data));
-  };
+  const userNameForm = useForm<z.infer<typeof UserNameFormSchema>>({
+    resolver: zodResolver(UserNameFormSchema),
+    defaultValues: {
+      userName: '',
+    },
+  });
+
+  const NameForm = useForm<z.infer<typeof NameFormSchema>>({
+    resolver: zodResolver(NameFormSchema),
+    defaultValues: {
+      name: '',
+    },
+  });
+
   const emailSubmit = (data: z.infer<typeof EmailFormSchema>) => {
     alert(`${JSON.stringify(data)} 인증하기`);
+    setEmail(data.email);
   };
+
   const passwordSubmit = (data: z.infer<typeof PasswordFormSchema>) => {
     //alert(`${JSON.stringify(data)} 비번맞냐`);
+    setPassword(data.password);
   };
+
+  const userNameSubmit = (data: z.infer<typeof UserNameFormSchema>) =>
+    setUserName(data.userName);
+
+  const nameSubmit = (data: z.infer<typeof NameFormSchema>) =>
+    setName(data.name);
+
+  const reset = () => {
+    setEmpty(false);
+    setWarning(false);
+  };
+
+  const signIn = () => {
+    if (email === '' || password === '' || userName === '' || name === '') {
+      setEmpty(true);
+      return;
+    }
+
+    fetch(`${process.env.NEXT_PUBLIC_API}/signup`, {
+      method: 'post',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: userName,
+        email,
+        password,
+        name,
+      }),
+    }).then((res) => {
+      if (res.status === 200) {
+        alert('회원가입이 완료되었습니다. 로그인 창으로 이동합니다.');
+        router.push('/signIn');
+      } else if (res.status === 400 || res.status === 409) setWarning(true);
+    });
+  };
+
   return (
     <div className="flex flex-col p-8 gap-4 items-center">
       <h2 className="text-2xl font-bold">Sign Up</h2>
       <Form {...emailForm}>
-        <form onSubmit={emailForm.handleSubmit(emailSubmit)} className="w-full">
+        <form
+          onSubmit={emailForm.handleSubmit(emailSubmit)}
+          onChange={reset}
+          className="w-full"
+        >
           <FormField
             control={emailForm.control}
             name="email"
@@ -99,9 +163,10 @@ export default function SignUpPage() {
                 <FormMessage />
               </FormItem>
             )}
-          ></FormField>
+          />
         </form>
       </Form>
+
       <Form {...passwordForm}>
         <form
           onChange={passwordForm.handleSubmit(passwordSubmit)}
@@ -141,11 +206,15 @@ export default function SignUpPage() {
           />
         </form>
       </Form>
+
       <Form {...userNameForm}>
-        <form onSubmit={userNameForm.handleSubmit(onSubmit)} className="w-full">
+        <form
+          onSubmit={userNameForm.handleSubmit(userNameSubmit)}
+          className="w-full"
+        >
           <FormField
             control={userNameForm.control}
-            name="username"
+            name="userName"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>UserName</FormLabel>
@@ -160,10 +229,44 @@ export default function SignUpPage() {
                 <FormMessage />
               </FormItem>
             )}
-          ></FormField>
+          />
         </form>
       </Form>
-      <Button className="h-12 w-full">Sign in</Button>
+
+      <Form {...NameForm}>
+        <form onChange={NameForm.handleSubmit(nameSubmit)} className="w-full">
+          <FormField
+            control={NameForm.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <div className="flex gap-1">
+                  <FormControl>
+                    <Input placeholder="name" {...field} />
+                  </FormControl>
+                </div>
+                <FormDescription>이름을 입력해주세요.</FormDescription>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </form>
+      </Form>
+
+      <Button className="h-12 w-full" onClick={signIn}>
+        Sign in
+      </Button>
+
+      {empty ? (
+        <div className="text-red-500">
+          입력 항목이 모두 채워지지 않았습니다.
+        </div>
+      ) : null}
+      {warning ? (
+        <div className="text-red-500">회원가입을 다시 시도해주십시오.</div>
+      ) : null}
     </div>
   );
 }
