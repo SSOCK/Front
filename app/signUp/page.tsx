@@ -116,7 +116,7 @@ export default function SignUpPage() {
       return;
     }
 
-    fetch(`${process.env.NEXT_PUBLIC_API}/signup`, {
+    fetch('/api/signup', {
       method: 'post',
       headers: {
         'Content-type': 'application/json',
