@@ -22,30 +22,33 @@ export default function SignInPage() {
     setWarning(false);
   };
 
-  const signIn = () => {
+  const signIn = async () => {
     if (!email.current!.value || !password.current!.value) {
       setEmpty(true);
       return;
     } else setEmpty(false);
 
-    fetch('/api/login', {
-      method: 'post',
-      headers: {
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: email.current!.value,
-        password: password.current!.value,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data['access-token']) {
-          setCookie('access-token', data['access-token']);
-          setCookie('refresh-token', data['refresh-token']);
-          router.push('/');
-        } else setWarning(true);
+    try {
+      const res = await fetch('/api/login', {
+        method: 'post',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: email.current!.value,
+          password: password.current!.value,
+        }),
       });
+
+      const response = res.status === 200 ? await res.json() : {};
+      if ('access-token' in response && 'refresh-token' in response) {
+        setCookie('access-token', response['access-token']);
+        setCookie('refresh-token', response['refresh-token']);
+        router.push('/');
+      } else setWarning(true);
+    } catch (error) {
+      setWarning(true);
+    }
   };
 
   return (
