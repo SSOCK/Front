@@ -28,7 +28,7 @@ export default function SignInPage() {
       return;
     } else setEmpty(false);
 
-    fetch(`${process.env.NEXT_PUBLIC_API}/login`, {
+    fetch('/api/login', {
       method: 'post',
       headers: {
         'Content-type': 'application/json',
