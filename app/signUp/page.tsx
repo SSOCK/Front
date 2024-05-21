@@ -45,7 +45,7 @@ const PasswordFormSchema = z
     message: '비밀번호가 일치하지 않습니다.',
   });
 
-export default function LoginPage() {
+export default function SignUpPage() {
   const userNameForm = useForm<z.infer<typeof UserNameFormSchema>>({
     resolver: zodResolver(UserNameFormSchema),
     defaultValues: {
