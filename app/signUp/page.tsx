@@ -110,7 +110,7 @@ export default function SignUpPage() {
     setWarning(false);
   };
 
-  const signIn = () => {
+  const signUp = () => {
     if (email === '' || password === '' || userName === '' || name === '') {
       setEmpty(true);
       return;
@@ -255,7 +255,7 @@ export default function SignUpPage() {
         </form>
       </Form>
 
-      <Button className="h-12 w-full" onClick={signIn}>
+      <Button className="h-12 w-full" onClick={signUp}>
         Sign in
       </Button>
 
