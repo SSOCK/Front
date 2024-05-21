@@ -14,10 +14,10 @@ interface latLng {
 }
 
 interface clickEvent {
-  //카카오 clickevnet객체 La Ma 위도경도 x y viewport 기준 클릭좌표 인듯
   point: { x: number; y: number };
   latLng: latLng;
 }
+
 interface MapProps {
   modeRef?: React.MutableRefObject<boolean>;
 }
@@ -51,6 +51,7 @@ export default function Map({ modeRef }: MapProps) {
           position: latLng,
           draggable: true,
         });
+
         marker.index = dots.length;
         kakaoMap.event.addListener(marker, 'dragend', () => {
           console.log(dots, marker.index);
@@ -58,6 +59,7 @@ export default function Map({ modeRef }: MapProps) {
           polyline.setPath(dots);
           console.log(dots);
         });
+
         dots.push(latLng);
         marker.setMap(map);
         dotMarkers.push(marker);
@@ -69,6 +71,7 @@ export default function Map({ modeRef }: MapProps) {
         if (!modeRef || modeRef.current) addMarker(latLng);
       });
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <div id="map" className="w-full h-full" />;
