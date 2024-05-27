@@ -5,14 +5,12 @@ const nextConfig = {
     return config;
   },
   reactStrictMode: false,
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: `${process.env.NEXT_PUBLIC_API}:path*`,
-      },
-    ];
-  },
+  rewrites: async ()  => ({
+    beforeFiles: [{
+      source: '/api/:path*',
+      destination: `${process.env.NEXT_PUBLIC_API}/:path*`,
+    }],
+  })
 };
 
 export default nextConfig;
