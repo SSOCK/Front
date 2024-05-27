@@ -197,7 +197,10 @@ export default function SignUpPage() {
 
       <Form {...passwordForm}>
         <form
-          onChange={passwordForm.handleSubmit(passwordSubmit)}
+          onChange={() => {
+            passwordForm.handleSubmit(passwordSubmit)();
+            reset();
+          }}
           className="w-full"
         >
           <FormField
@@ -266,7 +269,13 @@ export default function SignUpPage() {
       ) : null}
 
       <Form {...NameForm}>
-        <form onChange={NameForm.handleSubmit(nameSubmit)} className="w-full">
+        <form
+          onChange={() => {
+            NameForm.handleSubmit(nameSubmit)();
+            reset();
+          }}
+          className="w-full"
+        >
           <FormField
             control={NameForm.control}
             name="name"
