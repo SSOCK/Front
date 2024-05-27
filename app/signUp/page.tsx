@@ -57,7 +57,9 @@ export default function SignUpPage() {
   const [password, setPassword] = useState<string>('');
   const [userName, setUserName] = useState<string>('');
   const [name, setName] = useState<string>('');
+  const [userNameDuplicate, setUserNameDuplicate] = useState(false);
   const [empty, setEmpty] = useState(false);
+  const [userNameCheck, setUserNameCheck] = useState(true);
   const [warning, setWarning] = useState(false);
   const [duplicate, setDuplicate] = useState(false);
 
@@ -100,21 +102,40 @@ export default function SignUpPage() {
     setPassword(data.password);
   };
 
-  const userNameSubmit = (data: z.infer<typeof UserNameFormSchema>) =>
-    setUserName(data.userName);
+  const userNameSubmit = async (data: z.infer<typeof UserNameFormSchema>) => {
+    setUserName('');
+    try {
+      const res = await fetch(`/api/auth/valid/user/${data.userName}`, {
+        method: 'get',
+      });
+
+      const response = res.status === 200 ? await res.json() : {};
+      if ('exists' in response)
+        !response['exists']
+          ? setUserName(data.userName)
+          : setUserNameDuplicate(true);
+    } catch (error) {
+      setWarning(true);
+    }
+  };
 
   const nameSubmit = (data: z.infer<typeof NameFormSchema>) =>
     setName(data.name);
 
   const reset = () => {
+    setUserNameDuplicate(false);
     setEmpty(false);
+    setUserNameCheck(true);
     setWarning(false);
     setDuplicate(false);
   };
 
   const signUp = async () => {
-    if (email === '' || password === '' || userName === '' || name === '') {
+    if (email === '' || password === '' || name === '') {
       setEmpty(true);
+      return;
+    } else if (userName === '') {
+      setUserNameCheck(false);
       return;
     }
 
@@ -217,6 +238,7 @@ export default function SignUpPage() {
       <Form {...userNameForm}>
         <form
           onSubmit={userNameForm.handleSubmit(userNameSubmit)}
+          onChange={reset}
           className="w-full"
         >
           <FormField
@@ -239,6 +261,9 @@ export default function SignUpPage() {
           />
         </form>
       </Form>
+      {userNameDuplicate ? (
+        <div className="text-red-500">이미 사용중인 닉네임입니다.</div>
+      ) : null}
 
       <Form {...NameForm}>
         <form onChange={NameForm.handleSubmit(nameSubmit)} className="w-full">
@@ -270,6 +295,9 @@ export default function SignUpPage() {
         <div className="text-red-500">
           입력 항목이 모두 채워지지 않았습니다.
         </div>
+      ) : null}
+      {!userNameCheck ? (
+        <div className="text-red-500">닉네임이 인증되지 않았습니다.</div>
       ) : null}
       {warning ? (
         <div className="text-red-500">회원가입을 다시 시도해주십시오.</div>
