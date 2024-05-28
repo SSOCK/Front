@@ -54,7 +54,12 @@ export default function SignUpPage() {
   const [password, setPassword] = useState<string>('');
   const [userName, setUserName] = useState<string>('');
   const [name, setName] = useState<string>('');
+
+  const [emailDescriptionReset, setEmailDescriptionReset] = useState(true);
+  const [userNameDescriptionReset, setUserNameDescriptionReset] =
+    useState(true);
   const [userNameDuplicate, setUserNameDuplicate] = useState(false);
+  const [userNameWarning, setUserNameWarning] = useState(false);
   const [empty, setEmpty] = useState(false);
   const [userNameCheck, setUserNameCheck] = useState(true);
   const [warning, setWarning] = useState(false);
@@ -92,6 +97,8 @@ export default function SignUpPage() {
   const emailSubmit = (data: z.infer<typeof EmailFormSchema>) => {
     alert(`${JSON.stringify(data)} 인증하기`);
     setEmail(data.email);
+    setEmailDescriptionReset(false);
+    // 인증 시 에러 컨트롤 필요 (ex. setUserNameWarning)
   };
 
   const passwordSubmit = (data: z.infer<typeof PasswordFormSchema>) =>
@@ -104,12 +111,17 @@ export default function SignUpPage() {
       });
 
       const response = res.status === 200 ? await res.json() : {};
-      if ('exists' in response)
-        !response['exists']
-          ? setUserName(data.userName)
-          : setUserNameDuplicate(true);
+      if (!('exists' in response)) {
+        setUserNameWarning(true);
+        return;
+      }
+      if (response['exists']) setUserNameDuplicate(true);
+      else {
+        setUserName(data.userName);
+        setUserNameDescriptionReset(false);
+      }
     } catch (error) {
-      setWarning(true);
+      setUserNameDuplicate(true);
     }
   };
 
@@ -118,10 +130,21 @@ export default function SignUpPage() {
 
   const reset = () => {
     setUserNameDuplicate(false);
+    setUserNameWarning(false);
     setEmpty(false);
     setUserNameCheck(true);
     setWarning(false);
     setDuplicate(false);
+  };
+
+  const emailReset = () => {
+    setEmail('');
+    setEmailDescriptionReset(true);
+  };
+
+  const userNamenReset = () => {
+    setUserName('');
+    setUserNameDescriptionReset(true);
   };
 
   const signUp = async () => {
@@ -165,7 +188,7 @@ export default function SignUpPage() {
           onSubmit={EmailForm.handleSubmit(emailSubmit)}
           onChange={() => {
             reset();
-            setEmail('');
+            emailReset();
           }}
           className="w-full"
         >
@@ -182,7 +205,9 @@ export default function SignUpPage() {
                   <Button type="submit">인증</Button>
                 </div>
                 <FormDescription>
-                  로그인시 사용할 이메일을 입력해주세요.
+                  {emailDescriptionReset
+                    ? '로그인시 사용할 이메일을 입력해주세요.'
+                    : '인증이 완료되었습니다.'}
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -221,6 +246,7 @@ export default function SignUpPage() {
             )}
           />
 
+          <div className="pt-4" />
           <FormField
             control={PasswordForm.control}
             name="confirm"
@@ -250,7 +276,7 @@ export default function SignUpPage() {
           onSubmit={UserNameForm.handleSubmit(userNameSubmit)}
           onChange={() => {
             reset();
-            setUserName('');
+            userNamenReset();
           }}
           className="w-full"
         >
@@ -266,7 +292,11 @@ export default function SignUpPage() {
                   </FormControl>
                   <Button type="submit">중복확인</Button>
                 </div>
-                <FormDescription>보여질 닉네임을 설정해주세요.</FormDescription>
+                <FormDescription>
+                  {userNameDescriptionReset
+                    ? '보여질 닉네임을 설정해주세요.'
+                    : '인증이 완료되었습니다.'}
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -275,6 +305,9 @@ export default function SignUpPage() {
       </Form>
       {userNameDuplicate ? (
         <div className="text-red-500">이미 사용중인 닉네임입니다.</div>
+      ) : null}
+      {userNameWarning ? (
+        <div className="text-red-500">중복확인을 다시 시도해주십시오.</div>
       ) : null}
 
       <Form {...NameForm}>
