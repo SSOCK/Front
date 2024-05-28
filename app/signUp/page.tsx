@@ -60,14 +60,14 @@ export default function SignUpPage() {
   const [warning, setWarning] = useState(false);
   const [duplicate, setDuplicate] = useState(false);
 
-  const emailForm = useForm<z.infer<typeof EmailFormSchema>>({
+  const EmailForm = useForm<z.infer<typeof EmailFormSchema>>({
     resolver: zodResolver(EmailFormSchema),
     defaultValues: {
       email: '',
     },
   });
 
-  const passwordForm = useForm<z.infer<typeof PasswordFormSchema>>({
+  const PasswordForm = useForm<z.infer<typeof PasswordFormSchema>>({
     resolver: zodResolver(PasswordFormSchema),
     defaultValues: {
       password: '',
@@ -75,7 +75,7 @@ export default function SignUpPage() {
     },
   });
 
-  const userNameForm = useForm<z.infer<typeof UserNameFormSchema>>({
+  const UserNameForm = useForm<z.infer<typeof UserNameFormSchema>>({
     resolver: zodResolver(UserNameFormSchema),
     defaultValues: {
       userName: '',
@@ -98,7 +98,6 @@ export default function SignUpPage() {
     setPassword(data.password);
 
   const userNameSubmit = async (data: z.infer<typeof UserNameFormSchema>) => {
-    setUserName('');
     try {
       const res = await fetch(`/api/auth/valid/user/${data.userName}`, {
         method: 'get',
@@ -161,14 +160,17 @@ export default function SignUpPage() {
   return (
     <div className="flex flex-col p-8 gap-4 items-center">
       <h2 className="text-2xl font-bold">Sign Up</h2>
-      <Form {...emailForm}>
+      <Form {...EmailForm}>
         <form
-          onSubmit={emailForm.handleSubmit(emailSubmit)}
-          onChange={reset}
+          onSubmit={EmailForm.handleSubmit(emailSubmit)}
+          onChange={() => {
+            reset();
+            setEmail('');
+          }}
           className="w-full"
         >
           <FormField
-            control={emailForm.control}
+            control={EmailForm.control}
             name="email"
             render={({ field }) => (
               <FormItem>
@@ -189,16 +191,16 @@ export default function SignUpPage() {
         </form>
       </Form>
 
-      <Form {...passwordForm}>
+      <Form {...PasswordForm}>
         <form
           onChange={() => {
-            passwordForm.handleSubmit(passwordSubmit)();
+            PasswordForm.handleSubmit(passwordSubmit)();
             reset();
           }}
           className="w-full"
         >
           <FormField
-            control={passwordForm.control}
+            control={PasswordForm.control}
             name="password"
             render={({ field: { value, onChange } }) => (
               <FormItem>
@@ -220,7 +222,7 @@ export default function SignUpPage() {
           />
 
           <FormField
-            control={passwordForm.control}
+            control={PasswordForm.control}
             name="confirm"
             render={({ field: { value, onChange } }) => (
               <FormItem>
@@ -243,14 +245,17 @@ export default function SignUpPage() {
         </form>
       </Form>
 
-      <Form {...userNameForm}>
+      <Form {...UserNameForm}>
         <form
-          onSubmit={userNameForm.handleSubmit(userNameSubmit)}
-          onChange={reset}
+          onSubmit={UserNameForm.handleSubmit(userNameSubmit)}
+          onChange={() => {
+            reset();
+            setUserName('');
+          }}
           className="w-full"
         >
           <FormField
-            control={userNameForm.control}
+            control={UserNameForm.control}
             name="userName"
             render={({ field }) => (
               <FormItem>
