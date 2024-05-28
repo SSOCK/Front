@@ -30,10 +30,7 @@ const PasswordFormSchema = z
       .string()
       .min(6, { message: '6자이상 20자이하로 입력해주세요.' })
       .max(20, { message: '6자이상 20자이하로 입력해주세요.' }),
-    confirm: z
-      .string()
-      .min(6, { message: '6자이상 20자이하로 입력해주세요.' })
-      .max(20, { message: '6자이상 20자이하로 입력해주세요.' }),
+    confirm: z.string(),
   })
   .refine((data) => data.password === data.confirm, {
     path: ['confirm'],
@@ -97,10 +94,8 @@ export default function SignUpPage() {
     setEmail(data.email);
   };
 
-  const passwordSubmit = (data: z.infer<typeof PasswordFormSchema>) => {
-    //alert(`${JSON.stringify(data)} 비번맞냐`);
+  const passwordSubmit = (data: z.infer<typeof PasswordFormSchema>) =>
     setPassword(data.password);
-  };
 
   const userNameSubmit = async (data: z.infer<typeof UserNameFormSchema>) => {
     setUserName('');
@@ -187,7 +182,6 @@ export default function SignUpPage() {
                 <FormDescription>
                   로그인시 사용할 이메일을 입력해주세요.
                 </FormDescription>
-
                 <FormMessage />
               </FormItem>
             )}
@@ -206,12 +200,17 @@ export default function SignUpPage() {
           <FormField
             control={passwordForm.control}
             name="password"
-            render={({ field }) => (
+            render={({ field: { value, onChange } }) => (
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <div className="flex gap-1">
                   <FormControl>
-                    <Input type="password" placeholder="Password" {...field} />
+                    <Input
+                      type="password"
+                      placeholder="Password"
+                      value={value}
+                      onChange={onChange}
+                    />
                   </FormControl>
                 </div>
                 <FormDescription>비밀번호를 입력해주세요</FormDescription>
@@ -219,15 +218,21 @@ export default function SignUpPage() {
               </FormItem>
             )}
           />
+
           <FormField
             control={passwordForm.control}
             name="confirm"
-            render={({ field }) => (
+            render={({ field: { value, onChange } }) => (
               <FormItem>
                 <FormLabel>Confirm Password</FormLabel>
                 <div className="flex gap-1">
                   <FormControl>
-                    <Input type="password" placeholder="Password" {...field} />
+                    <Input
+                      type="password"
+                      placeholder="Password"
+                      value={value}
+                      onChange={onChange}
+                    />
                   </FormControl>
                 </div>
                 <FormDescription>비밀번호를 다시 입력해주세요</FormDescription>
@@ -257,7 +262,6 @@ export default function SignUpPage() {
                   <Button type="submit">중복확인</Button>
                 </div>
                 <FormDescription>보여질 닉네임을 설정해주세요.</FormDescription>
-
                 <FormMessage />
               </FormItem>
             )}
@@ -288,7 +292,6 @@ export default function SignUpPage() {
                   </FormControl>
                 </div>
                 <FormDescription>이름을 입력해주세요.</FormDescription>
-
                 <FormMessage />
               </FormItem>
             )}
