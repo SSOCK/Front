@@ -18,6 +18,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>
+        <meta
+          name="google-site-verification"
+          content="UUayBY3CkM6qQ_WM9Yn8zpFpun_gjwuLFefygDqVNm0"
+        />
+      </head>
       <body className={inter.className}>
         <Script
           type="text/javascript"
