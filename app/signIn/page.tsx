@@ -35,7 +35,7 @@ export default function SignInPage() {
           'Content-type': 'application/json',
         },
         body: JSON.stringify({
-          username: email.current!.value,
+          email: email.current!.value,
           password: password.current!.value,
         }),
       });
