@@ -306,6 +306,7 @@ export default function SignUpPage() {
           />
         </form>
       </Form>
+
       {userNameDuplicate ? (
         <div className="text-red-500">이미 사용중인 닉네임입니다.</div>
       ) : null}
