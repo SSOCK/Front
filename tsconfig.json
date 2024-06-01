@@ -19,6 +19,8 @@
     ],
     "baseUrl": "./",
     "paths": {
+      "@hooks": ["hooks/index"],
+      "@hooks/*": ["hooks/*"],
       "@components": ["components/index"],
       "@components/*": ["components/*"],
       "@atoms": ["states/index"],
