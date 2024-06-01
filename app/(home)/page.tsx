@@ -1,3 +1,8 @@
+'use client';
+
+import { useEffect } from 'react';
+import { hasCookie } from 'cookies-next';
+import { useLogout } from '@hooks';
 import { HeadBar, Navigation, Post } from '@components';
 
 const data: {
@@ -37,6 +42,13 @@ const data: {
 ];
 
 export default function Home() {
+  const logout = useLogout();
+
+  useEffect(() => {
+    !hasCookie('access-token') ? logout() : null;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
       <HeadBar />
