@@ -150,10 +150,10 @@ export default function SignUpPage() {
   };
 
   const signUp = async () => {
-    if (email === '' || password === '' || name === '') {
+    if (!email || !password || !name) {
       setEmpty(true);
       return;
-    } else if (userName === '') {
+    } else if (!userName) {
       setUserNameCheck(false);
       return;
     }
