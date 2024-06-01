@@ -142,6 +142,8 @@ export default function SignUpPage() {
     setEmailDescriptionReset(true);
   };
 
+  const passwordReset = () => setPassword('');
+
   const userNamenReset = () => {
     setUserName('');
     setUserNameDescriptionReset(true);
@@ -221,6 +223,7 @@ export default function SignUpPage() {
           onChange={() => {
             PasswordForm.handleSubmit(passwordSubmit)();
             reset();
+            passwordReset();
           }}
           className="w-full"
         >
