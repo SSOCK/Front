@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { setCookie } from 'cookies-next';
@@ -35,6 +35,7 @@ const SignInFormSchema = z.object({
 
 export default function SignInPage() {
   const router = useRouter();
+  const remember = useRef<HTMLButtonElement>(null);
   const [warning, setWarning] = useState(false);
 
   const SignInForm = useForm<z.infer<typeof SignInFormSchema>>({
@@ -60,6 +61,9 @@ export default function SignInPage() {
 
       const response = res.status === 200 ? await res.json() : {};
       if ('access-token' in response && 'refresh-token' in response) {
+        remember.current!.getAttribute('data-state') === 'checked'
+          ? setCookie('rememberMe', true)
+          : null;
         setCookie('access-token', response['access-token']);
         setCookie('refresh-token', response['refresh-token']);
         router.push('/');
@@ -128,17 +132,16 @@ export default function SignInPage() {
             )}
           />
 
-          <div className="pt-4" />
+          <div className="pt-8 pb-4 flex align-middle gap-1 w-full justify-start">
+            <Checkbox id="rememberLogin" ref={remember} />
+            <Label htmlFor="rememberLogin">Remember me</Label>
+          </div>
+
           <Button type="submit" className="h-12 w-full">
             Sign in
           </Button>
         </form>
       </Form>
-
-      <div className="flex align-middle gap-1 w-full justify-start">
-        <Checkbox id="rememberLogin" />
-        <Label htmlFor="rememberLogin">Remember me</Label>
-      </div>
 
       {warning ? (
         <div className="text-red-500">
