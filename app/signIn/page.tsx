@@ -59,15 +59,24 @@ export default function SignInPage() {
         }),
       });
 
-      const response = res.status === 200 ? await res.json() : {};
-      if ('access-token' in response && 'refresh-token' in response) {
-        remember.current!.getAttribute('data-state') === 'checked'
-          ? setCookie('rememberMe', true)
-          : null;
-        setCookie('access-token', response['access-token']);
-        setCookie('refresh-token', response['refresh-token']);
-        router.push('/');
-      } else setWarning(true);
+      if (res.status !== 200) return new Error(`${res.status}`);
+
+      const response: { 'access-token': string; 'refresh-token': string } =
+        await res.json();
+      console.log(response);
+      sessionStorage.setItem('access-token', response['access-token']);
+      remember.current!.getAttribute('data-state') === 'checked'
+        ? setCookie('refresh-token', response['refresh-token'], {
+            maxAge: 60 * 60 * 24 * 7,
+            httpOnly: true,
+            path: '/api/auth/refresh',
+          })
+        : setCookie('refresh-token', response['refresh-token'], {
+            httpOnly: true,
+            path: '/api/auth/refresh',
+          });
+
+      router.push('/');
     } catch (error) {
       setWarning(true);
     }

@@ -45,7 +45,10 @@ export default function Home() {
   const logout = useLogout();
 
   useEffect(() => {
-    !hasCookie('access-token') ? logout() : null;
+    if (!sessionStorage.getItem('access-token')) {
+      logout();
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

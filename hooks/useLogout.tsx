@@ -4,8 +4,7 @@ import { deleteCookie } from 'cookies-next';
 const useLogout = () => {
   const router = useRouter();
   const logout = () => {
-    deleteCookie('rememberMe');
-    deleteCookie('access-token');
+    sessionStorage.removeItem('access-token');
     deleteCookie('refresh-token');
     router.push('/signIn');
   };
