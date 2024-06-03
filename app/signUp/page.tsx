@@ -172,7 +172,7 @@ export default function SignUpPage() {
         }),
       });
 
-      if (res.status === 200) {
+      if (res.status === 201) {
         alert('회원가입이 완료되었습니다. 로그인 창으로 이동합니다.');
         router.push('/signIn');
       } else if (res.status === 409) setDuplicate(true);
