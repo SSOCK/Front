@@ -64,7 +64,10 @@ export default function SignInPage() {
       const response: { 'access-token': string; 'refresh-token': string } =
         await res.json();
       console.log(response);
-      sessionStorage.setItem('access-token', response['access-token']);
+      sessionStorage.setItem(
+        'access-token',
+        `Bearer ${response['access-token']}`
+      );
       remember.current!.getAttribute('data-state') === 'checked'
         ? setCookie('refresh-token', response['refresh-token'], {
             maxAge: 60 * 60 * 24 * 7,
