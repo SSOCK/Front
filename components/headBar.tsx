@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { useLogout } from '@hooks';
+import useLogout from '@hooks/useLogout';
 import { Button } from './ui/button';
 
 export default function HeadBar() {

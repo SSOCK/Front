@@ -2,8 +2,8 @@
 
 import { useEffect } from 'react';
 import { hasCookie } from 'cookies-next';
-import { useLogout } from '@hooks';
 import { HeadBar, Navigation, Post } from '@components';
+import useLogout from '@hooks/useLogout';
 
 const data: {
   id: string;
