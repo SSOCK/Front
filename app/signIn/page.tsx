@@ -59,7 +59,7 @@ export default function SignInPage() {
         }),
       });
 
-      if (res.status !== 200) return new Error(`${res.status}`);
+      if (res.status !== 200) throw new Error(`${res.status}`);
 
       const response: { 'access-token': string; 'refresh-token': string } =
         await res.json();
