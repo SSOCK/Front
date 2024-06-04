@@ -5,12 +5,17 @@ const nextConfig = {
     return config;
   },
   reactStrictMode: false,
-  rewrites: async ()  => ({
-    beforeFiles: [{
-      source: '/api/:path*',
-      destination: `${process.env.NEXT_PUBLIC_API}/:path*`,
-    }],
-  })
+  rewrites: async () => ({
+    beforeFiles: [
+      {
+        source: '/api/:path*',
+        destination: `${process.env.NEXT_PUBLIC_API}/:path*`,
+      },
+    ],
+  }),
+  images: {
+    domains: ['storage.googleapis.com'],
+  },
 };
 
 export default nextConfig;
