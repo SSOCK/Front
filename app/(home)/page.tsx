@@ -10,7 +10,7 @@ export default function Home() {
 
   useEffect(() => {
     if (!sessionStorage.getItem('access-token')) {
-      logout();
+      //logout();
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

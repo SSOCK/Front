@@ -1,31 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Post } from '@components';
-import { tryAuthWithRefreshToken } from '@/utils/fetch';
+import { fetchWithRetry, getAccessToken } from '@/utils/fetch';
 
-async function getPost(): Promise<PostType[]> {
-  try {
-    const accessToken = sessionStorage.getItem('access-token');
-    if (!accessToken) throw new Error('access token이 없습니다!!');
-
-    const request = () =>
-      fetch('/api/posts?postid=1&limit=10', {
-        method: 'get',
-        headers: new Headers({
-          Authorization: accessToken,
-        }),
-      });
-    const response = await request();
-    if (response.status !== 200) {
-      throw response.status;
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.log(error);
-    tryAuthWithRefreshToken();
-    return [];
-  }
+async function getPost() {
+  const url = '/api/posts?postid=1&limit=10';
+  const options = {
+    method: 'get',
+  };
+  return fetchWithRetry(url, options);
 }
 
 export default function Posts() {
@@ -33,12 +15,12 @@ export default function Posts() {
   async function loadPost() {
     const posts = await getPost();
     setData(posts);
-    console.log(data);
+    //console.log(posts);
   }
 
   useEffect(() => {
     loadPost();
-    console.log(data);
+    //console.log(data);
   }, []);
   return data.map((post, index) => <Post key={post.id} postData={post} />);
 }
