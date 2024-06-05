@@ -18,7 +18,6 @@ type PostProps = {
 };
 
 export default function Post({ postData }: PostProps) {
-  console.log(postData);
   return (
     <div className="w-full p-5">
       <div className="flex flex-col bg-slate-300 p-5 rounded-md shadow-xl">

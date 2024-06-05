@@ -69,13 +69,13 @@ export default function SignInPage() {
         `Bearer ${response['access-token']}`
       );
       const cookieOptions = {
-        httpOnly: true,
+        //httpOnly: true,
         path: '/api/auth/refresh',
         ...(remember.current!.getAttribute('data-state') === 'checked' && {
           maxAge: 60 * 60 * 24 * 7,
         }),
       };
-      setCookie('refresh-token', response['refresh-token'], cookieOptions);
+      setCookie('refresh-token', `${response['refresh-token']}`, cookieOptions);
 
       router.push('/');
     } catch (error) {
