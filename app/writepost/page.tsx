@@ -25,15 +25,12 @@ const WritePostSchema = z.object({
     .min(1, { message: '1자이상 100자이하로 입력해주세요.' })
     .max(100, { message: '1자이상 100자이하로 입력해주세요.' }),
   content: z.string().max(2000, { message: '2000자이하로 입력해주세요.' }),
-  image: z.instanceof(File).optional(),
 });
 
 export default function WritePost() {
-  const [title, setTitle] = useState<string>('');
-  const [content, setContent] = useState<string>('');
   const [image, setImage] = useState<File | undefined>(undefined);
-
-  const [view, s];
+  const [view, setView] = useState(false);
+  const [preview, setPreview] = useState<string>('');
   const [warning, setWarning] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -42,18 +39,22 @@ export default function WritePost() {
     defaultValues: {
       title: '',
       content: '',
-      image: undefined,
     },
   });
 
-  const uploadImage = (event: React.ChangeEvent) => {
-    console.log('picture', event, event.target);
-    const pictures = (event.target as HTMLInputElement).files as FileList;
-    Array.from(pictures).map((file) => console.log(file));
+  const uploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files === null) return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreview(reader.result as string);
+    };
+    reader.readAsDataURL(event.target.files[0]);
+    setImage(event.target.files[0]);
+    setView(true);
   };
 
   const writePostSubmit = (data: z.infer<typeof WritePostSchema>) => {
-    // 이 함수는 적절한 값이 채워졌을 때 실행됨 -> fetch문 작성
+    // 이 함수는 적절한 값이 채워졌을 때 실행됨 -> fetch문 작성 (image는 image로, 나머지는 data.xxx)
   };
 
   return (
@@ -61,7 +62,7 @@ export default function WritePost() {
       <HeadBar />
 
       <div className="mainPart p-5 flex flex-col items-center justify-between">
-        <div className="flex flex-col bg-slate-300 p-5 rounded-md shadow-xl w-full h-full">
+        <div className="flex flex-col bg-slate-300 p-5 rounded-md shadow-xl w-full h-full overflow-y-scroll">
           <Form {...WritePostForm}>
             <form
               onSubmit={WritePostForm.handleSubmit(writePostSubmit)}
@@ -122,6 +123,9 @@ export default function WritePost() {
                 accept="image/*"
                 onChange={uploadImage}
               />
+              {view ? (
+                <img src={preview as string} alt="preview" className="pb-4" />
+              ) : null}
 
               {warning ? (
                 <div className="text-red-500 pb-4">
