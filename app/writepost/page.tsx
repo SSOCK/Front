@@ -42,6 +42,15 @@ export default function WritePost() {
     },
   });
 
+  const deleteImage = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+    setPreview('');
+    setImage(undefined);
+    setView(false);
+  };
+
   const uploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files === null) return;
     const reader = new FileReader();
@@ -52,7 +61,7 @@ export default function WritePost() {
   };
 
   const writePostSubmit = (data: z.infer<typeof WritePostSchema>) => {
-    // 이 함수는 적절한 값이 채워졌을 때 실행됨 -> fetch문 작성 (image는 image로, 나머지는 data.xxx)
+    console.log(data.title, data.content, image);
   };
 
   return (
@@ -111,8 +120,28 @@ export default function WritePost() {
               </div>
 
               <FormLabel>Image</FormLabel>
+
               <label htmlFor="file" className="block pt-2 pb-4">
-                <Camera className="w-1/6 h-1/6" />
+                {view ? (
+                  <>
+                    <Button
+                      type="button"
+                      onClick={deleteImage}
+                      className="p-2 my-2 block"
+                    >
+                      Delete
+                    </Button>
+                    <div className="flex justify-center">
+                      <img
+                        src={preview as string}
+                        alt="preview"
+                        className="pb-4"
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <Camera className="w-1/6 h-1/6" />
+                )}
               </label>
               <input
                 id="file"
@@ -122,9 +151,6 @@ export default function WritePost() {
                 accept="image/*"
                 onChange={uploadImage}
               />
-              {view ? (
-                <img src={preview as string} alt="preview" className="pb-4" />
-              ) : null}
 
               {warning ? (
                 <div className="text-red-500 pb-4">
