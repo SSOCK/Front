@@ -45,10 +45,8 @@ export default function WritePost() {
   const uploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files === null) return;
     const reader = new FileReader();
-    reader.onloadend = () => {
-      setPreview(reader.result as string);
-    };
     reader.readAsDataURL(event.target.files[0]);
+    reader.onloadend = () => setPreview(reader.result as string);
     setImage(event.target.files[0]);
     setView(true);
   };
@@ -112,7 +110,8 @@ export default function WritePost() {
                 />
               </div>
 
-              <label htmlFor="file" className="block pb-4">
+              <FormLabel>Image</FormLabel>
+              <label htmlFor="file" className="block pt-2 pb-4">
                 <Camera className="w-1/6 h-1/6" />
               </label>
               <input
