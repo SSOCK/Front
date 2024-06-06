@@ -145,7 +145,7 @@ export default function WritePost() {
                     <Button
                       type="button"
                       onClick={deleteImage}
-                      className="p-2 my-2 block"
+                      className="p-2 mb-3 block"
                     >
                       Delete
                     </Button>
