@@ -15,8 +15,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@components/ui/form';
-import { Input } from '@components/ui/input';
-import { Textarea } from '@components/ui/textarea';
 import Camera from '@/public/icons/camera.svg';
 
 const WritePostSchema = z.object({
@@ -32,6 +30,8 @@ export default function WritePost() {
   const [view, setView] = useState(false);
   const [preview, setPreview] = useState<string>('');
   const [warning, setWarning] = useState(false);
+  const titleRef = useRef<HTMLTextAreaElement>(null);
+  const contentRef = useRef<HTMLTextAreaElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const WritePostForm = useForm<z.infer<typeof WritePostSchema>>({
@@ -41,6 +41,13 @@ export default function WritePost() {
       content: '',
     },
   });
+
+  const handleTextareaHeight = (
+    refName: React.RefObject<HTMLTextAreaElement>
+  ) => {
+    refName.current!.style.height = 'auto';
+    refName.current!.style.height = refName.current!.scrollHeight + 'px';
+  };
 
   const deleteImage = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -83,10 +90,16 @@ export default function WritePost() {
                     <FormLabel>Title</FormLabel>
                     <div className="flex gap-1">
                       <FormControl>
-                        <Input
+                        <textarea
+                          ref={titleRef}
+                          rows={1}
                           placeholder="Title"
                           value={value}
-                          onChange={onChange}
+                          onChange={(event) => {
+                            onChange(event);
+                            handleTextareaHeight(titleRef);
+                          }}
+                          className="textarea"
                         />
                       </FormControl>
                     </div>
@@ -105,10 +118,15 @@ export default function WritePost() {
                       <FormLabel>Content</FormLabel>
                       <div className="flex gap-1">
                         <FormControl>
-                          <Textarea
+                          <textarea
+                            ref={contentRef}
                             placeholder="Content"
                             value={value}
-                            onChange={onChange}
+                            onChange={(event) => {
+                              onChange(event);
+                              handleTextareaHeight(contentRef);
+                            }}
+                            className="textarea"
                           />
                         </FormControl>
                       </div>
