@@ -29,6 +29,7 @@ export default function WritePost() {
   const [image, setImage] = useState<File | undefined>(undefined);
   const [view, setView] = useState(false);
   const [preview, setPreview] = useState<string>('');
+  const [imgError, setImgError] = useState(false);
   const [warning, setWarning] = useState(false);
   const titleRef = useRef<HTMLTextAreaElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
@@ -42,6 +43,11 @@ export default function WritePost() {
     },
   });
 
+  const reset = () => {
+    setImgError(false);
+    setWarning(false);
+  };
+
   const handleTextareaHeight = (
     refName: React.RefObject<HTMLTextAreaElement>
   ) => {
@@ -53,6 +59,7 @@ export default function WritePost() {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
+    setImgError(false);
     setPreview('');
     setImage(undefined);
     setView(false);
@@ -60,6 +67,13 @@ export default function WritePost() {
 
   const uploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files === null) return;
+
+    const reg = /(.*?)\.(jpg|jpeg|png|gif)$/;
+    if (!event.target.files[0].name.match(reg)) {
+      setImgError(true);
+      return;
+    }
+
     const reader = new FileReader();
     reader.readAsDataURL(event.target.files[0]);
     reader.onloadend = () => setPreview(reader.result as string);
@@ -116,6 +130,7 @@ export default function WritePost() {
                           value={value}
                           onChange={(event) => {
                             onChange(event);
+                            reset();
                             handleTextareaHeight(titleRef);
                           }}
                           className="textarea"
@@ -143,6 +158,7 @@ export default function WritePost() {
                             value={value}
                             onChange={(event) => {
                               onChange(event);
+                              reset();
                               handleTextareaHeight(contentRef);
                             }}
                             className="textarea"
@@ -185,9 +201,18 @@ export default function WritePost() {
                 ref={fileRef}
                 type="file"
                 className="hidden"
-                accept="image/*"
-                onChange={uploadImage}
+                accept="image/png, image/jpeg, image/gif"
+                onChange={(event) => {
+                  reset();
+                  uploadImage(event);
+                }}
               />
+
+              {imgError ? (
+                <div className="text-red-500 pb-4">
+                  png, jpg(jpeg), gif 형식만 가능합니다.
+                </div>
+              ) : null}
 
               {warning ? (
                 <div className="text-red-500 pb-4">
