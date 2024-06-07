@@ -67,8 +67,27 @@ export default function WritePost() {
     setView(true);
   };
 
-  const writePostSubmit = (data: z.infer<typeof WritePostSchema>) => {
-    console.log(data.title, data.content, image);
+  const writePostSubmit = async (data: z.infer<typeof WritePostSchema>) => {
+    const accessToken = sessionStorage.getItem('access-token');
+    try {
+      if (accessToken === null) throw 401;
+      const formData = new FormData();
+      formData.append('title', data.title);
+      formData.append('content', data.content);
+      image ? formData.append('image', image) : null;
+
+      const res = await fetch('/api/posts', {
+        method: 'post',
+        headers: new Headers({
+          Authorization: accessToken,
+        }),
+        body: formData,
+      });
+      if (res.status !== 201) throw res.status;
+    } catch (error) {
+      if (error === 401) console.log('refresh토큰으로 재소통 필요');
+      setWarning(true);
+    }
   };
 
   return (
