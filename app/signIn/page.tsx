@@ -163,7 +163,7 @@ export default function SignInPage() {
 
       <div className="flex gap-1">
         <h5>Don&apos;t have an account?</h5>
-        <Link href="/signUp" className="underline font-bold">
+        <Link href="/signup" className="underline font-bold">
           Sign Up
         </Link>
       </div>
