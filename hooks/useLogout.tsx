@@ -6,7 +6,7 @@ const useLogout = () => {
   const logout = () => {
     sessionStorage.removeItem('access-token');
     deleteCookie('refresh-token');
-    router.push('/signIn');
+    router.push('/signin');
   };
   return logout;
 };
