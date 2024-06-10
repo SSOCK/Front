@@ -36,14 +36,17 @@ export default function WritePost() {
   const [image, setImage] = useState<Array<File>>([]);
   const [view, setView] = useState(false);
   const [preview, setPreview] = useState<Array<Preview>>([]);
-  const [imgFormat, setImgFormat] = useState(false);
   const [imgLimit, setImgLimit] = useState(false);
-  const [sameImg, setSameImg] = useState(false);
-  const [warning, setWarning] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string>('');
+
   const titleRef = useRef<HTMLTextAreaElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
-  const imgLimitNum = 10;
+
+  const ImgLimitNum = 10;
+  const FormatError = 'png, jpg(jpeg), gif 형식만 가능합니다.';
+  const SameError = '동일한 이미지는 첨부할 수 없습니다.';
+  const PostError = '전송을 다시 시도해주십시오.';
 
   const WritePostForm = useForm<z.infer<typeof WritePostSchema>>({
     resolver: zodResolver(WritePostSchema),
@@ -52,12 +55,6 @@ export default function WritePost() {
       content: '',
     },
   });
-
-  const reset = () => {
-    setImgFormat(false);
-    setSameImg(false);
-    setWarning(false);
-  };
 
   const handleTextareaHeight = (
     refName: React.RefObject<HTMLTextAreaElement>
@@ -72,9 +69,8 @@ export default function WritePost() {
   ) => {
     event.preventDefault();
     fileRef.current!.value = '';
-    setImgFormat(false);
     setImgLimit(false);
-    setSameImg(false);
+    setErrorMsg('');
 
     if (preview.length === 1) {
       setPreview([]);
@@ -86,17 +82,22 @@ export default function WritePost() {
     setPreview(
       preview.filter(
         ({ src, name, lastModified, size }) =>
-          src !== deleteImg.src &&
-          name != deleteImg.name &&
-          lastModified !== deleteImg.lastModified &&
+          src !== deleteImg.src ||
+          name !== deleteImg.name ||
+          lastModified !== deleteImg.lastModified ||
           size !== deleteImg.size
       )
     );
+
+    // setPreview(
+    //   preview.filter((obj) => JSON.stringify(obj) !== JSON.stringify(deleteImg))
+    // );
+
     setImage(
       image.filter(
         ({ name, lastModified, size }) =>
-          name != deleteImg.name &&
-          lastModified !== deleteImg.lastModified &&
+          name !== deleteImg.name ||
+          lastModified !== deleteImg.lastModified ||
           size !== deleteImg.size
       )
     );
@@ -107,7 +108,7 @@ export default function WritePost() {
 
     const reg = /(.*?)\.(jpg|jpeg|png|gif)$/;
     if (!files[0].name.match(reg)) {
-      setImgFormat(true);
+      setErrorMsg(FormatError);
       return;
     }
 
@@ -131,10 +132,10 @@ export default function WritePost() {
             item.size === newPreview.size
         )
       ) {
-        setSameImg(true);
+        setErrorMsg(SameError);
         return;
       }
-      if (preview.length === imgLimitNum - 1) setImgLimit(true);
+      if (preview.length === ImgLimitNum - 1) setImgLimit(true);
       setPreview([...preview, newPreview]);
       setImage([...image, files[0]]);
       setView(true);
@@ -158,9 +159,16 @@ export default function WritePost() {
         body: formData,
       });
       if (res.status !== 201) throw res.status;
+      else {
+        setErrorMsg('');
+        setImage([]);
+        setView(false);
+        setPreview([]);
+        setImgLimit(false);
+      }
     } catch (error) {
       if (error === 401) console.log('refresh토큰으로 재소통 필요');
-      setWarning(true);
+      setErrorMsg(PostError);
     }
   };
 
@@ -190,7 +198,7 @@ export default function WritePost() {
                           value={value}
                           onChange={(event) => {
                             onChange(event);
-                            reset();
+                            setErrorMsg('');
                             handleTextareaHeight(titleRef);
                           }}
                           className="textarea"
@@ -218,7 +226,7 @@ export default function WritePost() {
                             value={value}
                             onChange={(event) => {
                               onChange(event);
-                              reset();
+                              setErrorMsg('');
                               handleTextareaHeight(contentRef);
                             }}
                             className="textarea"
@@ -239,7 +247,7 @@ export default function WritePost() {
                 {view ? (
                   <div className="justify-center">
                     {preview.map((item) => (
-                      <div key={item.src}>
+                      <div key={item.src + item.name}>
                         <Button
                           type="button"
                           onClick={(event) => deleteImage(event, item)}
@@ -265,29 +273,14 @@ export default function WritePost() {
                 className="hidden"
                 accept="image/png, image/jpeg, image/gif"
                 onChange={(event) => {
-                  reset();
+                  setErrorMsg('');
                   uploadImage(event.target.files);
                 }}
               />
 
-              {imgFormat ? (
-                <div className="text-red-500 pb-4">
-                  png, jpg(jpeg), gif 형식만 가능합니다.
-                </div>
+              {errorMsg ? (
+                <div className="text-red-500 pb-4">{errorMsg}</div>
               ) : null}
-
-              {sameImg ? (
-                <div className="text-red-500 pb-4">
-                  동일한 이미지는 첨부할 수 없습니다.
-                </div>
-              ) : null}
-
-              {warning ? (
-                <div className="text-red-500 pb-4">
-                  전송을 다시 시도해주십시오.
-                </div>
-              ) : null}
-
               <Button type="submit" className="h-12 w-full pt-auto">
                 Submit
               </Button>
