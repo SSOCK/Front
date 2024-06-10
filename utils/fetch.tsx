@@ -6,13 +6,7 @@ export async function refreshAccessToken() {
     credentials: 'include',
   });
 
-  if (respones.status !== 201) {
-    //실패시 처리
-    logout();
-    return;
-  }
   if (!respones.ok) throw new Error('accessToken 재발급에 실패했습니다.');
-
   const data: {
     'access-token': string;
   } = await respones.json();
@@ -24,15 +18,15 @@ export async function refreshAccessToken() {
 export async function fetchWithRetry(url: string, options: RequestInit) {
   try {
     options.headers = { ...options.headers, Authorization: getAccessToken() };
-    const respones = await fetch(url, options);
-    if (respones.ok) return await respones.json();
+    const response = await fetch(url, options);
+    if (response.status !== 401) return response;
 
     await refreshAccessToken();
     options.headers = { ...options.headers, Authorization: getAccessToken() };
-    const respones2 = await fetch(url, options);
-    return await respones2.json();
+    const response2 = await fetch(url, options);
+    return response2;
   } catch (error) {
-    console.error('fetch중 에러발생:', error);
+    logout();
   }
 }
 
