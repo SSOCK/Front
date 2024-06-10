@@ -58,12 +58,8 @@ export default function SignUpPage() {
   const [emailDescriptionReset, setEmailDescriptionReset] = useState(true);
   const [userNameDescriptionReset, setUserNameDescriptionReset] =
     useState(true);
-  const [userNameDuplicate, setUserNameDuplicate] = useState(false);
-  const [userNameWarning, setUserNameWarning] = useState(false);
-  const [empty, setEmpty] = useState(false);
-  const [userNameCheck, setUserNameCheck] = useState(true);
-  const [warning, setWarning] = useState(false);
-  const [duplicate, setDuplicate] = useState(false);
+  const [userNameError, setUserNameError] = useState<string>('');
+  const [signUpError, setSignUpError] = useState<string>('');
 
   const EmailForm = useForm<z.infer<typeof EmailFormSchema>>({
     resolver: zodResolver(EmailFormSchema),
@@ -110,18 +106,18 @@ export default function SignUpPage() {
         method: 'get',
       });
 
-      const response = res.status === 200 ? await res.json() : {};
-      if (!('exists' in response)) {
-        setUserNameWarning(true);
-        return;
-      }
-      if (response['exists']) setUserNameDuplicate(true);
-      else {
-        setUserName(data.userName);
-        setUserNameDescriptionReset(false);
-      }
+      if (res.status !== 200) throw 'PostError';
+
+      const response = await res.json();
+      if (!('exists' in response)) throw 'PostError';
+      if (response['exists']) throw 'Duplicate';
+
+      setUserName(data.userName);
+      setUserNameDescriptionReset(false);
     } catch (error) {
-      setUserNameDuplicate(true);
+      error === 'Duplicate'
+        ? setUserNameError('이미 사용중인 닉네임입니다.')
+        : setUserNameError('중복확인을 다시 시도해주십시오.');
     }
   };
 
@@ -129,12 +125,8 @@ export default function SignUpPage() {
     setName(data.name);
 
   const reset = () => {
-    setUserNameDuplicate(false);
-    setUserNameWarning(false);
-    setEmpty(false);
-    setUserNameCheck(true);
-    setWarning(false);
-    setDuplicate(false);
+    setUserNameError('');
+    setSignUpError('');
   };
 
   const emailReset = () => {
@@ -151,10 +143,10 @@ export default function SignUpPage() {
 
   const signUp = async () => {
     if (!email || !password || !name) {
-      setEmpty(true);
+      setSignUpError('입력 항목이 모두 채워지지 않았습니다.');
       return;
     } else if (!userName) {
-      setUserNameCheck(false);
+      setSignUpError('닉네임이 인증되지 않았습니다.');
       return;
     }
 
@@ -172,13 +164,13 @@ export default function SignUpPage() {
         }),
       });
 
-      if (res.status === 201) {
-        alert('회원가입이 완료되었습니다. 로그인 창으로 이동합니다.');
-        router.push('/signin');
-      } else if (res.status === 409) setDuplicate(true);
-      else setWarning(true);
+      if (res.status !== 201) throw res.status;
+      alert('회원가입이 완료되었습니다. 로그인 창으로 이동합니다.');
+      router.push('/signin');
     } catch (error) {
-      setWarning(true);
+      error === 409
+        ? setSignUpError('이미 존재하는 사용자입니다.')
+        : setSignUpError('회원가입을 다시 시도해주십시오');
     }
   };
 
@@ -307,11 +299,8 @@ export default function SignUpPage() {
         </form>
       </Form>
 
-      {userNameDuplicate ? (
-        <div className="text-red-500">이미 사용중인 닉네임입니다.</div>
-      ) : null}
-      {userNameWarning ? (
-        <div className="text-red-500">중복확인을 다시 시도해주십시오.</div>
+      {userNameError.length ? (
+        <div className="text-red-500">{userNameError}</div>
       ) : null}
 
       <Form {...NameForm}>
@@ -345,19 +334,8 @@ export default function SignUpPage() {
         Sign in
       </Button>
 
-      {empty ? (
-        <div className="text-red-500">
-          입력 항목이 모두 채워지지 않았습니다.
-        </div>
-      ) : null}
-      {!userNameCheck ? (
-        <div className="text-red-500">닉네임이 인증되지 않았습니다.</div>
-      ) : null}
-      {warning ? (
-        <div className="text-red-500">회원가입을 다시 시도해주십시오.</div>
-      ) : null}
-      {duplicate ? (
-        <div className="text-red-500">이미 존재하는 사용자입니다.</div>
+      {signUpError.length ? (
+        <div className="text-red-500">{signUpError}</div>
       ) : null}
     </div>
   );
