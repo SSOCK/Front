@@ -68,6 +68,11 @@
             "position": "before"
           },
           {
+            "pattern": "@utils/*",
+            "group": "internal",
+            "position": "before"
+          },
+          {
             "pattern": "@atoms",
             "group": "internal",
             "position": "before"

@@ -1,10 +1,14 @@
+import logout from './logout';
+
 export async function refreshAccessToken() {
   const respones = await fetch('/api/auth/refresh', {
     method: 'post',
     credentials: 'include',
   });
+
   if (respones.status !== 201) {
     //실패시 처리
+    logout();
     return;
   }
   if (!respones.ok) throw new Error('accessToken 재발급에 실패했습니다.');

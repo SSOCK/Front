@@ -1,11 +1,10 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import useLogout from '@hooks/useLogout';
+import logout from '@utils/logout';
 import { Button } from './ui/button';
 
 export default function HeadBar() {
-  const logout = useLogout();
   const path = usePathname().split('/')[1];
   const title = path === '' ? 'home' : path;
 

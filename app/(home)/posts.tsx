@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Post } from '@components';
-import { fetchWithRetry } from '@/utils/fetch';
+import { fetchWithRetry } from '@utils/fetch';
 
 async function getPost(): Promise<PostType[]> {
   const url = '/api/posts?postid=1&limit=10';
