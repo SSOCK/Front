@@ -2,13 +2,11 @@
 
 import { useEffect } from 'react';
 import { HeadBar, Navigation } from '@components';
-import useLogout from '@hooks/useLogout';
-import { refreshAccessToken } from '@/utils/fetch';
+import { refreshAccessToken } from '@utils/fetch';
+import logout from '@utils/logout';
 import Posts from './posts';
 
 export default function Home() {
-  const logout = useLogout();
-
   useEffect(() => {
     const checkToken = async () => {
       await refreshAccessToken();
