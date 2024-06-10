@@ -17,6 +17,13 @@ import {
 } from '@components/ui/form';
 import Camera from '@/public/icons/camera.svg';
 
+interface Preview {
+  src: string;
+  name: string;
+  lastModified: number;
+  size: number;
+}
+
 const WritePostSchema = z.object({
   title: z
     .string()
@@ -26,10 +33,11 @@ const WritePostSchema = z.object({
 });
 
 export default function WritePost() {
-  const [image, setImage] = useState<File | undefined>(undefined);
+  const [image, setImage] = useState<Array<File>>([]);
   const [view, setView] = useState(false);
-  const [preview, setPreview] = useState<string>('');
+  const [preview, setPreview] = useState<Array<Preview>>([]);
   const [imgError, setImgError] = useState(false);
+  const [sameImg, setSameImg] = useState(false);
   const [warning, setWarning] = useState(false);
   const titleRef = useRef<HTMLTextAreaElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
@@ -45,6 +53,7 @@ export default function WritePost() {
 
   const reset = () => {
     setImgError(false);
+    setSameImg(false);
     setWarning(false);
   };
 
@@ -56,29 +65,76 @@ export default function WritePost() {
   };
 
   const deleteImage = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    deleteImg: Preview
   ) => {
     event.preventDefault();
+    fileRef.current!.value = '';
     setImgError(false);
-    setPreview('');
-    setImage(undefined);
-    setView(false);
+    setSameImg(false);
+
+    if (preview.length === 1) {
+      setPreview([]);
+      setImage([]);
+      setView(false);
+      return;
+    }
+
+    setPreview(
+      preview.filter(
+        ({ src, name, lastModified, size }) =>
+          src !== deleteImg.src &&
+          name != deleteImg.name &&
+          lastModified !== deleteImg.lastModified &&
+          size !== deleteImg.size
+      )
+    );
+    setImage(
+      image.filter(
+        ({ name, lastModified, size }) =>
+          name != deleteImg.name &&
+          lastModified !== deleteImg.lastModified &&
+          size !== deleteImg.size
+      )
+    );
   };
 
-  const uploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files === null) return;
+  const uploadImage = (files: FileList | null) => {
+    if (files === null || !files.length) return;
 
     const reg = /(.*?)\.(jpg|jpeg|png|gif)$/;
-    if (!event.target.files[0].name.match(reg)) {
+    if (!files[0].name.match(reg)) {
       setImgError(true);
       return;
     }
 
+    const newPreview: Preview = {
+      src: '',
+      name: files[0].name,
+      lastModified: files[0].lastModified,
+      size: files[0].size,
+    };
+
     const reader = new FileReader();
-    reader.readAsDataURL(event.target.files[0]);
-    reader.onloadend = () => setPreview(reader.result as string);
-    setImage(event.target.files[0]);
-    setView(true);
+    reader.readAsDataURL(files[0]);
+    reader.onloadend = () => {
+      newPreview.src = reader.result as string;
+      if (
+        preview.some(
+          (item) =>
+            item.src === newPreview.src &&
+            item.name === newPreview.name &&
+            item.lastModified === newPreview.lastModified &&
+            item.size === newPreview.size
+        )
+      ) {
+        setSameImg(true);
+        return;
+      }
+      setPreview([...preview, newPreview]);
+      setImage([...image, files[0]]);
+      setView(true);
+    };
   };
 
   const writePostSubmit = async (data: z.infer<typeof WritePostSchema>) => {
@@ -88,7 +144,7 @@ export default function WritePost() {
       const formData = new FormData();
       formData.append('title', data.title);
       formData.append('content', data.content);
-      image ? formData.append('image', image) : null;
+      image.forEach((item) => formData.append('image', item));
 
       const res = await fetch('/api/posts', {
         method: 'post',
@@ -174,28 +230,30 @@ export default function WritePost() {
 
               <FormLabel>Image</FormLabel>
 
-              <label htmlFor="file" className="block pt-2 pb-4">
+              <label htmlFor="file" className="flex flex-col pt-2 pb-4">
+                <Camera className="w-1/6 h-1/6 pb-2" />
                 {view ? (
-                  <>
-                    <Button
-                      type="button"
-                      onClick={deleteImage}
-                      className="p-2 mb-3 block"
-                    >
-                      Delete
-                    </Button>
-                    <div className="flex justify-center">
-                      <img
-                        src={preview as string}
-                        alt="preview"
-                        className="pb-4"
-                      />
-                    </div>
-                  </>
-                ) : (
-                  <Camera className="w-1/6 h-1/6" />
-                )}
+                  <div className="justify-center">
+                    {preview.map((item) => (
+                      <div key={item.src}>
+                        <Button
+                          type="button"
+                          onClick={(event) => deleteImage(event, item)}
+                          className="p-2 mb-1 block"
+                        >
+                          Delete
+                        </Button>
+                        <img
+                          src={item.src as string}
+                          alt="preview"
+                          className="pb-4"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
               </label>
+
               <input
                 id="file"
                 ref={fileRef}
@@ -204,13 +262,19 @@ export default function WritePost() {
                 accept="image/png, image/jpeg, image/gif"
                 onChange={(event) => {
                   reset();
-                  uploadImage(event);
+                  uploadImage(event.target.files);
                 }}
               />
 
               {imgError ? (
                 <div className="text-red-500 pb-4">
                   png, jpg(jpeg), gif 형식만 가능합니다.
+                </div>
+              ) : null}
+
+              {sameImg ? (
+                <div className="text-red-500 pb-4">
+                  동일한 이미지는 첨부할 수 없습니다.
                 </div>
               ) : null}
 
