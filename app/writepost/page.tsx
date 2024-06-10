@@ -36,12 +36,14 @@ export default function WritePost() {
   const [image, setImage] = useState<Array<File>>([]);
   const [view, setView] = useState(false);
   const [preview, setPreview] = useState<Array<Preview>>([]);
-  const [imgError, setImgError] = useState(false);
+  const [imgFormat, setImgFormat] = useState(false);
+  const [imgLimit, setImgLimit] = useState(false);
   const [sameImg, setSameImg] = useState(false);
   const [warning, setWarning] = useState(false);
   const titleRef = useRef<HTMLTextAreaElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+  const imgLimitNum = 10;
 
   const WritePostForm = useForm<z.infer<typeof WritePostSchema>>({
     resolver: zodResolver(WritePostSchema),
@@ -52,7 +54,7 @@ export default function WritePost() {
   });
 
   const reset = () => {
-    setImgError(false);
+    setImgFormat(false);
     setSameImg(false);
     setWarning(false);
   };
@@ -70,7 +72,8 @@ export default function WritePost() {
   ) => {
     event.preventDefault();
     fileRef.current!.value = '';
-    setImgError(false);
+    setImgFormat(false);
+    setImgLimit(false);
     setSameImg(false);
 
     if (preview.length === 1) {
@@ -104,7 +107,7 @@ export default function WritePost() {
 
     const reg = /(.*?)\.(jpg|jpeg|png|gif)$/;
     if (!files[0].name.match(reg)) {
-      setImgError(true);
+      setImgFormat(true);
       return;
     }
 
@@ -131,6 +134,7 @@ export default function WritePost() {
         setSameImg(true);
         return;
       }
+      if (preview.length === imgLimitNum - 1) setImgLimit(true);
       setPreview([...preview, newPreview]);
       setImage([...image, files[0]]);
       setView(true);
@@ -231,7 +235,7 @@ export default function WritePost() {
               <FormLabel>Image</FormLabel>
 
               <label htmlFor="file" className="flex flex-col pt-2 pb-4">
-                <Camera className="w-1/6 h-1/6 pb-2" />
+                {!imgLimit ? <Camera className="w-1/6 h-1/6 pb-2" /> : null}
                 {view ? (
                   <div className="justify-center">
                     {preview.map((item) => (
@@ -266,7 +270,7 @@ export default function WritePost() {
                 }}
               />
 
-              {imgError ? (
+              {imgFormat ? (
                 <div className="text-red-500 pb-4">
                   png, jpg(jpeg), gif 형식만 가능합니다.
                 </div>
