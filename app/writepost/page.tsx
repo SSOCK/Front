@@ -15,6 +15,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@components/ui/form';
+import { fetchWithRetry } from '@utils/fetch';
 import Camera from '@/public/icons/camera.svg';
 
 interface Preview {
@@ -143,32 +144,27 @@ export default function WritePost() {
   };
 
   const writePostSubmit = async (data: z.infer<typeof WritePostSchema>) => {
-    const accessToken = sessionStorage.getItem('access-token');
-    try {
-      if (accessToken === null) throw 401;
-      const formData = new FormData();
-      formData.append('title', data.title);
-      formData.append('content', data.content);
-      image.forEach((item) => formData.append('image', item));
+    const formData = new FormData();
+    formData.append('title', data.title);
+    formData.append('content', data.content);
+    image.forEach((item) => formData.append('image', item));
 
-      const res = await fetch('/api/posts', {
-        method: 'post',
-        headers: new Headers({
-          Authorization: accessToken,
-        }),
-        body: formData,
-      });
-      if (res.status !== 201) throw res.status;
-      else {
-        WritePostForm.reset();
-        setErrorMsg('');
-        setImage([]);
-        setView(false);
-        setPreview([]);
-        setImgLimit(false);
-      }
+    const url = '/api/posts';
+    const options = {
+      method: 'post',
+      body: formData,
+    };
+
+    try {
+      const res = await fetchWithRetry(url, options);
+      if (res!.status !== 201) throw res!.status;
+      WritePostForm.reset();
+      setErrorMsg('');
+      setImage([]);
+      setView(false);
+      setPreview([]);
+      setImgLimit(false);
     } catch (error) {
-      if (error === 401) console.log('refresh토큰으로 재소통 필요');
       setErrorMsg(PostError);
     }
   };
