@@ -160,6 +160,7 @@ export default function WritePost() {
       });
       if (res.status !== 201) throw res.status;
       else {
+        WritePostForm.reset();
         setErrorMsg('');
         setImage([]);
         setView(false);
