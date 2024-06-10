@@ -59,7 +59,7 @@ export default function SignInPage() {
         }),
       });
 
-      if (res.status !== 200) throw new Error(`${res.status}`);
+      if (res.status !== 200) throw res.status;
 
       const response: { 'access-token': string; 'refresh-token': string } =
         await res.json();
@@ -68,14 +68,16 @@ export default function SignInPage() {
         'access-token',
         `Bearer ${response['access-token']}`
       );
-      const cookieOptions = {
-        //httpOnly: true,
-        path: '/api/auth/refresh',
-        ...(remember.current!.getAttribute('data-state') === 'checked' && {
-          maxAge: 60 * 60 * 24 * 7,
-        }),
-      };
-      setCookie('refresh-token', `${response['refresh-token']}`, cookieOptions);
+      remember.current!.getAttribute('data-state') === 'checked'
+        ? setCookie('refresh-token', response['refresh-token'], {
+            maxAge: 60 * 60 * 24 * 7,
+            httpOnly: true,
+            path: '/api/auth/refresh',
+          })
+        : setCookie('refresh-token', response['refresh-token'], {
+            httpOnly: true,
+            path: '/api/auth/refresh',
+          });
 
       router.push('/');
     } catch (error) {

@@ -1,26 +1,30 @@
 import { useEffect, useState } from 'react';
 import { Post } from '@components';
-import { fetchWithRetry, getAccessToken } from '@/utils/fetch';
 
-async function getPost() {
-  const url = '/api/posts?postid=1&limit=10';
-  const options = {
+async function getPost(): Promise<PostType[]> {
+  const accessToken = sessionStorage.getItem('access-token');
+  if (!accessToken) throw new Error('access token이 없습니다!!');
+
+  const response = await fetch('/api/posts?postid=1&limit=10', {
     method: 'get',
-  };
-  return fetchWithRetry(url, options);
+    headers: new Headers({
+      Authorization: accessToken,
+    }),
+  });
+  return await response.json();
 }
 
 export default function Posts() {
   const [data, setData] = useState<PostType[]>([]);
+
   async function loadPost() {
     const posts = await getPost();
     setData(posts);
-    //console.log(posts);
   }
 
   useEffect(() => {
     loadPost();
-    //console.log(data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  return data.map((post, index) => <Post key={post.id} postData={post} />);
+  return data.map((post, index) => <Post key={index} postData={post} />);
 }
