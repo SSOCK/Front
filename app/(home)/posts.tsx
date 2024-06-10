@@ -1,17 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Post } from '@components';
+import { fetchWithRetry } from '@/utils/fetch';
 
 async function getPost(): Promise<PostType[]> {
-  const accessToken = sessionStorage.getItem('access-token');
-  if (!accessToken) throw new Error('access token이 없습니다!!');
-
-  const response = await fetch('/api/posts?postid=1&limit=10', {
+  const url = '/api/posts?postid=1&limit=10';
+  const options = {
     method: 'get',
-    headers: new Headers({
-      Authorization: accessToken,
-    }),
-  });
-  return await response.json();
+  };
+  return fetchWithRetry(url, options);
 }
 
 export default function Posts() {
@@ -26,5 +22,5 @@ export default function Posts() {
     loadPost();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  return data.map((post, index) => <Post key={index} postData={post} />);
+  return data.map((post) => <Post key={post.id} postData={post} />);
 }

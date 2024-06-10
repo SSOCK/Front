@@ -63,22 +63,20 @@ export default function SignInPage() {
 
       const response: { 'access-token': string; 'refresh-token': string } =
         await res.json();
-      console.log(response);
+      console.log('signin Done', response);
       sessionStorage.setItem(
         'access-token',
         `Bearer ${response['access-token']}`
       );
-      remember.current!.getAttribute('data-state') === 'checked'
-        ? setCookie('refresh-token', response['refresh-token'], {
-            maxAge: 60 * 60 * 24 * 7,
-            httpOnly: true,
-            path: '/api/auth/refresh',
-          })
-        : setCookie('refresh-token', response['refresh-token'], {
-            httpOnly: true,
-            path: '/api/auth/refresh',
-          });
 
+      const cookieOptions = {
+        //httpOnly: true,
+        path: '/api/auth/refresh',
+        ...(remember.current!.getAttribute('data-state') === 'checked' && {
+          maxAge: 60 * 60 * 24 * 7,
+        }),
+      };
+      setCookie('refresh-token', `${response['refresh-token']}`, cookieOptions);
       router.push('/');
     } catch (error) {
       setWarning(true);
