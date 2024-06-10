@@ -16,19 +16,17 @@ export async function refreshAccessToken() {
   sessionStorage.setItem('access-token', `Bearer ${data['access-token']}`);
   return;
 }
+
 export async function fetchWithRetry(url: string, options: RequestInit) {
   try {
     options.headers = { ...options.headers, Authorization: getAccessToken() };
     const respones = await fetch(url, options);
-    if (respones.ok) {
-      const data = await respones.json();
-      return data;
-    }
+    if (respones.ok) return await respones.json();
+
     await refreshAccessToken();
     options.headers = { ...options.headers, Authorization: getAccessToken() };
     const respones2 = await fetch(url, options);
-    const data = await respones2.json();
-    return data;
+    return await respones2.json();
   } catch (error) {
     console.error('fetch중 에러발생:', error);
   }
