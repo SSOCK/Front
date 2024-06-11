@@ -35,7 +35,6 @@ const WritePostSchema = z.object({
 
 export default function WritePost() {
   const [image, setImage] = useState<Array<File>>([]);
-  const [view, setView] = useState(false);
   const [preview, setPreview] = useState<Array<Preview>>([]);
   const [imgLimit, setImgLimit] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string>('');
@@ -76,7 +75,6 @@ export default function WritePost() {
     if (preview.length === 1) {
       setPreview([]);
       setImage([]);
-      setView(false);
       return;
     }
 
@@ -139,7 +137,6 @@ export default function WritePost() {
       if (preview.length === ImgLimitNum - 1) setImgLimit(true);
       setPreview([...preview, newPreview]);
       setImage([...image, files[0]]);
-      setView(true);
     };
   };
 
@@ -161,7 +158,6 @@ export default function WritePost() {
       WritePostForm.reset();
       setErrorMsg('');
       setImage([]);
-      setView(false);
       setPreview([]);
       setImgLimit(false);
     } catch (error) {
@@ -241,7 +237,7 @@ export default function WritePost() {
 
               <label htmlFor="file" className="flex flex-col pt-2 pb-4">
                 {!imgLimit ? <Camera className="w-1/6 h-1/6 pb-2" /> : null}
-                {view ? (
+                {preview.length > 0 ? (
                   <div className="justify-center">
                     {preview.map((item) => (
                       <div key={item.src + item.name}>
