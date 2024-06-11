@@ -36,14 +36,13 @@ const WritePostSchema = z.object({
 export default function WritePost() {
   const [image, setImage] = useState<Array<File>>([]);
   const [preview, setPreview] = useState<Array<Preview>>([]);
-  const [imgLimit, setImgLimit] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string>('');
 
   const titleRef = useRef<HTMLTextAreaElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const ImgLimitNum = 10;
+  const IMG_LIMIT_NUM = 10;
   const FormatError = 'png, jpg(jpeg), gif 형식만 가능합니다.';
   const SameError = '동일한 이미지는 첨부할 수 없습니다.';
   const PostError = '전송을 다시 시도해주십시오.';
@@ -69,7 +68,6 @@ export default function WritePost() {
   ) => {
     event.preventDefault();
     fileRef.current!.value = '';
-    setImgLimit(false);
     setErrorMsg('');
 
     if (preview.length === 1) {
@@ -134,7 +132,6 @@ export default function WritePost() {
         setErrorMsg(SameError);
         return;
       }
-      if (preview.length === ImgLimitNum - 1) setImgLimit(true);
       setPreview([...preview, newPreview]);
       setImage([...image, files[0]]);
     };
@@ -159,7 +156,6 @@ export default function WritePost() {
       setErrorMsg('');
       setImage([]);
       setPreview([]);
-      setImgLimit(false);
     } catch (error) {
       setErrorMsg(PostError);
     }
@@ -236,7 +232,9 @@ export default function WritePost() {
               <FormLabel>Image</FormLabel>
 
               <label htmlFor="file" className="flex flex-col pt-2 pb-4">
-                {!imgLimit ? <Camera className="w-1/6 h-1/6 pb-2" /> : null}
+                {preview.length < IMG_LIMIT_NUM ? (
+                  <Camera className="w-1/6 h-1/6 pb-2" />
+                ) : null}
                 {preview.length > 0 ? (
                   <div className="justify-center">
                     {preview.map((item) => (
