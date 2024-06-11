@@ -43,9 +43,6 @@ export default function WritePost() {
   const fileRef = useRef<HTMLInputElement>(null);
 
   const IMG_LIMIT_NUM = 10;
-  const FormatError = 'png, jpg(jpeg), gif 형식만 가능합니다.';
-  const SameError = '동일한 이미지는 첨부할 수 없습니다.';
-  const PostError = '전송을 다시 시도해주십시오.';
 
   const WritePostForm = useForm<z.infer<typeof WritePostSchema>>({
     resolver: zodResolver(WritePostSchema),
@@ -105,7 +102,7 @@ export default function WritePost() {
 
     const reg = /(.*?)\.(jpg|jpeg|png|gif)$/;
     if (!files[0].name.match(reg)) {
-      setErrorMsg(FormatError);
+      setErrorMsg('png, jpg(jpeg), gif 형식만 가능합니다.');
       return;
     }
 
@@ -129,7 +126,7 @@ export default function WritePost() {
             item.size === newPreview.size
         )
       ) {
-        setErrorMsg(SameError);
+        setErrorMsg('동일한 이미지는 첨부할 수 없습니다.');
         return;
       }
       setPreview([...preview, newPreview]);
@@ -157,7 +154,7 @@ export default function WritePost() {
       setImage([]);
       setPreview([]);
     } catch (error) {
-      setErrorMsg(PostError);
+      setErrorMsg('전송을 다시 시도해주십시오.');
     }
   };
 
