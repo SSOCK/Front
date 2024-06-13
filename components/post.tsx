@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { getPostTime } from '@utils/time';
 import {
   Carousel,
   CarouselContent,
@@ -20,7 +21,7 @@ type PostProps = {
 export default function Post({ postData }: PostProps) {
   return (
     <div className="w-full p-5">
-      <div className="flex flex-col bg-slate-300 p-5 rounded-md shadow-xl">
+      <div className="flex flex-col bg-slate-300 p-5 rounded-md shadow-xl gap-5">
         <div className="flex flex-row gap-5 flex-auto">
           <Avatar>
             <AvatarFallback>
@@ -32,11 +33,13 @@ export default function Post({ postData }: PostProps) {
             <h1 className=" text-sm font-semibold">
               {postData.member.username}
             </h1>
-            <h2 className="text-sm">{postData.createdAt}</h2>
+            <h2 className="text-sm">
+              {getPostTime(postData.modifiedAt ?? postData.createdAt)}
+            </h2>
           </div>
         </div>
 
-        <div className="flex-auto p-5 flex flex-col items-center">
+        <div className="flex-auto flex flex-col items-center">
           <div className="w-full">
             <h6 className="text-lg font-bold">{postData.title}</h6>
           </div>
@@ -72,14 +75,14 @@ export default function Post({ postData }: PostProps) {
           </div>
         </div>
 
-        <div className="flex-auto flex pl-5 pr-5">
-          <Button variant={'ghost'}>
+        <div className="flex-auto flex gap-10">
+          <Button variant="ghost" className="p-0">
             <Like className="mr-2" />
-            <h5>좋아요 N개</h5>
+            <h5>좋아요 {postData.likes}개</h5>
           </Button>
-          <Button variant={'ghost'}>
+          <Button variant="ghost" className="p-0">
             <Comment className="mr-2" />
-            <h5>댓글 N개</h5>
+            <h5>댓글 {postData.comments.length}개</h5>
           </Button>
         </div>
       </div>
