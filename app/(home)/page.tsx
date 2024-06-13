@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { HeadBar, Navigation } from '@components';
 import { refreshAccessToken } from '@utils/fetch';
 import logout from '@utils/logout';
+import MyCalender from '@components/myCalender';
 import Posts from './posts';
 
 export default function Home() {
@@ -21,9 +22,14 @@ export default function Home() {
   return (
     <>
       <HeadBar />
-      <main className="mainPart flex flex-col items-center justify-between">
-        <Posts />
-      </main>
+      <div className="flex items-center w-full ">
+        <div className="flex flex-col w-full overflow-scroll">
+          <Posts />
+        </div>
+        <div className="flex flex-col h-full p-5 pl-0">
+          <MyCalender />
+        </div>
+      </div>
     </>
   );
 }

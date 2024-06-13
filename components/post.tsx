@@ -9,6 +9,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
+import { cn } from '@/lib/utils';
 import Comment from '@/public/icons/comment.svg';
 import Like from '@/public/icons/like.svg';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
@@ -21,19 +22,19 @@ type PostProps = {
 export default function Post({ postData }: PostProps) {
   return (
     <div className="w-full p-5">
-      <div className="flex flex-col bg-slate-300 p-5 rounded-md shadow-xl gap-5">
-        <div className="flex flex-row gap-5 flex-auto">
-          <Avatar>
+      <div className="flex flex-col bg-white p-5 shadow gap-5">
+        <div className="flex flex-row gap-4 flex-auto items-center">
+          <Avatar className=" size-12">
             <AvatarFallback>
               <h6 className="text-xs">{postData.member.username}</h6>
             </AvatarFallback>
           </Avatar>
 
-          <div>
-            <h1 className=" text-sm font-semibold">
+          <div className="flex flex-col gap-1">
+            <h1 className="text-xs font-semibold">
               {postData.member.username}
             </h1>
-            <h2 className="text-sm">
+            <h2 className="text-xs">
               {getPostTime(postData.modifiedAt ?? postData.createdAt)}
             </h2>
           </div>
@@ -43,20 +44,13 @@ export default function Post({ postData }: PostProps) {
           <div className="w-full">
             <h6 className="text-lg font-bold">{postData.title}</h6>
           </div>
-          {/*여기 나중에 image여러개 지원하면 바꿔야댐*/}
           {postData.imageUrls.length && (
             <Carousel className="w-full max-w-xs p-4">
               <CarouselContent>
                 {postData.imageUrls.map((url, index) => (
                   <CarouselItem key={index}>
-                    <div className="flex justify-center">
-                      <Image
-                        src={url}
-                        alt={url}
-                        width={200}
-                        height={0}
-                        className=" rounded-sm"
-                      />
+                    <div className="flex justify-center h-80 bg-black">
+                      <img src={url} alt={url} className="object-cover" />
                     </div>
                   </CarouselItem>
                 ))}
