@@ -17,7 +17,6 @@ import {
 } from '@components/ui/form';
 import { Input } from '@components/ui/input';
 import { fetchWithRetry } from '@utils/fetch';
-import Camera from '@/public/icons/camera.svg';
 
 interface Preview {
   alt: string;
@@ -62,6 +61,20 @@ export default function WritePost() {
     });
   }, [image]);
 
+  const updateImage = (files: FileList | null) => {
+    const fileList = Array.from(files ?? []);
+    const reg = /(.*?)\.(jpg|jpeg|png|gif)$/i;
+
+    if (fileList.length > IMG_LIMIT_NUM) {
+      setErrorMsg(`${IMG_LIMIT_NUM}개의 이미지까지만 지원합니다.`);
+      return;
+    }
+    if (fileList.some((file) => !reg.test(file.name))) {
+      setErrorMsg('jpg, jpeg, png, gif형식만 지원합니다.');
+      return;
+    }
+    setImage(fileList);
+  };
   const handleTextareaHeight = (
     refName: React.RefObject<HTMLTextAreaElement>
   ) => {
@@ -161,7 +174,8 @@ export default function WritePost() {
                 accept="image/png, image/jpeg, image/gif"
                 multiple
                 onChange={(event) => {
-                  setImage(Array.from(event.target.files ?? []));
+                  setErrorMsg('');
+                  updateImage(event.target.files);
                 }}
               />
               {preview.length > 0 ? (
