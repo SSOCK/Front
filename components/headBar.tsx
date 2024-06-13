@@ -2,23 +2,35 @@
 
 import { usePathname } from 'next/navigation';
 import logout from '@utils/logout';
+import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
 
-export default function HeadBar() {
-  const path = usePathname().split('/')[1];
-  const title = path === '' ? 'home' : path;
+const paths = [
+  { path: '', category: '피드' },
+  { path: 'map', category: '코스' },
+  { path: 'club', category: '클럽/챌린지' },
+];
 
+export default function HeadBar() {
+  const nowPath = usePathname().split('/')[1];
   return (
-    <div className="flex justify-between w-full h-16 items-center p-4 bg-primary z-50">
-      <Button className="hover:bg-slate-500">{title}</Button>
+    <div className="flex justify-between w-full h-16 items-center p-4 z-50 border-b">
       <div>
-        <Button className="hover:bg-slate-500">chat</Button>
-        <Button className="hover:bg-slate-500">search</Button>
-        <Button className="hover:bg-slate-500">notice</Button>
-        <Button className="hover:bg-slate-500" onClick={logout}>
-          logout
+        <Button variant="link" className="text-xl font-bold ">
+          RunningMate
         </Button>
+        {paths.map(({ path, category }) => (
+          <Button
+            key={category}
+            variant="link"
+            className={cn(['font-bold', nowPath !== path && 'text-black'])}
+          >
+            {category}
+          </Button>
+        ))}
       </div>
+
+      <div></div>
     </div>
   );
 }
