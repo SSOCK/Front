@@ -78,7 +78,7 @@
   }
 
   .mainPart {
-    @apply flex-grow overflow-y-scroll;
+    @apply flex-grow;
   }
 
   .textarea {
