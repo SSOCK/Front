@@ -22,7 +22,6 @@ export default function Home() {
           {mode ? '끝내기' : '그리기'}
         </Button>
       </main>
-      <Navigation />
     </>
   );
 }

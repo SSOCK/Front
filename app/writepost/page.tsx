@@ -187,8 +187,6 @@ export default function WritePost() {
           </Form>
         </div>
       </div>
-
-      <Navigation />
     </>
   );
 }
