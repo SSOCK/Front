@@ -24,7 +24,6 @@ export default function Home() {
       <main className="mainPart flex flex-col items-center justify-between">
         <Posts />
       </main>
-      <Navigation />
     </>
   );
 }
