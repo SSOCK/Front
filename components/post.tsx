@@ -23,9 +23,6 @@ export default function Post({ postData }: PostProps) {
       <div className="flex flex-col bg-slate-300 p-5 rounded-md shadow-xl">
         <div className="flex flex-row gap-5 flex-auto">
           <Avatar>
-            {postData.imageUrl ? (
-              <AvatarImage src={postData.imageUrl} alt="" />
-            ) : null}
             <AvatarFallback>
               <h6 className="text-xs">{postData.member.username}</h6>
             </AvatarFallback>
@@ -44,25 +41,31 @@ export default function Post({ postData }: PostProps) {
             <h6 className="text-lg font-bold">{postData.title}</h6>
           </div>
           {/*여기 나중에 image여러개 지원하면 바꿔야댐*/}
-          {postData.imageUrl ? (
+          {postData.imageUrls.length && (
             <Carousel className="w-full max-w-xs p-4">
               <CarouselContent>
-                <CarouselItem>
-                  <div className="flex justify-center">
-                    <Image
-                      src={postData.imageUrl}
-                      alt=""
-                      width={200}
-                      height={0}
-                      className=" rounded-sm"
-                    />
-                  </div>
-                </CarouselItem>
+                {postData.imageUrls.map((url, index) => (
+                  <CarouselItem key={index}>
+                    <div className="flex justify-center">
+                      <Image
+                        src={url}
+                        alt={url}
+                        width={200}
+                        height={0}
+                        className=" rounded-sm"
+                      />
+                    </div>
+                  </CarouselItem>
+                ))}
               </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
+              {postData.imageUrls.length > 1 && (
+                <>
+                  <CarouselPrevious />
+                  <CarouselNext />
+                </>
+              )}
             </Carousel>
-          ) : null}
+          )}
 
           <div className=" w-full">
             <h6>{postData.content}</h6>
