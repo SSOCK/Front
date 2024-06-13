@@ -1,10 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Post } from '@components';
 import { fetchWithRetry } from '@utils/fetch';
 import logout from '@utils/logout';
 
-async function getPost(): Promise<PostType[] | undefined> {
-  const url = '/api/posts?postid=1&limit=10';
+const LOAD_POST_NUM = 10;
+
+async function getPost(postid: number = 1): Promise<PostType[] | undefined> {
+  console.log('this', postid);
+  const url = `/api/posts?postid=${postid}&limit=${LOAD_POST_NUM}`;
   const options = {
     method: 'get',
   };
@@ -15,15 +18,49 @@ async function getPost(): Promise<PostType[] | undefined> {
 
 export default function Posts() {
   const [data, setData] = useState<PostType[]>([]);
+  const [lastPostId, setLastPostId] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const triggerRef = useRef(null);
 
   async function loadPost() {
-    const posts = (await getPost()) as PostType[];
-    setData(posts);
+    setLoading(true);
+    const posts = (await getPost(lastPostId)) as PostType[];
+    console.log(posts);
+    setData([...data, ...posts]);
+    setLoading(false);
   }
 
   useEffect(() => {
     loadPost();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  return data.map((post) => <Post key={post.id} postData={post} />);
+  }, [lastPostId]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !loading) {
+          const lastId = [...data].pop()?.id ?? 1;
+          setLastPostId(lastId);
+        }
+      },
+      { threshold: 1.0 }
+    );
+    if (triggerRef.current) {
+      observer.observe(triggerRef.current);
+    }
+    return () => {
+      if (triggerRef.current) {
+        observer.unobserve(triggerRef.current);
+      }
+    };
+  }, [loading]);
+  return (
+    <>
+      {data.map((post, index) => (
+        <Post key={index} postData={post} />
+      ))}
+      <div ref={triggerRef}>{loading && <h1>loading...</h1>}</div>
+    </>
+  );
 }
