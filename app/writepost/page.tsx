@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -15,14 +15,13 @@ import {
   FormLabel,
   FormMessage,
 } from '@components/ui/form';
+import { Input } from '@components/ui/input';
 import { fetchWithRetry } from '@utils/fetch';
 import Camera from '@/public/icons/camera.svg';
 
 interface Preview {
+  alt: string;
   src: string;
-  name: string;
-  lastModified: number;
-  size: number;
 }
 
 const WritePostSchema = z.object({
@@ -38,9 +37,7 @@ export default function WritePost() {
   const [preview, setPreview] = useState<Array<Preview>>([]);
   const [errorMsg, setErrorMsg] = useState<string>('');
 
-  const titleRef = useRef<HTMLTextAreaElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
-  const fileRef = useRef<HTMLInputElement>(null);
 
   const IMG_LIMIT_NUM = 10;
 
@@ -52,86 +49,24 @@ export default function WritePost() {
     },
   });
 
+  useEffect(() => {
+    const srcs: Preview[] = [];
+    image.forEach((file) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        srcs.push({ src: reader.result as string, alt: file.name });
+        if (srcs.length === image.length) setPreview(srcs);
+        //비동기로 이미지소스 읽어와서 어떤게 마지막에 끝날지 알 수 없음
+      };
+    });
+  }, [image]);
+
   const handleTextareaHeight = (
     refName: React.RefObject<HTMLTextAreaElement>
   ) => {
     refName.current!.style.height = 'auto';
     refName.current!.style.height = refName.current!.scrollHeight + 'px';
-  };
-
-  const deleteImage = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    deleteImg: Preview
-  ) => {
-    event.preventDefault();
-    fileRef.current!.value = '';
-    setErrorMsg('');
-
-    if (preview.length === 1) {
-      setPreview([]);
-      setImage([]);
-      return;
-    }
-
-    setPreview(
-      preview.filter(
-        ({ src, name, lastModified, size }) =>
-          src !== deleteImg.src ||
-          name !== deleteImg.name ||
-          lastModified !== deleteImg.lastModified ||
-          size !== deleteImg.size
-      )
-    );
-
-    // setPreview(
-    //   preview.filter((obj) => JSON.stringify(obj) !== JSON.stringify(deleteImg))
-    // );
-
-    setImage(
-      image.filter(
-        ({ name, lastModified, size }) =>
-          name !== deleteImg.name ||
-          lastModified !== deleteImg.lastModified ||
-          size !== deleteImg.size
-      )
-    );
-  };
-
-  const uploadImage = (files: FileList | null) => {
-    if (files === null || !files.length) return;
-
-    const reg = /(.*?)\.(jpg|jpeg|png|gif)$/;
-    if (!files[0].name.match(reg)) {
-      setErrorMsg('png, jpg(jpeg), gif 형식만 가능합니다.');
-      return;
-    }
-
-    const newPreview: Preview = {
-      src: '',
-      name: files[0].name,
-      lastModified: files[0].lastModified,
-      size: files[0].size,
-    };
-
-    const reader = new FileReader();
-    reader.readAsDataURL(files[0]);
-    reader.onloadend = () => {
-      newPreview.src = reader.result as string;
-      if (
-        preview.some(
-          (item) =>
-            item.src === newPreview.src &&
-            item.name === newPreview.name &&
-            item.lastModified === newPreview.lastModified &&
-            item.size === newPreview.size
-        )
-      ) {
-        setErrorMsg('동일한 이미지는 첨부할 수 없습니다.');
-        return;
-      }
-      setPreview([...preview, newPreview]);
-      setImage([...image, files[0]]);
-    };
   };
 
   const writePostSubmit = async (data: z.infer<typeof WritePostSchema>) => {
@@ -177,17 +112,11 @@ export default function WritePost() {
                     <FormLabel>Title</FormLabel>
                     <div className="flex gap-1">
                       <FormControl>
-                        <textarea
-                          ref={titleRef}
-                          rows={1}
+                        <Input
                           placeholder="Title"
+                          type="text"
                           value={value}
-                          onChange={(event) => {
-                            onChange(event);
-                            setErrorMsg('');
-                            handleTextareaHeight(titleRef);
-                          }}
-                          className="textarea"
+                          onChange={onChange}
                         />
                       </FormControl>
                     </div>
@@ -227,44 +156,26 @@ export default function WritePost() {
               </div>
 
               <FormLabel>Image</FormLabel>
-
-              <label htmlFor="file" className="flex flex-col pt-2 pb-4">
-                {preview.length < IMG_LIMIT_NUM ? (
-                  <Camera className="w-1/6 h-1/6 pb-2" />
-                ) : null}
-                {preview.length > 0 ? (
-                  <div className="justify-center">
-                    {preview.map((item) => (
-                      <div key={item.src + item.name}>
-                        <Button
-                          type="button"
-                          onClick={(event) => deleteImage(event, item)}
-                          className="p-2 mb-1 block"
-                        >
-                          Delete
-                        </Button>
-                        <img
-                          src={item.src as string}
-                          alt="preview"
-                          className="pb-4"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                ) : null}
-              </label>
-
-              <input
-                id="file"
-                ref={fileRef}
+              <Input
                 type="file"
-                className="hidden"
                 accept="image/png, image/jpeg, image/gif"
+                multiple
                 onChange={(event) => {
-                  setErrorMsg('');
-                  uploadImage(event.target.files);
+                  setImage(Array.from(event.target.files ?? []));
                 }}
               />
+              {preview.length > 0 ? (
+                <div className="justify-center">
+                  {preview.map((item, index) => (
+                    <img
+                      key={index}
+                      src={item.src}
+                      alt={item.alt}
+                      className="pb-4"
+                    />
+                  ))}
+                </div>
+              ) : null}
 
               {errorMsg ? (
                 <div className="text-red-500 pb-4">{errorMsg}</div>

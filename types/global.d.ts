@@ -3,10 +3,12 @@ declare global {
     content: string;
     createdAt: string;
     id: number;
-    imageUrl: null | string;
+    imageUrls: string[];
     modifiedAt: null | string;
     title: string;
     member: MemberInfo;
+    likes: number;
+    comments: string[];
   };
   type MemberInfo = {
     email: string;
