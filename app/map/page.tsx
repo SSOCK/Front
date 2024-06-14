@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react';
 import { HeadBar, Map, Navigation } from '@components';
 import { Button } from '@components/ui/button';
+import Menu from './menu';
 
 export default function Home() {
   const [mode, setMode] = useState(false);
@@ -16,11 +17,12 @@ export default function Home() {
   return (
     <>
       <HeadBar />
-      <main className="mainPart w-full h-full">
+      <main className="mainPart w-full h-full relative">
         <Map modeRef={modeRef} />
-        <Button className="fixed z-50" onClick={changeMode}>
+        <Menu />
+        {/* <Button className="fixed z-50" onClick={changeMode}>
           {mode ? '끝내기' : '그리기'}
-        </Button>
+        </Button> */}
       </main>
     </>
   );
