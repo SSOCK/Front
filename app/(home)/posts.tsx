@@ -3,11 +3,9 @@ import { Post } from '@components';
 import { fetchWithRetry } from '@utils/fetch';
 import logout from '@utils/logout';
 
-const LOAD_POST_NUM = 10;
-
-async function getPost(postid: number = 1): Promise<PostType[] | undefined> {
+async function getPost(postid: number): Promise<PostType[] | undefined> {
   console.log('this', postid);
-  const url = `/api/posts?postid=${postid}&limit=${LOAD_POST_NUM}`;
+  const url = `/api/posts${postid && `?after=${postid}`}`;
   const options = {
     method: 'get',
   };
@@ -18,7 +16,7 @@ async function getPost(postid: number = 1): Promise<PostType[] | undefined> {
 
 export default function Posts() {
   const [data, setData] = useState<PostType[]>([]);
-  const [lastPostId, setLastPostId] = useState(1);
+  const [lastPostId, setLastPostId] = useState(-1);
   const [loading, setLoading] = useState(false);
   const triggerRef = useRef(null);
 
@@ -46,14 +44,17 @@ export default function Posts() {
       },
       { threshold: 1.0 }
     );
-    if (triggerRef.current) {
-      observer.observe(triggerRef.current);
+    const ref = triggerRef.current;
+    if (ref) {
+      observer.observe(ref);
     }
     return () => {
-      if (triggerRef.current) {
-        observer.unobserve(triggerRef.current);
+      if (ref) {
+        observer.unobserve(ref);
       }
     };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
   return (
     <>
