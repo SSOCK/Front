@@ -1,28 +1,32 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import { HeadBar, Map, Navigation } from '@components';
-import { Button } from '@components/ui/button';
+import { useRef } from 'react';
+import { HeadBar, Map } from '@components';
 import Menu from './menu';
 
-export default function Home() {
-  const [mode, setMode] = useState(false);
-  const modeRef = useRef(false);
+export interface latLng {
+  La: number;
+  Ma: number;
+}
 
-  const changeMode = () => {
-    setMode(!mode);
-    modeRef.current = !modeRef.current;
+export interface myMap {
+  maps: object;
+  data: {
+    drawMode: boolean;
+    dots: latLng[];
+    dotMarkers: any[];
   };
+}
+
+export default function Home() {
+  const mapRef = useRef<myMap | undefined>(undefined); // 카카오맵 객체 받아올곳
 
   return (
     <>
       <HeadBar />
       <main className="mainPart w-full h-full relative">
-        <Map modeRef={modeRef} />
-        <Menu />
-        {/* <Button className="fixed z-50" onClick={changeMode}>
-          {mode ? '끝내기' : '그리기'}
-        </Button> */}
+        <Map mapRef={mapRef} />
+        <Menu mapRef={mapRef} />
       </main>
     </>
   );
