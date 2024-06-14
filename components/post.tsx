@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { getPostTime } from '@utils/time';
 import {
   Carousel,
@@ -9,7 +8,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
-import { cn } from '@/lib/utils';
 import Comment from '@/public/icons/comment.svg';
 import Like from '@/public/icons/like.svg';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
@@ -49,7 +47,7 @@ export default function Post({ postData }: PostProps) {
               <CarouselContent>
                 {postData.imageUrls.map((url, index) => (
                   <CarouselItem key={index}>
-                    <div className="flex justify-center h-80 bg-black">
+                    <div className="flex justify-center h-80">
                       <img src={url} alt={url} className="object-cover" />
                     </div>
                   </CarouselItem>

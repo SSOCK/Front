@@ -4,7 +4,6 @@ import { fetchWithRetry } from '@utils/fetch';
 import logout from '@utils/logout';
 
 async function getPost(postid: number): Promise<PostType[] | undefined> {
-  console.log('this', postid);
   const url = `/api/posts${postid && `?after=${postid}`}`;
   const options = {
     method: 'get',
