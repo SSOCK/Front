@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import logout from '@utils/logout';
 import { cn } from '@/lib/utils';
@@ -25,7 +26,7 @@ export default function HeadBar() {
             variant="link"
             className={cn(['font-bold', nowPath !== path && 'text-black'])}
           >
-            {category}
+            <Link href={`/${path}`}>{category}</Link>
           </Button>
         ))}
       </div>
