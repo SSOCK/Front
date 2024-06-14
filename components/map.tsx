@@ -1,16 +1,12 @@
 'use client';
 
 import { useEffect } from 'react';
+import { myMap, latLng } from '@/app/map/page';
 
 declare global {
   interface Window {
     kakao: any;
   }
-}
-
-interface latLng {
-  La: number;
-  Ma: number;
 }
 
 interface clickEvent {
@@ -19,16 +15,20 @@ interface clickEvent {
 }
 
 interface MapProps {
-  modeRef?: React.MutableRefObject<boolean>;
+  mapRef: React.MutableRefObject<myMap | undefined>;
 }
 
-export default function Map({ modeRef }: MapProps) {
-  const dots: latLng[] = [];
-  const dotMarkers = [];
-
+export default function Map({ mapRef }: MapProps) {
   useEffect(() => {
     const kakaoMap = window.kakao.maps;
     kakaoMap.load(() => {
+      const myMap: myMap = {
+        maps: { ...kakaoMap },
+        data: { drawMode: false, dots: [], dotMarkers: [] },
+      };
+      if (mapRef) {
+        mapRef.current = myMap;
+      }
       const container = document.getElementById('map');
       const mapOptions = {
         center: new kakaoMap.LatLng(33.450701, 126.570667),
@@ -36,6 +36,7 @@ export default function Map({ modeRef }: MapProps) {
       };
       const map = new kakaoMap.Map(container, mapOptions);
 
+      const { dots, dotMarkers } = myMap.data;
       const polyline = new kakaoMap.Polyline({
         map: map,
         path: dots,
@@ -68,7 +69,7 @@ export default function Map({ modeRef }: MapProps) {
       };
 
       kakaoMap.event.addListener(map, 'click', ({ latLng }: clickEvent) => {
-        if (!modeRef || modeRef.current) addMarker(latLng);
+        if (myMap.data.drawMode) addMarker(latLng);
       });
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
