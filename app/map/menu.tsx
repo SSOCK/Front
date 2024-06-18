@@ -2,41 +2,50 @@
 
 import { useState } from 'react';
 import { Button } from '@components/ui/button';
-import { latLng, myMap } from './page';
+import AddCourse from './addCourse';
+import FindCourse from './findCourse';
+import HomeCourse from './homeCourse';
+import MenuNavigations from './menuNavigation';
+import MyCourse from './myCourse';
+import { myMap } from './page';
 
 interface MenuProps {
   mapRef: React.MutableRefObject<myMap | undefined>;
 }
 
+export type MenuInfo = {
+  name: string;
+  component: JSX.Element;
+};
+
+const MAP_NAV_LIST = [
+  { name: '홈', component: <HomeCourse /> },
+  { name: '찾기', component: <FindCourse /> },
+  { name: '추가', component: <AddCourse /> },
+  { name: '내코스', component: <MyCourse /> },
+];
+
 export default function Menu({ mapRef }: MenuProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [drawMode, setDrawMode] = useState(false);
-  const [dots, setDots] = useState<latLng[]>([]);
+  const [nowMenu, setNowMenu] = useState<number>(0);
   const toggleIsOpen = () => {
     setIsOpen(!isOpen);
   };
+  console.log(nowMenu);
   return (
     <div
       className={`flex absolute z-50 w-96 top-0 h-full ease-in-out transition-transform duration-300 ${isOpen && '-translate-x-full'}`}
     >
-      <div className="bg-white w-96 h-full border-r ">
-        <h1 className="text-xs">{JSON.stringify(dots)}</h1>
-        <Button
-          onClick={() => {
-            if (mapRef.current === undefined) return;
-            const myMap: myMap = mapRef.current;
-            myMap.data.drawMode = !myMap.data.drawMode;
-            //그리기 아닐때는 draggable 막기
-            myMap.data.dotMarkers.forEach((marker) => {
-              marker.K = myMap.data.drawMode; //marker object 뜯어서 찾음...
-              console.log(marker);
-            });
-            setDrawMode(myMap.data.drawMode);
-            setDots(myMap.data.dots);
-          }}
-        >
-          {drawMode ? '끝내기' : '그리기'}
-        </Button>
+      {/* 아래가 메인 화면 */}
+      <div className="bg-white w-96 h-full border-r flex flex-col">
+        <div className="flex-grow bg-slate-300">
+          {MAP_NAV_LIST[nowMenu].component}
+        </div>
+        <MenuNavigations
+          menuList={MAP_NAV_LIST}
+          nowMenu={nowMenu}
+          setNowMenu={setNowMenu}
+        />
       </div>
 
       <button
