@@ -1,8 +1,10 @@
 'use client';
 
+import { MutableRefObject, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { Button } from '@components/ui/button';
 import {
   Form,
   FormControl,
@@ -12,35 +14,136 @@ import {
   FormLabel,
   FormMessage,
 } from '@components/ui/form';
+import { Input } from '@components/ui/input';
+import { fetchWithRetry } from '@utils/fetch';
+import { LatLng, MyMap } from './page';
 
 const CourseFormSchema = z.object({
-  title: z.string().min(2).max(20),
-  difficulty: z.number().min(0).max(2),
+  title: z.string().min(2, '2글자 이상').max(20),
+  difficulty: z.coerce.number().min(0).max(2),
+  distance: z.number().min(0).max(300),
+  course: z
+    .array(z.object({ latitude: z.number(), longitude: z.number() }))
+    .min(2, '좌표를 두개 이상 찍어주세요.'),
 });
 
-const example = {
-  course: [
-    {
-      latitude: 37.7749,
-      longitude: -122.4194,
-    },
-    {
-      latitude: 37.775,
-      longitude: -122.4184,
-    },
-  ],
-  distance: 12.34, //MAX 300
-  title: 'Morning Run',
-  difficulty: 1, //0: Easy, 1: Medium, 2: Hard
-};
+export default function AddCourse({
+  mapRef,
+}: {
+  mapRef: React.MutableRefObject<MyMap | undefined>;
+}) {
+  const [drawMode, setDrawMode] = useState(false);
+  const [dots, setDots] = useState<LatLng[]>([]);
 
-export default function AddCourse() {
   const form = useForm<z.infer<typeof CourseFormSchema>>({
     resolver: zodResolver(CourseFormSchema),
     defaultValues: {
       title: '',
-      difficulty: 0,
+      difficulty: 1,
+      distance: 0,
+      course: [],
     },
   });
-  return <div></div>;
+
+  const toggleMode = () => {
+    if (!mapRef.current) return;
+    const { data } = mapRef.current;
+    data.drawMode = !data.drawMode;
+    data.dotMarkers.forEach((marker) => {
+      marker.K = data.drawMode;
+    });
+    setDrawMode(data.drawMode);
+    if (drawMode) {
+      setDots(data.dots);
+      console.log(data.dots);
+      console.log(data.polyLine);
+      console.log(Math.round(data.polyLine.getLength()));
+
+      form.setValue(
+        'course',
+        data.dots.map((dots) => ({
+          latitude: dots.Ma,
+          longitude: dots.La,
+        }))
+      );
+      form.setValue('distance', Math.round(data.polyLine.getLength() / 1000));
+      console.log('done', form.getValues());
+    }
+  };
+
+  const submit = () => {
+    console.log(form.getValues());
+    const url = '/api/courses';
+    fetchWithRetry(url, {
+      method: 'POST',
+      body: JSON.stringify(form.getValues()),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    });
+  };
+  return (
+    <div>
+      <div>
+        <Button onClick={toggleMode}>
+          {drawMode ? '확정' : '그리기/수정'}
+        </Button>
+      </div>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(submit)}>
+          <FormField
+            control={form.control}
+            name="course"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="course">정보</FormLabel>
+                <FormControl>
+                  {!drawMode && (
+                    <div>
+                      <h1>좌표: {dots.length}개</h1>
+                      <h1>
+                        거리: {mapRef.current?.data.polyLine.getLength() / 1000}
+                        km
+                      </h1>
+                    </div>
+                  )}
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="title">Title</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="difficulty"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="difficulty">difficulty</FormLabel>
+                <FormControl>
+                  <Input type="number" min="0" max="2" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <Button type="submit">완료</Button>
+        </form>
+      </Form>
+    </div>
+  );
 }

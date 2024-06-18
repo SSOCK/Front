@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { myMap, latLng } from '@/app/map/page';
+import { MyMap, LatLng } from '@/app/map/page';
 
 declare global {
   interface Window {
@@ -11,20 +11,20 @@ declare global {
 
 interface clickEvent {
   point: { x: number; y: number };
-  latLng: latLng;
+  latLng: LatLng;
 }
 
 interface MapProps {
-  mapRef: React.MutableRefObject<myMap | undefined>;
+  mapRef: React.MutableRefObject<MyMap | undefined>;
 }
 
 export default function Map({ mapRef }: MapProps) {
   useEffect(() => {
     const kakaoMap = window.kakao.maps;
     kakaoMap.load(() => {
-      const myMap: myMap = {
+      const myMap: MyMap = {
         maps: { ...kakaoMap },
-        data: { drawMode: false, dots: [], dotMarkers: [] },
+        data: { drawMode: false, dots: [], dotMarkers: [], polyLine: {} },
       };
       if (mapRef) {
         mapRef.current = myMap;
@@ -45,8 +45,8 @@ export default function Map({ mapRef }: MapProps) {
         strokeOpacity: 0.8,
         strokeStyle: 'solid',
       });
-
-      const addMarker = (latLng: latLng) => {
+      myMap.data.polyLine = polyline;
+      const addMarker = (latLng: LatLng) => {
         const marker = new kakaoMap.Marker({
           map: map,
           position: latLng,
@@ -55,17 +55,14 @@ export default function Map({ mapRef }: MapProps) {
 
         marker.index = dots.length;
         kakaoMap.event.addListener(marker, 'dragend', () => {
-          console.log(dots, marker.index);
           dots[marker.index] = marker.getPosition();
           polyline.setPath(dots);
-          console.log(dots);
         });
 
         dots.push(latLng);
         marker.setMap(map);
         dotMarkers.push(marker);
         polyline.setPath(dots);
-        console.log(dots);
       };
 
       kakaoMap.event.addListener(map, 'click', ({ latLng }: clickEvent) => {

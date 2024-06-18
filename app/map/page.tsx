@@ -4,22 +4,23 @@ import { useRef } from 'react';
 import { HeadBar, Map } from '@components';
 import Menu from './menu';
 
-export interface latLng {
+export interface LatLng {
   La: number;
   Ma: number;
 }
 
-export interface myMap {
+export interface MyMap {
   maps: object;
   data: {
     drawMode: boolean;
-    dots: latLng[];
+    dots: LatLng[];
     dotMarkers: any[];
+    polyLine: any;
   };
 }
 
 export default function Home() {
-  const mapRef = useRef<myMap | undefined>(undefined); // 카카오맵 객체 받아올곳
+  const mapRef = useRef<MyMap | undefined>(undefined); // 카카오맵 객체 받아올곳
 
   return (
     <>
