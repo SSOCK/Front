@@ -7,10 +7,10 @@ import FindCourse from './findCourse';
 import HomeCourse from './homeCourse';
 import MenuNavigations from './menuNavigation';
 import MyCourse from './myCourse';
-import { myMap } from './page';
+import { MyMap } from './page';
 
 interface MenuProps {
-  mapRef: React.MutableRefObject<myMap | undefined>;
+  mapRef: React.MutableRefObject<MyMap | undefined>;
 }
 
 export type MenuInfo = {
@@ -18,16 +18,15 @@ export type MenuInfo = {
   component: JSX.Element;
 };
 
-const MAP_NAV_LIST = [
-  { name: '홈', component: <HomeCourse /> },
-  { name: '찾기', component: <FindCourse /> },
-  { name: '추가', component: <AddCourse /> },
-  { name: '내코스', component: <MyCourse /> },
-];
-
 export default function Menu({ mapRef }: MenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [nowMenu, setNowMenu] = useState<number>(0);
+  const MAP_NAV_LIST = [
+    { name: '홈', component: <HomeCourse /> },
+    { name: '찾기', component: <FindCourse /> },
+    { name: '추가', component: <AddCourse mapRef={mapRef} /> },
+    { name: '내코스', component: <MyCourse /> },
+  ];
   const toggleIsOpen = () => {
     setIsOpen(!isOpen);
   };
