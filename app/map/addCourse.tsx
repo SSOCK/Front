@@ -1,6 +1,6 @@
 'use client';
 
-import { MutableRefObject, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -8,7 +8,6 @@ import { Button } from '@components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -55,9 +54,6 @@ export default function AddCourse({
     setDrawMode(data.drawMode);
     if (drawMode) {
       setDots(data.dots);
-      console.log(data.dots);
-      console.log(data.polyLine);
-      console.log(Math.round(data.polyLine.getLength()));
 
       form.setValue(
         'course',
@@ -67,20 +63,20 @@ export default function AddCourse({
         }))
       );
       form.setValue('distance', Math.round(data.polyLine.getLength() / 1000));
-      console.log('done', form.getValues());
     }
   };
 
-  const submit = () => {
-    console.log(form.getValues());
+  const submit = async () => {
     const url = '/api/courses';
-    fetchWithRetry(url, {
+    const res = await fetchWithRetry(url, {
       method: 'POST',
       body: JSON.stringify(form.getValues()),
       headers: {
         'Content-type': 'application/json',
       },
     });
+    if (!res?.ok) throw new Error('코스 등록 실패');
+    location.reload();
   };
   return (
     <div>
