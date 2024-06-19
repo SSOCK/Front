@@ -3,7 +3,7 @@
 export default function FindCourse() {
   return (
     <div>
-      <h1> Add Course!!</h1>
+      <h1>Find Course!!</h1>
     </div>
   );
 }
