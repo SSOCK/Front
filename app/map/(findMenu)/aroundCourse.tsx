@@ -105,7 +105,7 @@ export default function AroundCourse({
       return new myMap.maps.Polyline({
         map: myMap.map,
         path: path,
-        strokeWeight: 5,
+        strokeWeight: 15,
         strokeColor: STROKE_COLOR[index % STROKE_COLOR.length],
         strokeOpacity: 0.5,
         strokeStyle: 'solid',
@@ -113,12 +113,30 @@ export default function AroundCourse({
     });
   }, [courses, mapRef]);
 
+  const courseClick = (index: number) => {
+    if (!mapRef.current) return;
+    const myMap = mapRef.current;
+    const lat =
+      courses[index].course.reduce((a, b) => a + b.latitude, 0) /
+      courses[index].course.length;
+    const lng =
+      courses[index].course.reduce((a, b) => a + b.longitude, 0) /
+      courses[index].course.length;
+    const coord = new myMap.maps.LatLng(lat, lng);
+    console.log(myMap.map.setCenter(coord));
+  };
   return (
     <div className="">
       {center &&
-        courses.map((course) => {
+        courses.map((course, index) => {
           return (
-            <div key={course.id} className="flex flex-col gap-2 p-5">
+            <div
+              key={course.id}
+              className="flex flex-col gap-2 p-5"
+              onClick={() => {
+                courseClick(index);
+              }}
+            >
               <div className="w-full h-44 bg-gray-200 "></div>
               <h2 className="font-bold text-lg">{course.title}</h2>
               <div>
