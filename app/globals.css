@@ -86,6 +86,19 @@
   }
 }
 
-*::-webkit-scrollbar {
+.hidden-scrollbar::-webkit-scrollbar {
   display: none;
+}
+/* *::-webkit-scrollbar-button {
+  display: none;
+} */
+*::-webkit-scrollbar {
+  width: 5px;
+}
+*::-webkit-scrollbar-track {
+  background-color: lightgray;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: gray;
+  border-radius: 3px;
 }

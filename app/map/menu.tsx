@@ -24,7 +24,7 @@ export default function Menu({ mapRef }: MenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [nowMenu, setNowMenu] = useState<number>(0);
   const MAP_NAV_LIST = [
-    { name: '검색', component: <FindCourse />, svg: <Find /> },
+    { name: '검색', component: <FindCourse mapRef={mapRef} />, svg: <Find /> },
     { name: '저장', component: <MyCourse />, svg: <Save /> },
     { name: '추가', component: <AddCourse mapRef={mapRef} />, svg: <Pencil /> },
   ];
@@ -34,7 +34,7 @@ export default function Menu({ mapRef }: MenuProps) {
   console.log(nowMenu);
   return (
     <div
-      className={`flex absolute z-50 top-0 h-full ease-in-out transition-transform duration-300 ${isOpen && '-translate-x-full'} `}
+      className={`flex absolute z-50 top-0 h-full ease-in-out transition-transform duration-300 ${isOpen && '-translate-x-full'} shadow-xl`}
     >
       <MenuNavigations
         menuList={MAP_NAV_LIST}
@@ -44,7 +44,7 @@ export default function Menu({ mapRef }: MenuProps) {
 
       {/* 아래가 메인 화면 */}
 
-      <div className="bg-white w-[23rem] h-full border-x flex flex-row  border-gray-200 p-4">
+      <div className="bg-white w-[23rem] h-full border-l flex flex-row border-gray-200">
         <div className="flex-grow">{MAP_NAV_LIST[nowMenu].component}</div>
       </div>
 
