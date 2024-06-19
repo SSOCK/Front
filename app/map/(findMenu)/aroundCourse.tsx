@@ -28,10 +28,20 @@ async function getCourses(latLng: LatLng) {
   return await res.json();
 }
 
+const STROKE_COLOR = [
+  '#FF0000',
+  '#FFA500',
+  '#FFFF00',
+  '#008000',
+  '#0000FF',
+  '#00008B',
+  '#800080',
+];
+
 export default function AroundCourse({ mapRef }: ArroundCourseProps) {
   const [center, setCenter] = useState<LatLng>();
   const [courses, setCourses] = useState<CourseInfo[]>([]);
-  const lineRef = useRef([]);
+  const lineRef = useRef<any[]>([]);
   useEffect(() => {
     if (!mapRef.current) return;
     const myMap = mapRef.current;
@@ -49,7 +59,6 @@ export default function AroundCourse({ mapRef }: ArroundCourseProps) {
   }, [mapRef]);
 
   useEffect(() => {
-    console.log(center);
     if (!center) return;
     async function updateCourses(center: LatLng) {
       const data = (await getCourses(center)).courses as CourseInfo[];
@@ -59,8 +68,8 @@ export default function AroundCourse({ mapRef }: ArroundCourseProps) {
     updateCourses(center);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [center]);
+
   useEffect(() => {
-    console.log(courses);
     //map에 코스추가~
     if (!mapRef.current) return;
     const myMap = mapRef.current;
@@ -69,31 +78,41 @@ export default function AroundCourse({ mapRef }: ArroundCourseProps) {
         ({ latitude, longitude }) => new myMap.maps.LatLng(latitude, longitude)
       )
     );
-    console.log(paths, 'paths');
-    var polyline = new myMap.maps.Polyline({
-      map: myMap.map,
-      path: [
-        new myMap.maps.LatLng(33.452344169439975, 126.56878163224233),
-        new myMap.maps.LatLng(33.452739313807456, 126.5709308145358),
-        new myMap.maps.LatLng(33.45178067090639, 126.5726886938753),
-      ],
-      strokeWeight: 2,
-      strokeColor: '#FF00FF',
-      strokeOpacity: 0.8,
-      strokeStyle: 'dashed',
-    });
-    paths.forEach((path) => {
-      console.log(path);
-      const line = new myMap.maps.Polyline({
+
+    if (lineRef.current.length) {
+      lineRef.current.forEach((line) => {
+        line.setMap(null);
+      });
+      lineRef.current = [];
+    }
+
+    lineRef.current = paths.map((path, index) => {
+      return new myMap.maps.Polyline({
         map: myMap.map,
         path: path,
         strokeWeight: 5,
-        strokeColor: '#ff6600',
-        strokeOpacity: 0.8,
+        strokeColor: STROKE_COLOR[index % STROKE_COLOR.length],
+        strokeOpacity: 0.5,
         strokeStyle: 'solid',
       });
     });
-  }, [courses]);
+  }, [courses, mapRef]);
 
-  return <div>{center ? `${center.La},${center.Ma}` : 'none'}</div>;
+  return (
+    <div className="">
+      {center &&
+        courses.map((course) => {
+          return (
+            <div key={course.id} className="flex flex-col gap-2 p-5">
+              <div className="w-full h-44 bg-gray-200 "></div>
+              <h2 className="font-bold text-lg">{course.title}</h2>
+              <div>
+                <h3 className=" text-sm">거리 {course.distance / 1000}km</h3>
+                <h3 className=" text-sm">난이도 {course.difficulty}</h3>
+              </div>
+            </div>
+          );
+        })}
+    </div>
+  );
 }
