@@ -24,13 +24,27 @@ export default function Map({ mapRef, setMapIsLoading }: MapProps) {
     console.log('render!!');
     const kakaoMap = window.kakao.maps;
     kakaoMap.load(function () {
-      console.log('load done');
+      let now = new kakaoMap.LatLng(33.450701, 126.570667);
+
+      console.log(now);
       const container = document.getElementById('map');
       const mapOptions = {
-        center: new kakaoMap.LatLng(33.450701, 126.570667),
+        center: now,
         level: 3,
       };
       const map = new kakaoMap.Map(container, mapOptions);
+
+      if ('geolocation' in window.navigator) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          console.log(position.coords);
+          map.setCenter(
+            new kakaoMap.LatLng(
+              position.coords.latitude,
+              position.coords.longitude
+            )
+          );
+        });
+      }
 
       const myMap: MyMap = {
         maps: kakaoMap,
