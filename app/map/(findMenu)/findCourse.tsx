@@ -1,9 +1,11 @@
 'use client';
 
+import SearchInput from './searchInput';
+
 export default function FindCourse() {
   return (
     <div>
-      <h1>Find Course!!</h1>
+      <SearchInput />
     </div>
   );
 }
