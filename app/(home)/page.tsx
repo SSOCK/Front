@@ -23,7 +23,7 @@ export default function Home() {
     <>
       <HeadBar />
       <div className="flex items-center w-full ">
-        <div className="flex flex-col w-full overflow-scroll">
+        <div className="flex flex-col w-full overflow-scroll hidden-scrollbar">
           <Posts />
         </div>
         <div className="flex flex-col h-full p-5 pl-0">

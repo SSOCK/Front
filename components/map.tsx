@@ -16,25 +16,31 @@ interface clickEvent {
 
 interface MapProps {
   mapRef: React.MutableRefObject<MyMap | undefined>;
+  setMapIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Map({ mapRef }: MapProps) {
+export default function Map({ mapRef, setMapIsLoading }: MapProps) {
   useEffect(() => {
+    console.log('render!!');
     const kakaoMap = window.kakao.maps;
-    kakaoMap.load(() => {
-      const myMap: MyMap = {
-        maps: { ...kakaoMap },
-        data: { drawMode: false, dots: [], dotMarkers: [], polyLine: {} },
-      };
-      if (mapRef) {
-        mapRef.current = myMap;
-      }
+    kakaoMap.load(function () {
+      console.log('load done');
       const container = document.getElementById('map');
       const mapOptions = {
         center: new kakaoMap.LatLng(33.450701, 126.570667),
         level: 3,
       };
       const map = new kakaoMap.Map(container, mapOptions);
+
+      const myMap: MyMap = {
+        maps: kakaoMap,
+        map: map,
+        data: { drawMode: false, dots: [], dotMarkers: [], polyLine: {} },
+      };
+
+      if (mapRef) {
+        mapRef.current = myMap;
+      }
 
       const { dots, dotMarkers } = myMap.data;
       const polyline = new kakaoMap.Polyline({
@@ -68,6 +74,8 @@ export default function Map({ mapRef }: MapProps) {
       kakaoMap.event.addListener(map, 'click', ({ latLng }: clickEvent) => {
         if (myMap.data.drawMode) addMarker(latLng);
       });
+
+      setMapIsLoading(false);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
