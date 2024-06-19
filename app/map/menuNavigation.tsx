@@ -1,6 +1,6 @@
 'use client';
 
-import { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { MenuInfo } from './menu';
 
 interface MenuNavProps {
@@ -15,15 +15,21 @@ export default function MenuNavigations({
   setNowMenu,
 }: MenuNavProps) {
   return (
-    <div className="w-full h-14 bg-slate-100 flex border border-r-0 ">
-      {menuList.map(({ name }, index) => (
-        <button
-          key={index}
-          className={`rounded-none flex-grow h-full basis-0 ${index !== menuList.length && `border-r`} ${index === nowMenu && 'text-primary font-bold'}`}
-          onClick={() => setNowMenu(index)}
-        >
-          {name}
-        </button>
+    <div className="h-full w-16 bg-white flex flex-col items-center">
+      {menuList.map(({ name, svg }, index) => (
+        <>
+          {name === '추가' && <div className="bg-gray-200 w-2/3 h-[1px]"></div>}
+          <button
+            key={index}
+            className={`text-xs rounded-none h-20  ${index === nowMenu && 'text-primary font-bold'} flex flex-col items-center justify-center gap-1`}
+            onClick={() => setNowMenu(index)}
+          >
+            {React.cloneElement(svg, {
+              className: `size-5 ${index === nowMenu && 'stroke-primary fill-primary'}`,
+            })}
+            <h2 className="font-bold">{name}</h2>
+          </button>
+        </>
       ))}
     </div>
   );
