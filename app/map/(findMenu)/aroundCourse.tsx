@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { fetchWithRetry } from '@utils/fetch';
 import { MyMap, LatLng } from '@/app/map/page';
 
 interface ArroundCourseProps {
   mapRef: React.MutableRefObject<MyMap | undefined>;
+  setNowPlace: React.Dispatch<React.SetStateAction<string>>;
 }
 type CourseInfo = {
   course: { latitude: number; longitude: number }[];
@@ -20,7 +21,7 @@ type CourseInfo = {
 };
 
 async function getCourses(latLng: LatLng) {
-  const url = `/api/courses/radius?latitude=${latLng.Ma}&longitude=${latLng.La}&radius=1000`;
+  const url = `/api/courses/radius?latitude=${latLng.Ma}&longitude=${latLng.La}&radius=4999`;
   const res = await fetchWithRetry(url, {
     method: 'get',
   });
@@ -38,13 +39,20 @@ const STROKE_COLOR = [
   '#800080',
 ];
 
-export default function AroundCourse({ mapRef }: ArroundCourseProps) {
-  const [center, setCenter] = useState<LatLng>();
+export default function AroundCourse({
+  mapRef,
+  setNowPlace,
+}: ArroundCourseProps) {
+  const [center, setCenter] = useState<LatLng>({
+    La: 126.570667,
+    Ma: 33.450701,
+  });
   const [courses, setCourses] = useState<CourseInfo[]>([]);
   const lineRef = useRef<any[]>([]);
   useEffect(() => {
     if (!mapRef.current) return;
     const myMap = mapRef.current;
+
     setCenter(myMap.map.getCenter());
 
     //idle은 화면 이동이나 축소확대시, 움직이는 동안은 x
@@ -66,6 +74,13 @@ export default function AroundCourse({ mapRef }: ArroundCourseProps) {
       setCourses(data);
     }
     updateCourses(center);
+    if (!mapRef.current) return;
+    const geocoder = new mapRef.current.maps.services.Geocoder();
+    geocoder.coord2Address(center.La, center.Ma, (result: any, state: any) => {
+      setNowPlace(
+        `${result[0].address.region_2depth_name} ${result[0].address.region_3depth_name}`
+      );
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [center]);
 

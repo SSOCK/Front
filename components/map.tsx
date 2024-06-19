@@ -21,12 +21,10 @@ interface MapProps {
 
 export default function Map({ mapRef, setMapIsLoading }: MapProps) {
   useEffect(() => {
-    console.log('render!!');
     const kakaoMap = window.kakao.maps;
     kakaoMap.load(function () {
       let now = new kakaoMap.LatLng(33.450701, 126.570667);
 
-      console.log(now);
       const container = document.getElementById('map');
       const mapOptions = {
         center: now,
@@ -36,7 +34,6 @@ export default function Map({ mapRef, setMapIsLoading }: MapProps) {
 
       if ('geolocation' in window.navigator) {
         navigator.geolocation.getCurrentPosition((position) => {
-          console.log(position.coords);
           map.setCenter(
             new kakaoMap.LatLng(
               position.coords.latitude,

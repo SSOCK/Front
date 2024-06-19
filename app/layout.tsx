@@ -28,7 +28,7 @@ export default function RootLayout({
         <Script
           type="text/javascript"
           strategy="beforeInteractive"
-          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_MAP_KEY}&autoload=false&libraries=drawing`}
+          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_MAP_KEY}&autoload=false&libraries=drawing,services`}
         />
         <main className="w-full h-full flex flex-col">
           <RecoilRootWrapper>{children}</RecoilRootWrapper>
