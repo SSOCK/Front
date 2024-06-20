@@ -1,10 +1,9 @@
 'use client';
 
 import { useEffect } from 'react';
-import { HeadBar, Navigation } from '@components';
+import { HeadBar, MyCalender } from '@components';
 import { refreshAccessToken } from '@utils/fetch';
 import logout from '@utils/logout';
-import MyCalender from '@components/myCalender';
 import Posts from './posts';
 
 export default function Home() {

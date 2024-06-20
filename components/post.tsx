@@ -1,16 +1,16 @@
 'use client';
 
-import { getPostTime } from '@utils/time';
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from '@/components/ui/carousel';
+} from '@components/ui/carousel';
+import { getPostTime } from '@utils/time';
 import Comment from '@/public/icons/comment.svg';
 import Like from '@/public/icons/like.svg';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import { Avatar, AvatarFallback } from './ui/avatar';
 import { Button } from './ui/button';
 
 type PostProps = {
@@ -21,7 +21,7 @@ export default function Post({ postData }: PostProps) {
   return (
     <div className="w-full p-5">
       <div className="flex flex-col bg-white p-5 shadow gap-5">
-        <div className="flex flex-row gap-4 flex-auto items-center">
+        <div className="flex flex-row gap-4 flex-auto items-center cursor-pointer">
           <Avatar className=" size-12">
             <AvatarFallback>
               <h6 className="text-xs">{postData.member.username}</h6>
