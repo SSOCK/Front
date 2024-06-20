@@ -1,5 +1,6 @@
 'use client';
 
+// import { useState } from 'react';
 import {
   Carousel,
   CarouselContent,
@@ -18,6 +19,8 @@ type PostProps = {
 };
 
 export default function Post({ postData }: PostProps) {
+  // const [viewComment, setViewComment] = useState(false);
+
   return (
     <div className="w-full p-5">
       <div className="flex flex-col bg-white p-5 shadow gap-5">
@@ -42,12 +45,12 @@ export default function Post({ postData }: PostProps) {
           <div className="w-full">
             <h6 className="text-lg font-bold">{postData.title}</h6>
           </div>
-          {postData.imageUrls.length && (
-            <Carousel className="w-full max-w-xs p-4">
+          {postData.imageUrls.length !== 0 && (
+            <Carousel className="w-full px-8 py-4">
               <CarouselContent>
                 {postData.imageUrls.map((url, index) => (
                   <CarouselItem key={index}>
-                    <div className="flex justify-center h-80">
+                    <div className="flex justify-center h-80 w-full">
                       <img src={url} alt={url} className="object-cover" />
                     </div>
                   </CarouselItem>
@@ -72,12 +75,22 @@ export default function Post({ postData }: PostProps) {
             <Like className="mr-2" />
             <h5>좋아요 {postData.likes}개</h5>
           </Button>
-          <Button variant="ghost" className="p-0">
+          <Button
+            variant="ghost"
+            className="p-0"
+            // onClick={() => setViewComment(!viewComment)}
+          >
             <Comment className="mr-2" />
             <h5>댓글 {postData.comments.length}개</h5>
           </Button>
         </div>
       </div>
+
+      {/* {viewComment ? (
+        <div className="bg-black">
+          <Button onClick={() => setViewComment(false)}>x</Button>
+        </div>
+      ) : null} */}
     </div>
   );
 }
