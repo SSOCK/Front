@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, ChangeEvent } from 'react';
 import {
   Carousel,
   CarouselContent,
@@ -8,6 +8,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@components/ui/carousel';
+import { fetchWithRetry } from '@utils/fetch';
 import { getPostTime } from '@utils/time';
 import Comment from '@/public/icons/comment.svg';
 import Like from '@/public/icons/like.svg';
@@ -21,16 +22,50 @@ type PostProps = {
 
 export default function Post({ postData }: PostProps) {
   const [viewComment, setViewComment] = useState(false);
-  const [comment, setComment] = useState([]);
   const [commentError, setCommentError] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
   const commentRef = useRef<HTMLInputElement>(null);
+  const ComentLengthLimit = 2000;
 
-  const sendComment = () => {
-    if (!commentRef.current?.value) {
+  const changeComment = (event: ChangeEvent<HTMLInputElement>) => {
+    setSubmitError(false);
+    if (event.target.value.length > ComentLengthLimit) {
+      setCommentError(true);
+      commentRef.current!.value = event.target.value.substring(
+        0,
+        ComentLengthLimit
+      );
+      return;
+    }
+    setCommentError(false);
+  };
+
+  const sendComment = async () => {
+    setSubmitError(false);
+    if (
+      !commentRef.current?.value ||
+      commentRef.current?.value.length > ComentLengthLimit
+    ) {
       setCommentError(true);
       return;
     }
-    alert(commentRef.current?.value);
+
+    const url = `/api/posts/${postData.id}/comments`;
+    const response = await fetchWithRetry(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        content: commentRef.current?.value,
+      }),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    });
+
+    if (response!.status !== 201) {
+      setSubmitError(true);
+      return;
+    }
+    setViewComment(false);
   };
 
   return (
@@ -99,7 +134,7 @@ export default function Post({ postData }: PostProps) {
       </div>
 
       {viewComment ? (
-        <div className="bg-red-400">
+        <div className="border rounded-sm p-5 pb-3">
           <Button
             className="pl-auto mb-2"
             onClick={() => setViewComment(false)}
@@ -111,39 +146,45 @@ export default function Post({ postData }: PostProps) {
               ref={commentRef}
               placeholder="댓글을 입력해주세요"
               className="mr-2"
-              onChange={() => setCommentError(false)}
+              onChange={changeComment}
             />
             <Button onClick={sendComment}>전송</Button>
           </div>
           {commentError ? (
             <p className="text-right text-red-500">
-              댓글은 한글자 이상 입력 가능합니다.
+              댓글은 한글자 이상 2000자 이하로 입력 가능합니다.
+            </p>
+          ) : null}
+          {submitError ? (
+            <p className="text-right text-red-500">
+              댓글을 다시 전송해주십시오.
             </p>
           ) : null}
 
-          {comment.length ? (
-            <div className="p-5">
-              <div className="flex flex-row gap-4 flex-auto items-center cursor-pointer">
-                <Avatar className=" size-12">
-                  <AvatarFallback>
-                    <h6 className="text-xs">댓글작성자이름</h6>
-                  </AvatarFallback>
-                </Avatar>
+          {postData.comments.map((comments) => (
+            <>
+              <div className="pb-5">
+                <div className="flex flex-row gap-4 flex-auto items-center cursor-pointer">
+                  <Avatar className=" size-12">
+                    <AvatarFallback>
+                      <h6 className="text-xs">{comments.username}</h6>
+                    </AvatarFallback>
+                  </Avatar>
 
-                <div className="flex flex-col gap-1">
-                  <h1 className="text-xs font-semibold">댓글작성자이름</h1>
-                  <h2 className="text-xs">
-                    {/* {getPostTime(postData.modifiedAt ?? postData.createdAt)} */}
-                    몇 분 전
-                  </h2>
+                  <div className="flex flex-col gap-1">
+                    <h1 className="text-xs font-semibold">
+                      {comments.username}
+                    </h1>
+                    <h2 className="text-xs">
+                      {getPostTime(comments.createdAt)}
+                    </h2>
+                  </div>
                 </div>
-              </div>
 
-              <div className="pt-2 ml-16">
-                댓글내용블라블라댓글내용블라블라댓글내용블라블라댓글내용블라블라댓글내용블라블라댓글내용블라블라댓글내용블라블라댓글내용블라블라댓글내용블라블라댓글내용블라블라댓글내용블라블라댓글내용블라블라댓글내용블라블라댓글내용블라블라댓글내용블라블라댓글내용블라블라댓글내용블라블라댓글내용블라블라
+                <div className="pt-2 ml-16">{comments.content}</div>
               </div>
-            </div>
-          ) : null}
+            </>
+          ))}
         </div>
       ) : null}
     </div>
