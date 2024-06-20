@@ -8,13 +8,20 @@ declare global {
     title: string;
     member: MemberInfo;
     likes: number;
-    comments: string[];
+    comments: Comment[];
   };
   type MemberInfo = {
     email: string;
     id: number;
     name: string;
     username: string;
+  };
+  type Comment = {
+    id: number;
+    content: string;
+    username: string;
+    createdAt: string;
+    postId: number;
   };
 }
 
