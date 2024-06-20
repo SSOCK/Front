@@ -22,6 +22,7 @@ type PostProps = {
 
 export default function Post({ postData }: PostProps) {
   const [viewComment, setViewComment] = useState(false);
+  const [commentDelError, setCommentDelError] = useState(false);
   const [commentError, setCommentError] = useState(false);
   const [submitError, setSubmitError] = useState(false);
   const commentRef = useRef<HTMLInputElement>(null);
@@ -66,6 +67,18 @@ export default function Post({ postData }: PostProps) {
       return;
     }
     setViewComment(false);
+  };
+
+  const deleteComment = async (id: number) => {
+    setCommentDelError(false);
+    const url = `/api/comments/${id}`;
+    const response = await fetchWithRetry(url, {
+      method: 'DELETE',
+    });
+    if (response!.status !== 204) {
+      setCommentDelError(true);
+      return;
+    }
   };
 
   return (
@@ -179,7 +192,18 @@ export default function Post({ postData }: PostProps) {
                       {getPostTime(comments.createdAt)}
                     </h2>
                   </div>
+                  <div
+                    className="ml-auto text-sm cursor-pointer text-red-500"
+                    onClick={() => deleteComment(comments.id)}
+                  >
+                    delete
+                  </div>
                 </div>
+                {commentDelError ? (
+                  <p className="text-right text-red-500">
+                    댓글 삭제를 다시 진행해주십시오.
+                  </p>
+                ) : null}
 
                 <div className="pt-2 ml-16">{comments.content}</div>
               </div>
