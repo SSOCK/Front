@@ -24,7 +24,7 @@ export default function Map({ mapRef, setMapIsLoading }: MapProps) {
     const kakaoMap = window.kakao.maps;
     kakaoMap.load(function () {
       let now = new kakaoMap.LatLng(33.450701, 126.570667);
-
+      console.log(now, 'now');
       const container = document.getElementById('map');
       const mapOptions = {
         center: now,

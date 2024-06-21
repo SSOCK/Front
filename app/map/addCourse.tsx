@@ -22,7 +22,7 @@ const CourseFormSchema = z.object({
   difficulty: z.coerce.number().min(0).max(2),
   distance: z.number().min(0).max(300),
   course: z
-    .array(z.object({ latitude: z.number(), longitude: z.number() }))
+    .array(z.object({ La: z.number(), Ma: z.number() }))
     .min(2, '좌표를 두개 이상 찍어주세요.'),
 });
 
@@ -58,8 +58,8 @@ export default function AddCourse({
       form.setValue(
         'course',
         data.dots.map((dots) => ({
-          latitude: dots.Ma,
-          longitude: dots.La,
+          La: dots.Ma,
+          Ma: dots.La,
         }))
       );
       form.setValue('distance', Math.round(data.polyLine.getLength() / 1000));
@@ -90,7 +90,7 @@ export default function AddCourse({
           <FormField
             control={form.control}
             name="course"
-            render={({ field }) => (
+            render={() => (
               <FormItem>
                 <FormLabel htmlFor="course">정보</FormLabel>
                 <FormControl>

@@ -7,7 +7,7 @@ interface ArroundCourseProps {
   setNowPlace: React.Dispatch<React.SetStateAction<string>>;
 }
 type CourseInfo = {
-  course: { latitude: number; longitude: number }[];
+  course: LatLng[];
   id: number;
   title: string;
   distance: number;
@@ -54,7 +54,6 @@ export default function AroundCourse({
     const myMap = mapRef.current;
 
     setCenter(myMap.map.getCenter());
-
     //idle은 화면 이동이나 축소확대시, 움직이는 동안은 x
     const event = () => {
       setCenter(myMap.map.getCenter());
@@ -89,9 +88,7 @@ export default function AroundCourse({
     if (!mapRef.current) return;
     const myMap = mapRef.current;
     const paths = courses.map((c) =>
-      c.course.map(
-        ({ latitude, longitude }) => new myMap.maps.LatLng(latitude, longitude)
-      )
+      c.course.map(({ La, Ma }) => new myMap.maps.LatLng(La, Ma))
     );
 
     if (lineRef.current.length) {
@@ -117,10 +114,10 @@ export default function AroundCourse({
     if (!mapRef.current) return;
     const myMap = mapRef.current;
     const lat =
-      courses[index].course.reduce((a, b) => a + b.latitude, 0) /
+      courses[index].course.reduce((a, b) => a + b.La, 0) /
       courses[index].course.length;
     const lng =
-      courses[index].course.reduce((a, b) => a + b.longitude, 0) /
+      courses[index].course.reduce((a, b) => a + b.Ma, 0) /
       courses[index].course.length;
     const coord = new myMap.maps.LatLng(lat, lng);
     console.log(myMap.map.setCenter(coord));
