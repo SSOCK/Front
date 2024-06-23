@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { HeadBar } from '@components';
+import { Challenge, Club, HeadBar } from '@components';
 import { Button } from '@components/ui/button';
 import {
   DropdownMenu,
@@ -13,8 +13,6 @@ import {
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
 import { Input } from '@components/ui/input';
-import Challenge from './challenge';
-import Club from './club';
 
 export default function Home() {
   const [position, setPosition] = useState<string>('클럽');
