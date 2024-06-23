@@ -30,7 +30,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="w-3/5 min-w-fit flex justify-center mx-auto pb-10">
+        <div className="min-w-fit flex justify-center mx-auto pb-10">
           <div className="flex justify-between gap-4 items-center w-full p-4 border border-zinc-400 rounded-md bg-white">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
