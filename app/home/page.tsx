@@ -79,7 +79,7 @@ export default function Home() {
       </div>
 
       <div className="pt-5 m-auto w-full lg:w-4/5">
-        <div className="text-md font-bold cursor-pointer">인기 클럽</div>
+        <div className="pl-2 text-md font-bold cursor-pointer">인기 클럽</div>
         <div className="clubchallenge">
           <Club
             title={'클럽명'}
@@ -107,7 +107,7 @@ export default function Home() {
           />
         </div>
 
-        <div className="text-md font-bold cursor-pointer">
+        <div className="pl-2 text-md font-bold cursor-pointer">
           현재 모집 중인 챌린지
         </div>
         <div className="clubchallenge">

@@ -88,6 +88,10 @@
   .clubchallenge {
     @apply grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4;
   }
+
+  .sortclubchallenge {
+    @apply px-2 border-r-2 cursor-pointer sm:px-5;
+  }
 }
 
 .hidden-scrollbar::-webkit-scrollbar {
