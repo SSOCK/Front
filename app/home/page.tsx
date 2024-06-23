@@ -78,9 +78,9 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="w-3/5 mx-auto pt-5">
+      <div className="pt-5 m-auto w-full lg:w-4/5">
         <div className="text-md font-bold cursor-pointer">인기 클럽</div>
-        <div className="grid grid-cols-4 gap-2">
+        <div className="clubchallenge">
           <Club
             title={'클럽명'}
             img={'https://avatars.githubusercontent.com/u/96722691?v=5'}
