@@ -54,8 +54,8 @@ export default function Home() {
           이달의 인기 챌린지
         </div>
 
-        <div className="flex justify-center m-auto pb-10 w-3/5">
-          <div className="bg-white p-8 border-2 border-zinc-300 basis-1/3">
+        <div className="flex justify-center m-auto pb-10 w-4/5">
+          <div className="bg-white p-8 border-2 border-zinc-300 basis-full sm:basis-1/2 lg:basis-1/3">
             <div className="font-bold text-lg">챌린지명</div>
             <div className="">간단소개(ex. 매일 5km 달리기)</div>
             <div className="">기간</div>
@@ -63,7 +63,9 @@ export default function Home() {
             <Button className="w-full mt-10">참여하기</Button>
           </div>
 
-          <div className="bg p-8 bg-zinc-300 basis-2/3">Right</div>
+          <div className="bg p-8 bg-zinc-300 hidden basis-1/2 sm:block lg:basis-2/3">
+            Right
+          </div>
         </div>
       </div>
 
