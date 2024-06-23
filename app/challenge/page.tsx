@@ -68,25 +68,17 @@ export default function Home() {
       </div>
 
       <div className="m-auto w-full lg:w-4/5">
-        <div className="flex justify-between pt-10 mb-5">
-          <div className="cursor-pointer">{month}월 △</div>
-          <div className="flex">
-            <div
-              ref={peopleRef}
-              className="px-5 border-r-2 cursor-pointer"
-              onClick={sort}
-            >
+        <div className="flex flex-col justify-between pt-10 mb-5 sm:flex-row">
+          <div className="pl-2 cursor-pointer">{month}월 △</div>
+          <div className="flex ml-auto sm:ml-0">
+            <div ref={peopleRef} className="sortclubchallenge" onClick={sort}>
               {people ? (
                 <span className="text-blue-600">✔️ 인원많은순</span>
               ) : (
                 '인원많은순'
               )}
             </div>
-            <div
-              ref={closeRef}
-              className="px-5 border-r-2 cursor-pointer"
-              onClick={sort}
-            >
+            <div ref={closeRef} className="sortclubchallenge" onClick={sort}>
               {close ? (
                 <span className="text-blue-600">✔️ 가까운순</span>
               ) : (
@@ -95,7 +87,7 @@ export default function Home() {
             </div>
             <div
               ref={participateRef}
-              className="px-5 border-r-2 cursor-pointer"
+              className="sortclubchallenge"
               onClick={sort}
             >
               {participate ? (
@@ -104,7 +96,11 @@ export default function Home() {
                 '참여율순'
               )}
             </div>
-            <div ref={recentRef} className="px-5 cursor-pointer" onClick={sort}>
+            <div
+              ref={recentRef}
+              className="sortclubchallenge border-r-0"
+              onClick={sort}
+            >
               {recent ? (
                 <span className="text-blue-600">✔️ 최신순</span>
               ) : (
