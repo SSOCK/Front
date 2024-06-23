@@ -107,7 +107,7 @@ export default function Home() {
           />
         </div>
 
-        <div className="pl-2 text-md font-bold cursor-pointer">
+        <div className="pl-2 pt-10 text-md font-bold cursor-pointer">
           현재 모집 중인 챌린지
         </div>
         <div className="clubchallenge">
