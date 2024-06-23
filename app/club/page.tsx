@@ -6,7 +6,6 @@ import { Button } from '@components/ui/button';
 import { Input } from '@components/ui/input';
 
 export default function Home() {
-  const [month, setMonth] = useState(6);
   const [people, setPeople] = useState(false);
   const [close, setClose] = useState(false);
   const [participate, setParticipate] = useState(false);
@@ -17,7 +16,6 @@ export default function Home() {
   const recentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setMonth(new Date().getMonth() + 1);
     setPeople(true);
   }, []);
 
@@ -58,20 +56,20 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="flex justify-center min-w-fit mx-auto gap-4 items-center p-4 border border-zinc-400 rounded-md bg-white">
+        <div className="flex justify-center min-w-fit mx-auto gap-2 items-center p-4 border border-zinc-400 rounded-md bg-white md:gap-4">
           <div className="flex grow w-full">
             <div className="border-r flex items-center basis-1/2">
               <div>🔍</div>
               <Input
                 placeholder="검색어 키워드를 입력해주세요"
-                className="min-w-72 border-0"
+                className="max-w-24 border-0 overflow-hidden text-ellipsis whitespace-nowrap md:min-w-72"
               />
             </div>
             <div className="flex items-center basis-1/2">
               <div className="pl-2">📍</div>
               <Input
                 placeholder="위치를 입력해주세요"
-                className="min-w-72 border-0"
+                className="max-w-24 border-0 overflow-hidden text-ellipsis whitespace-nowrap md:min-w-72"
               />
             </div>
           </div>

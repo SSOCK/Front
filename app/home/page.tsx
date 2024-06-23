@@ -31,7 +31,7 @@ export default function Home() {
         </div>
 
         <div className="min-w-fit flex justify-center mx-auto pb-10">
-          <div className="flex justify-between gap-4 items-center w-full p-4 border border-zinc-400 rounded-md bg-white">
+          <div className="flex justify-between gap-2 items-center w-full p-4 border border-zinc-400 rounded-md bg-white lg:gap-4">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -61,15 +61,15 @@ export default function Home() {
               <div className="border-r flex items-center basis-1/2">
                 <div>🔍</div>
                 <Input
-                  placeholder="클럽명 또는 키워드를 입력해주세요"
-                  className="min-w-72 border-0"
+                  placeholder="검색어 키워드를 입력해주세요"
+                  className="max-w-24 border-0 overflow-hidden text-ellipsis whitespace-nowrap md:min-w-72"
                 />
               </div>
               <div className="flex items-center basis-1/2">
                 <div className="pl-2">📍</div>
                 <Input
                   placeholder="위치를 입력해주세요"
-                  className="min-w-72 border-0"
+                  className="max-w-24 border-0 overflow-hidden text-ellipsis whitespace-nowrap md:min-w-72"
                 />
               </div>
             </div>
@@ -110,7 +110,7 @@ export default function Home() {
         <div className="text-md font-bold cursor-pointer">
           현재 모집 중인 챌린지
         </div>
-        <div className="grid grid-cols-4 gap-2">
+        <div className="clubchallenge">
           <Challenge
             title={'챌린지명'}
             img={'https://avatars.githubusercontent.com/u/96722691?v=5'}
