@@ -79,7 +79,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="w-3/5 m-auto">
+      <div className="m-auto w-full lg:w-4/5">
         <div className="flex justify-between pt-10 mb-5 w-fit">
           <div
             ref={peopleRef}
@@ -123,7 +123,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="grid grid-cols-4 gap-2">
+        <div className="clubchallenge">
           <Club
             title={'클럽명'}
             img={'https://avatars.githubusercontent.com/u/96722691?v=5'}

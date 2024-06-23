@@ -84,6 +84,10 @@
   .textarea {
     @apply w-full rounded-md placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 px-3 py-2 text-sm;
   }
+
+  .clubchallenge {
+    @apply grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4;
+  }
 }
 
 .hidden-scrollbar::-webkit-scrollbar {
