@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "cross-env-shell \"npm run open-browser && next dev\"",
-    "open-browser": "cross-env-shell \"if [ $BROWSER = 'windows' ]; then start http://localhost:3000; else open http://localhost:3000; fi\"",
+    "open-browser": "cross-env-shell \"node open-browser.ts\"",
     "build": "next build",
     "start": "next start",
     "format": "prettier --write .",
