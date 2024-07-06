@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { HeadBar } from '@components';
 import { Button } from '@components/ui/button';
+import Rank from './rank';
 
 export default function Home() {
   const name = '클럽명';
@@ -36,7 +37,7 @@ export default function Home() {
     <>
       <HeadBar />
       <div className="w-full">
-        <div className="bg-background h-64 border-2 relative">
+        <div className="h-64 relative bg-border">
           <img
             className="w-28 absolute top-48 ml-5 border rounded-sm"
             src={img}
@@ -44,7 +45,7 @@ export default function Home() {
           />
         </div>
 
-        <div className="flex w-full justify-between pt-20 gap-5">
+        <div className="flex w-full justify-between pt-16 gap-5">
           <div className="basis-2/3 flex flex-col ml-5">
             <div className="font-bold text-lg pb-4">
               {name}&nbsp;&nbsp;&nbsp;&nbsp;
@@ -90,7 +91,7 @@ export default function Home() {
             </div>
 
             <div className="pt-10">
-              {list.순위 ? <></> : null}
+              {list.순위 ? <Rank club={name} /> : null}
               {list.멤버 ? <></> : null}
               {list.일정 ? <></> : null}
               {list.게시판 ? <></> : null}
