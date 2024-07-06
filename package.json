@@ -3,8 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "cross-env-shell \"npm run open-browser && next dev\"",
-    "open-browser": "cross-env-shell \"node open-browser.ts\"",
+    "dev": "cross-env-shell \"node open-browser.ts && next dev\"",
     "build": "next build",
     "start": "next start",
     "format": "prettier --write .",
