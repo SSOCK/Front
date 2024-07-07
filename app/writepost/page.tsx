@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { HeadBar, Navigation } from '@components';
+import { HeadBar } from '@components';
 import { Button } from '@components/ui/button';
 import {
   Form,
