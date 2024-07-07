@@ -40,74 +40,95 @@ export default function Home() {
   return (
     <>
       <HeadBar />
-      <div className="w-full">
-        <div className="h-64 relative bg-border">
-          <img
-            className="w-28 absolute top-48 ml-5 border rounded-sm"
-            src={img}
-            alt="clubImg"
-          />
-        </div>
-
-        <div className="flex w-full justify-between pt-16 gap-5">
-          <div className="basis-2/3 flex flex-col ml-5">
-            <div className="font-bold text-lg pb-4">
-              {name}&nbsp;&nbsp;&nbsp;&nbsp;
-              <span className="font-normal text-base">
-                🏃 {num}명이 함께 달리는 중
-              </span>
-            </div>
-            <div>{introduce}</div>
-
-            <div className="flex justify-around pt-20">
-              <div
-                className={selectClass + (list.순위 ? ' border-primary' : null)}
-                onClick={() => changeList('순위')}
-              >
-                순위
-              </div>
-              <div
-                className={selectClass + (list.멤버 ? ' border-primary' : null)}
-                onClick={() => changeList('멤버')}
-              >
-                멤버
-              </div>
-              <div
-                className={selectClass + (list.일정 ? ' border-primary' : null)}
-                onClick={() => changeList('일정')}
-              >
-                일정
-              </div>
-              <div
-                className={
-                  selectClass + (list.게시판 ? ' border-primary' : null)
-                }
-                onClick={() => changeList('게시판')}
-              >
-                게시판
-              </div>
-              <div
-                className={selectClass + (list.채팅 ? ' border-primary' : null)}
-                onClick={() => changeList('채팅')}
-              >
-                채팅
-              </div>
-            </div>
-
-            <div className="pt-10">
-              {list.순위 ? <Rank club={name} /> : null}
-              {list.멤버 ? <Member club={name} /> : null}
-              {list.일정 ? <Plan club={name} /> : null}
-              {list.게시판 ? <Board club={name} /> : null}
-              {list.채팅 ? <Chat club={name} /> : null}
-            </div>
+      <div className="w-full flex justify-center">
+        <div className="w-full xl:w-5/6">
+          <div className="h-64 relative bg-border">
+            <img
+              className="w-28 absolute top-48 ml-5 border rounded-sm"
+              src={img}
+              alt="clubImg"
+            />
           </div>
 
-          <div className="basis-1/3 mr-5 flex flex-col gap-4">
-            <Button className="font-bold">클럽 가입하기</Button>
-            <Button className="font-bold bg-white border border-primary text-primary hover:bg-border">
-              친구 초대하기
-            </Button>
+          <div className="flex w-full justify-between pt-16 pr-5 lg:gap-5 lg-pr-0">
+            <div className="flex flex-col ml-5 basis-full lg:basis-2/3">
+              <div className="flex flex-row justify-between">
+                <div>
+                  <div className="flex gap-5 font-bold text-lg pb-4 pr-5">
+                    <div className="flex-shrink-0">{name}</div>
+                    <div className="font-normal text-base">
+                      🏃 {num}명이 함께 달리는 중
+                    </div>
+                  </div>
+                  <div>{introduce}</div>
+                </div>
+
+                <div className="flex flex-col gap-2 lg:hidden">
+                  <Button className="font-bold">클럽 가입하기</Button>
+                  <Button className="font-bold bg-white border border-primary text-primary hover:bg-border">
+                    친구 초대하기
+                  </Button>
+                </div>
+              </div>
+
+              <div className="flex justify-around pt-10 lg:pt-20">
+                <div
+                  className={
+                    selectClass + (list.순위 ? ' border-primary' : null)
+                  }
+                  onClick={() => changeList('순위')}
+                >
+                  순위
+                </div>
+                <div
+                  className={
+                    selectClass + (list.멤버 ? ' border-primary' : null)
+                  }
+                  onClick={() => changeList('멤버')}
+                >
+                  멤버
+                </div>
+                <div
+                  className={
+                    selectClass + (list.일정 ? ' border-primary' : null)
+                  }
+                  onClick={() => changeList('일정')}
+                >
+                  일정
+                </div>
+                <div
+                  className={
+                    selectClass + (list.게시판 ? ' border-primary' : null)
+                  }
+                  onClick={() => changeList('게시판')}
+                >
+                  게시판
+                </div>
+                <div
+                  className={
+                    selectClass + (list.채팅 ? ' border-primary' : null)
+                  }
+                  onClick={() => changeList('채팅')}
+                >
+                  채팅
+                </div>
+              </div>
+
+              <div className="pt-10">
+                {list.순위 ? <Rank club={name} /> : null}
+                {list.멤버 ? <Member club={name} /> : null}
+                {list.일정 ? <Plan club={name} /> : null}
+                {list.게시판 ? <Board club={name} /> : null}
+                {list.채팅 ? <Chat club={name} /> : null}
+              </div>
+            </div>
+
+            <div className="basis-1/3 mr-5 flex-col gap-4 hidden lg:flex">
+              <Button className="font-bold">클럽 가입하기</Button>
+              <Button className="font-bold bg-white border border-primary text-primary hover:bg-border">
+                친구 초대하기
+              </Button>
+            </div>
           </div>
         </div>
       </div>
