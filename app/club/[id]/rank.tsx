@@ -70,6 +70,26 @@ export default function Rank({ club }: { club: string }) {
     ],
   };
 
+  const SmallRankTitleTop = () => {
+    return (
+      <div className="flex justify-around border-b">
+        <div className="basis-1/5" />
+        <div className="basis-3/5 font-bold pl-2">거리</div>
+        <div className="basis-3/5 font-bold pl-2">시간</div>
+      </div>
+    );
+  };
+
+  const SmallRankTitleBottom = () => {
+    return (
+      <div className="flex justify-around border-b pt-5">
+        <div className="basis-1/5" />
+        <div className="basis-3/5 font-bold pl-2">페이스</div>
+        <div className="basis-3/5 font-bold pl-2">고도</div>
+      </div>
+    );
+  };
+
   const RankTitle = () => {
     return (
       <div className="flex justify-around border-b">
@@ -105,6 +125,88 @@ export default function Rank({ club }: { club: string }) {
           <div className="flex-shrink-0 pr-2">{unit}</div>
         </div>
       </div>
+    );
+  };
+
+  const SmallRankGroupTop = ({ idx }: { idx: number }) => {
+    return (
+      <>
+        <div className="basis-3/5">
+          <RankComponent
+            img={data.거리[idx].img}
+            name={data.거리[idx].name}
+            unit={data.거리[idx].dist}
+          />
+        </div>
+        <div className="basis-3/5">
+          <RankComponent
+            img={data.시간[idx].img}
+            name={data.시간[idx].name}
+            unit={data.시간[idx].time}
+          />
+        </div>
+      </>
+    );
+  };
+
+  const SmallRankGroupBottom = ({ idx }: { idx: number }) => {
+    return (
+      <>
+        <div className="basis-3/5">
+          <RankComponent
+            img={data.페이스[idx].img}
+            name={data.페이스[idx].name}
+            unit={data.페이스[idx].face}
+          />
+        </div>
+        <div className="basis-3/5">
+          <RankComponent
+            img={data.고도[idx].img}
+            name={data.고도[idx].name}
+            unit={data.고도[idx].alt}
+          />
+        </div>
+      </>
+    );
+  };
+
+  const SmallRank = () => {
+    return (
+      <>
+        <SmallRankTitleTop />
+
+        <div className="flex justify-around border-b">
+          <div className="basis-1/5">🥇</div>
+          <SmallRankGroupTop idx={0} />
+        </div>
+
+        <div className="flex justify-around border-b">
+          <div className="basis-1/5">🥈</div>
+          <SmallRankGroupTop idx={1} />
+        </div>
+
+        <div className="flex justify-around border-b">
+          <div className="basis-1/5">🥉</div>
+          <SmallRankGroupTop idx={2} />
+        </div>
+
+        <SmallRankTitleBottom />
+
+        <div className="flex justify-around border-b">
+          <div className="basis-1/5">🥇</div>
+          <SmallRankGroupBottom idx={0} />
+        </div>
+
+        <div className="flex justify-around border-b">
+          <div className="basis-1/5">🥈</div>
+          <SmallRankGroupBottom idx={1} />
+        </div>
+
+        <div className="flex justify-around border-b">
+          <div className="basis-1/5">🥉</div>
+          <SmallRankGroupBottom idx={2} />
+        </div>
+      </>
     );
   };
 
@@ -147,41 +249,53 @@ export default function Rank({ club }: { club: string }) {
     <div className="mb-20">
       <div className="font-bold pb-5">저번주 순위</div>
       <div className="flex flex-col">
-        <RankTitle />
-
-        <div className="flex justify-around border-b">
-          <div className="basis-1/12">🥇</div>
-          <RankGroup idx={0} />
+        <div className="md:hidden">
+          <SmallRank />
         </div>
 
-        <div className="flex justify-around border-b">
-          <div className="basis-1/12">🥈</div>
-          <RankGroup idx={1} />
-        </div>
+        <div className="hidden md:block">
+          <RankTitle />
 
-        <div className="flex justify-around border-b">
-          <div className="basis-1/12">🥉</div>
-          <RankGroup idx={2} />
+          <div className="flex justify-around border-b">
+            <div className="basis-1/12">🥇</div>
+            <RankGroup idx={0} />
+          </div>
+
+          <div className="flex justify-around border-b">
+            <div className="basis-1/12">🥈</div>
+            <RankGroup idx={1} />
+          </div>
+
+          <div className="flex justify-around border-b">
+            <div className="basis-1/12">🥉</div>
+            <RankGroup idx={2} />
+          </div>
         </div>
       </div>
 
       <div className="font-bold pt-10 pb-5">이번주 순위</div>
       <div className="flex flex-col">
-        <RankTitle />
-
-        <div className="flex justify-around border-b">
-          <div className="basis-1/12">🥇</div>
-          <RankGroup idx={0} />
+        <div className="md:hidden">
+          <SmallRank />
         </div>
 
-        <div className="flex justify-around border-b">
-          <div className="basis-1/12">🥈</div>
-          <RankGroup idx={1} />
-        </div>
+        <div className="hidden md:block">
+          <RankTitle />
 
-        <div className="flex justify-around border-b">
-          <div className="basis-1/12">🥉</div>
-          <RankGroup idx={2} />
+          <div className="flex justify-around border-b">
+            <div className="basis-1/12">🥇</div>
+            <RankGroup idx={0} />
+          </div>
+
+          <div className="flex justify-around border-b">
+            <div className="basis-1/12">🥈</div>
+            <RankGroup idx={1} />
+          </div>
+
+          <div className="flex justify-around border-b">
+            <div className="basis-1/12">🥉</div>
+            <RankGroup idx={2} />
+          </div>
         </div>
       </div>
     </div>
