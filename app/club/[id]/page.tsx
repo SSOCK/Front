@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { HeadBar } from '@components';
 import { Button } from '@components/ui/button';
 import Board from './board';
+import Chat from './chat';
 import Member from './member';
 import Plan from './plan';
 import Rank from './rank';
@@ -98,7 +99,7 @@ export default function Home() {
               {list.멤버 ? <Member club={name} /> : null}
               {list.일정 ? <Plan club={name} /> : null}
               {list.게시판 ? <Board club={name} /> : null}
-              {list.채팅 ? <></> : null}
+              {list.채팅 ? <Chat club={name} /> : null}
             </div>
           </div>
 
