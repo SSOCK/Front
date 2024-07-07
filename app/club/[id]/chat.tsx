@@ -46,7 +46,9 @@ export default function Chat({ club }: { club: string }) {
         <div className="w-full flex gap-3 justify-between">
           <div className="flex flex-col gap-3">
             <div className="font-bold">{title}</div>
-            <div className="text-sm">{getPostTime(lastChat)} 새로운 대화</div>
+            <div className="text-zinc-400 text-sm">
+              {getPostTime(lastChat)} 새로운 대화
+            </div>
           </div>
           <Button>채팅방 입장</Button>
         </div>
