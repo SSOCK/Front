@@ -163,6 +163,7 @@ export default function Post({ postData }: PostProps) {
             />
             <Button onClick={sendComment}>전송</Button>
           </div>
+
           {commentError ? (
             <p className="text-right text-red-500">
               댓글은 한글자 이상 2000자 이하로 입력 가능합니다.
@@ -174,40 +175,34 @@ export default function Post({ postData }: PostProps) {
             </p>
           ) : null}
 
-          {postData.comments.map((comments) => (
-            <>
-              <div className="pb-5">
-                <div className="flex flex-row gap-4 flex-auto items-center cursor-pointer">
-                  <Avatar className=" size-12">
-                    <AvatarFallback>
-                      <h6 className="text-xs">{comments.username}</h6>
-                    </AvatarFallback>
-                  </Avatar>
+          {postData.comments.map((comments, index) => (
+            <div key={index} className="pb-5">
+              <div className="flex flex-row gap-4 flex-auto items-center cursor-pointer">
+                <Avatar className=" size-12">
+                  <AvatarFallback>
+                    <h6 className="text-xs">{comments.username}</h6>
+                  </AvatarFallback>
+                </Avatar>
 
-                  <div className="flex flex-col gap-1">
-                    <h1 className="text-xs font-semibold">
-                      {comments.username}
-                    </h1>
-                    <h2 className="text-xs">
-                      {getPostTime(comments.createdAt)}
-                    </h2>
-                  </div>
-                  <div
-                    className="ml-auto text-sm cursor-pointer text-red-500"
-                    onClick={() => deleteComment(comments.id)}
-                  >
-                    delete
-                  </div>
+                <div className="flex flex-col gap-1">
+                  <h1 className="text-xs font-semibold">{comments.username}</h1>
+                  <h2 className="text-xs">{getPostTime(comments.createdAt)}</h2>
                 </div>
-                {commentDelError ? (
-                  <p className="text-right text-red-500">
-                    댓글 삭제를 다시 진행해주십시오.
-                  </p>
-                ) : null}
-
-                <div className="pt-2 ml-16">{comments.content}</div>
+                <div
+                  className="ml-auto text-sm cursor-pointer text-red-500"
+                  onClick={() => deleteComment(comments.id)}
+                >
+                  delete
+                </div>
               </div>
-            </>
+              {commentDelError ? (
+                <p className="text-right text-red-500">
+                  댓글 삭제를 다시 진행해주십시오.
+                </p>
+              ) : null}
+
+              <div className="pt-2 ml-16">{comments.content}</div>
+            </div>
           ))}
         </div>
       ) : null}
