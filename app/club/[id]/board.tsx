@@ -47,13 +47,15 @@ export default function Board({ club }: { club: string }) {
           src={profile}
           alt="profile"
         />
-        <div>
+        <div className="w-full">
           <div className="font-bold">{name}</div>
           <div className="text-sm">
             {timezone[0]}년 {timezone[1]}월 {day}일 {time[0]}:{time[1]}
           </div>
           <div className="pt-5">{text}</div>
-          <img className="mt-4" src={img} alt="img" />
+          <div className="mt-4 flex justify-center">
+            <img className="" src={img} alt="img" />
+          </div>
         </div>
       </div>
     );
