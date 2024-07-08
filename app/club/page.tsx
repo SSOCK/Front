@@ -4,6 +4,7 @@ import { useEffect, useState, useRef, MouseEvent } from 'react';
 import { Club, HeadBar } from '@components';
 import { Button } from '@components/ui/button';
 import { Input } from '@components/ui/input';
+import Check from '@/public/icons/check.svg';
 
 export default function Home() {
   const [people, setPeople] = useState(false);
@@ -81,14 +82,18 @@ export default function Home() {
         <div className="flex justify-between pt-10 mb-5 w-fit">
           <div ref={peopleRef} className="sortclubchallenge" onClick={sort}>
             {people ? (
-              <span className="text-blue-600">✔️ 인원많은순</span>
+              <span className="text-blue-600">
+                <Check className="inline w-5" /> 인원많은순
+              </span>
             ) : (
               '인원많은순'
             )}
           </div>
           <div ref={closeRef} className="sortclubchallenge" onClick={sort}>
             {close ? (
-              <span className="text-blue-600">✔️ 가까운순</span>
+              <span className="text-blue-600">
+                <Check className="inline w-5" /> 가까운순
+              </span>
             ) : (
               '가까운순'
             )}
@@ -99,7 +104,9 @@ export default function Home() {
             onClick={sort}
           >
             {participate ? (
-              <span className="text-blue-600">✔️ 참여율순</span>
+              <span className="text-blue-600">
+                <Check className="inline w-5" /> 참여율순
+              </span>
             ) : (
               '참여율순'
             )}
@@ -110,7 +117,9 @@ export default function Home() {
             onClick={sort}
           >
             {recent ? (
-              <span className="text-blue-600">✔️ 최신순</span>
+              <span className="text-blue-600">
+                <Check className="inline w-5" /> 최신순
+              </span>
             ) : (
               '최신순'
             )}
