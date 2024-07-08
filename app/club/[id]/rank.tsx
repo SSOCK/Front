@@ -1,4 +1,10 @@
+import First from '@/public/icons/first.svg';
+import Second from '@/public/icons/second.svg';
+import Third from '@/public/icons/third.svg';
+
 export default function Rank({ club }: { club: string }) {
+  const rankClass = 'flex justify-around border-b h-12';
+
   const data = {
     거리: [
       {
@@ -112,7 +118,7 @@ export default function Rank({ club }: { club: string }) {
     unit: string;
   }) => {
     return (
-      <div className="w-full flex gap-2 border-x bg-slate-100">
+      <div className="w-full h-full flex gap-2 border-x bg-slate-100">
         <div className="flex-shrink-0 flex items-center pl-2 py-2 basis-1/6">
           <img className="w-full rounded-full border" src={img} alt="profile" />
         </div>
@@ -175,35 +181,47 @@ export default function Rank({ club }: { club: string }) {
       <>
         <SmallRankTitleTop />
 
-        <div className="flex justify-around border-b">
-          <div className="basis-1/5">🥇</div>
+        <div className={rankClass}>
+          <div className="basis-1/5">
+            <First className="w-full h-full" />
+          </div>
           <SmallRankGroupTop idx={0} />
         </div>
 
-        <div className="flex justify-around border-b">
-          <div className="basis-1/5">🥈</div>
+        <div className={rankClass}>
+          <div className="basis-1/5">
+            <Second className="w-full h-full" />
+          </div>
           <SmallRankGroupTop idx={1} />
         </div>
 
-        <div className="flex justify-around border-b">
-          <div className="basis-1/5">🥉</div>
+        <div className={rankClass}>
+          <div className="basis-1/5">
+            <Third className="w-full h-full" />
+          </div>
           <SmallRankGroupTop idx={2} />
         </div>
 
         <SmallRankTitleBottom />
 
-        <div className="flex justify-around border-b">
-          <div className="basis-1/5">🥇</div>
+        <div className={rankClass}>
+          <div className="basis-1/5">
+            <First className="w-full h-full" />
+          </div>
           <SmallRankGroupBottom idx={0} />
         </div>
 
-        <div className="flex justify-around border-b">
-          <div className="basis-1/5">🥈</div>
+        <div className={rankClass}>
+          <div className="basis-1/5">
+            <Second className="w-full h-full" />
+          </div>
           <SmallRankGroupBottom idx={1} />
         </div>
 
-        <div className="flex justify-around border-b">
-          <div className="basis-1/5">🥉</div>
+        <div className={rankClass}>
+          <div className="basis-1/5">
+            <Third className="w-full h-full" />
+          </div>
           <SmallRankGroupBottom idx={2} />
         </div>
       </>
@@ -256,18 +274,24 @@ export default function Rank({ club }: { club: string }) {
         <div className="hidden md:block">
           <RankTitle />
 
-          <div className="flex justify-around border-b">
-            <div className="basis-1/12">🥇</div>
+          <div className={rankClass}>
+            <div className="basis-1/12">
+              <First className="w-full h-full" />
+            </div>
             <RankGroup idx={0} />
           </div>
 
-          <div className="flex justify-around border-b">
-            <div className="basis-1/12">🥈</div>
+          <div className={rankClass}>
+            <div className="basis-1/12">
+              <Second className="w-full h-full" />
+            </div>
             <RankGroup idx={1} />
           </div>
 
-          <div className="flex justify-around border-b">
-            <div className="basis-1/12">🥉</div>
+          <div className={rankClass}>
+            <div className="basis-1/12">
+              <Third className="w-full h-full" />
+            </div>
             <RankGroup idx={2} />
           </div>
         </div>
@@ -282,18 +306,24 @@ export default function Rank({ club }: { club: string }) {
         <div className="hidden md:block">
           <RankTitle />
 
-          <div className="flex justify-around border-b">
-            <div className="basis-1/12">🥇</div>
+          <div className={rankClass}>
+            <div className="basis-1/12">
+              <First className="w-full h-full" />
+            </div>
             <RankGroup idx={0} />
           </div>
 
-          <div className="flex justify-around border-b">
-            <div className="basis-1/12">🥈</div>
+          <div className={rankClass}>
+            <div className="basis-1/12">
+              <Second className="w-full h-full" />
+            </div>
             <RankGroup idx={1} />
           </div>
 
-          <div className="flex justify-around border-b">
-            <div className="basis-1/12">🥉</div>
+          <div className={rankClass}>
+            <div className="basis-1/12">
+              <Third className="w-full h-full" />
+            </div>
             <RankGroup idx={2} />
           </div>
         </div>
