@@ -5,6 +5,7 @@ import { Club, HeadBar } from '@components';
 import { Button } from '@components/ui/button';
 import { Input } from '@components/ui/input';
 import Check from '@/public/icons/check.svg';
+import Search from '@/public/icons/search.svg';
 
 export default function Home() {
   const [people, setPeople] = useState(false);
@@ -60,7 +61,7 @@ export default function Home() {
         <div className="flex justify-center min-w-fit mx-auto gap-2 items-center p-4 border border-zinc-400 rounded-md bg-white md:gap-4">
           <div className="flex grow w-full">
             <div className="border-r flex items-center basis-1/2">
-              <div>🔍</div>
+              <Search className="w-5 fill-slate-400 mr-1" />
               <Input
                 placeholder="검색어 키워드를 입력해주세요"
                 className="max-w-24 border-0 overflow-hidden text-ellipsis whitespace-nowrap md:min-w-72"
