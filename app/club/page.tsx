@@ -5,6 +5,7 @@ import { Club, HeadBar } from '@components';
 import { Button } from '@components/ui/button';
 import { Input } from '@components/ui/input';
 import Check from '@/public/icons/check.svg';
+import Pin from '@/public/icons/pin.svg';
 import Search from '@/public/icons/search.svg';
 
 export default function Home() {
@@ -68,7 +69,7 @@ export default function Home() {
               />
             </div>
             <div className="flex items-center basis-1/2">
-              <div className="pl-2">📍</div>
+              <Pin className="w-5 h-5 ml-2 mr-1 fill-slate-400" />
               <Input
                 placeholder="위치를 입력해주세요"
                 className="max-w-24 border-0 overflow-hidden text-ellipsis whitespace-nowrap md:min-w-72"
