@@ -1,4 +1,5 @@
 import Calendar from '@/public/icons/calendar.svg';
+import FillPin from '@/public/icons/fillpin.svg';
 import People from '@/public/icons/people.svg';
 
 export default function Plan({ club }: { club: string }) {
@@ -66,7 +67,9 @@ export default function Plan({ club }: { club: string }) {
             <Calendar className="w-5 inline mr-3" />
             {timezone[0]}년 {timezone[1]}월 {day}일 {time[0]}:{time[1]}
           </div>
-          <div className="text-zinc-400">📍 {loc}</div>
+          <div className="text-zinc-400">
+            <FillPin className="w-5 h-5 inline mr-2" /> {loc}
+          </div>
           <div className="text-zinc-400">
             <People className="w-6 inline mr-1" /> {participation}/{total}명
           </div>
