@@ -51,7 +51,7 @@ export default function Home() {
   return (
     <>
       <HeadBar />
-      <div className="w-full flex flex-col">
+      <div className="w-full flex flex-col xl:w-5/6 xl:mx-auto">
         <div className="flex justify-center flex-col mx-auto pt-20 pb-12">
           <div className="text-3xl font-bold pb-2 w-fit mx-auto">클럽</div>
           <div className="text-gray-500">
