@@ -77,7 +77,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="m-auto w-full lg:w-4/5">
+      <div className="m-auto w-full pb-20 lg:w-4/5">
         <div className="flex justify-between pt-10 mb-5 w-fit">
           <div ref={peopleRef} className="sortclubchallenge" onClick={sort}>
             {people ? (
