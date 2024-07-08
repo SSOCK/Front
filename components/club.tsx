@@ -1,3 +1,5 @@
+import People from '@/public/icons/people.svg';
+
 interface ClubProps {
   title: string;
   img: string;
@@ -15,7 +17,10 @@ export default function Club({ title, img, loc, participate }: ClubProps) {
         <div className="font-bold text-md">{title}</div>
         <div className="flex">
           <div className="text-sm pr-2">📍{loc}</div>
-          <div className="text-sm">🧑‍🤝‍🧑{participate}명</div>
+          <div className="text-sm">
+            <People className="w-5 inline mr-2" />
+            {participate}명
+          </div>
         </div>
       </div>
     </div>

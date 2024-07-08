@@ -1,4 +1,5 @@
 import Calendar from '@/public/icons/calendar.svg';
+import People from '@/public/icons/people.svg';
 
 export default function Plan({ club }: { club: string }) {
   const data = [
@@ -62,12 +63,12 @@ export default function Plan({ club }: { club: string }) {
             </div>
           </div>
           <div className="text-zinc-400">
-            <Calendar className="w-5 inline mr-2" />
+            <Calendar className="w-5 inline mr-3" />
             {timezone[0]}년 {timezone[1]}월 {day}일 {time[0]}:{time[1]}
           </div>
           <div className="text-zinc-400">📍 {loc}</div>
           <div className="text-zinc-400">
-            👥 {participation}/{total}명
+            <People className="w-6 inline mr-1" /> {participation}/{total}명
           </div>
         </div>
       </div>

@@ -112,7 +112,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="clubchallenge">
+        <div className="clubchallenge pb-20">
           <Challenge
             title={'챌린지명'}
             img={'https://avatars.githubusercontent.com/u/96722691?v=5'}
