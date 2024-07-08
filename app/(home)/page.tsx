@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
 import { Input } from '@components/ui/input';
+import Search from '@/public/icons/search.svg';
 
 export default function Home() {
   const [position, setPosition] = useState<string>('클럽');
@@ -59,7 +60,7 @@ export default function Home() {
             </DropdownMenu>
             <div className="flex grow">
               <div className="border-r flex items-center basis-1/2">
-                <div>🔍</div>
+                <Search className="w-5 fill-slate-400 mr-1" />
                 <Input
                   placeholder="검색어 키워드를 입력해주세요"
                   className="max-w-24 border-0 overflow-hidden text-ellipsis whitespace-nowrap md:min-w-72"
