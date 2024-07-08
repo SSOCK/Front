@@ -1,3 +1,5 @@
+import Calendar from '@/public/icons/calendar.svg';
+
 export default function Plan({ club }: { club: string }) {
   const data = [
     {
@@ -60,7 +62,8 @@ export default function Plan({ club }: { club: string }) {
             </div>
           </div>
           <div className="text-zinc-400">
-            🗓️ {timezone[0]}년 {timezone[1]}월 {day}일 {time[0]}:{time[1]}
+            <Calendar className="w-5 inline mr-2" />
+            {timezone[0]}년 {timezone[1]}월 {day}일 {time[0]}:{time[1]}
           </div>
           <div className="text-zinc-400">📍 {loc}</div>
           <div className="text-zinc-400">
