@@ -22,7 +22,7 @@ export default function Home() {
   return (
     <>
       <HeadBar />
-      <div className="w-full bg-gray-200 flex flex-col">
+      <div className="w-full bg-gray-200 flex flex-col xl:w-5/6 xl:mx-auto">
         <div className="flex justify-center flex-col mx-auto pt-20 pb-16">
           <div className="text-3xl font-bold pb-2 text-primary">
             (예시) 함께 달리는 즐거움!

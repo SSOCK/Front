@@ -49,7 +49,7 @@ export default function Home() {
   return (
     <>
       <HeadBar />
-      <div className="w-full bg-gray-200 flex flex-col">
+      <div className="w-full bg-gray-200 flex flex-col xl:w-5/6 xl:mx-auto">
         <div className="flex justify-center text-lg font-bold pt-10 pb-6">
           이달의 인기 챌린지
         </div>
