@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 import Add from '@/public/icons/add.svg';
@@ -17,6 +17,8 @@ const paths = [
 ];
 
 export default function HeadBar() {
+  const router = useRouter();
+
   const [add, setAdd] = useState(false);
   const [bell, setBell] = useState(false);
   const [alarm, setAlarm] = useState<Array<ReactNode>>([]);
@@ -43,8 +45,6 @@ export default function HeadBar() {
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const moveToMypage = () => (window.location.href = '/mypage');
 
   return (
     <div className="flex justify-between w-full h-16 items-center p-2 z-50 border-b xl:w-5/6 xl:mx-auto xl:p-4">
@@ -109,7 +109,7 @@ export default function HeadBar() {
           className="w-8 h-8 rounded-full border bg-slate-400 cursor-pointer"
           src={img}
           alt=""
-          onClick={moveToMypage}
+          onClick={() => router.push('/mypage')}
         />
       </div>
     </div>
