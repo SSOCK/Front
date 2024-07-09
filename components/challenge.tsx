@@ -1,4 +1,7 @@
+import { useRouter } from 'next/navigation';
+
 interface ChallengeProps {
+  id: number;
   title: string;
   img: string;
   introduce: string;
@@ -7,14 +10,19 @@ interface ChallengeProps {
 }
 
 export default function Challenge({
+  id,
   title,
   img,
   introduce,
   period,
   participate,
 }: ChallengeProps) {
+  const router = useRouter();
   return (
-    <div className="flex flex-col p-3 cursor-pointer h-64">
+    <div
+      className="flex flex-col p-3 cursor-pointer h-64"
+      onClick={() => router.push(`/challenge/${id}`)}
+    >
       <div className="overflow-hidden basis-2/3 rounded-md border-2">
         <img className="" src={img} alt="challengeImg" />
       </div>

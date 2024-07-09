@@ -1,16 +1,22 @@
+import { useRouter } from 'next/navigation';
 import FillPin from '@/public/icons/fillpin.svg';
 import People from '@/public/icons/people.svg';
 
 interface ClubProps {
+  id: number;
   title: string;
   img: string;
   loc: string;
   participate: number;
 }
 
-export default function Club({ title, img, loc, participate }: ClubProps) {
+export default function Club({ id, title, img, loc, participate }: ClubProps) {
+  const router = useRouter();
   return (
-    <div className="flex flex-col p-3 cursor-pointer h-64">
+    <div
+      className="flex flex-col p-3 cursor-pointer h-64"
+      onClick={() => router.push(`/club/${id}`)}
+    >
       <div className="overflow-hidden basis-3/4 rounded-md border-2">
         <img className="" src={img} alt="challengeImg" />
       </div>

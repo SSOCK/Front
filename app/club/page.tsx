@@ -130,48 +130,56 @@ export default function Home() {
 
         <div className="clubchallenge">
           <Club
+            id={123}
             title={'클럽명'}
             img={'https://avatars.githubusercontent.com/u/96722691?v=5'}
             loc={'위치'}
             participate={0}
           />
           <Club
+            id={123}
             title={'클럽명'}
             img={'https://avatars.githubusercontent.com/u/96722691?v=5'}
             loc={'위치'}
             participate={0}
           />
           <Club
+            id={123}
             title={'클럽명'}
             img={'https://avatars.githubusercontent.com/u/96722691?v=5'}
             loc={'위치'}
             participate={0}
           />
           <Club
+            id={123}
             title={'클럽명'}
             img={'https://avatars.githubusercontent.com/u/96722691?v=5'}
             loc={'위치'}
             participate={0}
           />
           <Club
+            id={123}
             title={'클럽명'}
             img={'https://avatars.githubusercontent.com/u/96722691?v=5'}
             loc={'위치'}
             participate={0}
           />
           <Club
+            id={123}
             title={'클럽명'}
             img={'https://avatars.githubusercontent.com/u/96722691?v=5'}
             loc={'위치'}
             participate={0}
           />
           <Club
+            id={123}
             title={'클럽명'}
             img={'https://avatars.githubusercontent.com/u/96722691?v=5'}
             loc={'위치'}
             participate={0}
           />
           <Club
+            id={123}
             title={'클럽명'}
             img={'https://avatars.githubusercontent.com/u/96722691?v=5'}
             loc={'위치'}
