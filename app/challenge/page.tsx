@@ -114,6 +114,7 @@ export default function Home() {
 
         <div className="clubchallenge pb-20">
           <Challenge
+            id={123}
             title={'챌린지명'}
             img={'https://avatars.githubusercontent.com/u/96722691?v=5'}
             introduce={'간단소개'}
@@ -121,6 +122,7 @@ export default function Home() {
             participate={0}
           />
           <Challenge
+            id={123}
             title={'챌린지명'}
             img={'https://avatars.githubusercontent.com/u/96722691?v=5'}
             introduce={'간단소개'}
@@ -128,6 +130,7 @@ export default function Home() {
             participate={0}
           />
           <Challenge
+            id={123}
             title={'챌린지명'}
             img={'https://avatars.githubusercontent.com/u/96722691?v=5'}
             introduce={'간단소개'}
@@ -135,6 +138,7 @@ export default function Home() {
             participate={0}
           />
           <Challenge
+            id={123}
             title={'챌린지명'}
             img={'https://avatars.githubusercontent.com/u/96722691?v=5'}
             introduce={'간단소개'}
@@ -142,6 +146,7 @@ export default function Home() {
             participate={0}
           />
           <Challenge
+            id={123}
             title={'챌린지명'}
             img={'https://avatars.githubusercontent.com/u/96722691?v=5'}
             introduce={'간단소개'}
@@ -149,6 +154,7 @@ export default function Home() {
             participate={0}
           />
           <Challenge
+            id={123}
             title={'챌린지명'}
             img={'https://avatars.githubusercontent.com/u/96722691?v=5'}
             introduce={'간단소개'}
@@ -156,6 +162,7 @@ export default function Home() {
             participate={0}
           />
           <Challenge
+            id={123}
             title={'챌린지명'}
             img={'https://avatars.githubusercontent.com/u/96722691?v=5'}
             introduce={'간단소개'}
@@ -163,6 +170,7 @@ export default function Home() {
             participate={0}
           />
           <Challenge
+            id={123}
             title={'챌린지명'}
             img={'https://avatars.githubusercontent.com/u/96722691?v=5'}
             introduce={'간단소개'}

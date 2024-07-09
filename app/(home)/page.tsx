@@ -84,24 +84,28 @@ export default function Home() {
         <div className="pl-2 text-md font-bold cursor-pointer">인기 클럽</div>
         <div className="clubchallenge">
           <Club
+            id={123}
             title={'클럽명'}
             img={'https://avatars.githubusercontent.com/u/96722691?v=5'}
             loc={'위치'}
             participate={0}
           />
           <Club
+            id={123}
             title={'클럽명'}
             img={'https://avatars.githubusercontent.com/u/96722691?v=5'}
             loc={'위치'}
             participate={0}
           />
           <Club
+            id={123}
             title={'클럽명'}
             img={'https://avatars.githubusercontent.com/u/96722691?v=5'}
             loc={'위치'}
             participate={0}
           />
           <Club
+            id={123}
             title={'클럽명'}
             img={'https://avatars.githubusercontent.com/u/96722691?v=5'}
             loc={'위치'}
@@ -114,6 +118,7 @@ export default function Home() {
         </div>
         <div className="clubchallenge mb-20">
           <Challenge
+            id={123}
             title={'챌린지명'}
             img={'https://avatars.githubusercontent.com/u/96722691?v=5'}
             introduce={'간단소개'}
@@ -121,6 +126,7 @@ export default function Home() {
             participate={0}
           />
           <Challenge
+            id={123}
             title={'챌린지명'}
             img={'https://avatars.githubusercontent.com/u/96722691?v=5'}
             introduce={'간단소개'}
@@ -128,6 +134,7 @@ export default function Home() {
             participate={0}
           />
           <Challenge
+            id={123}
             title={'챌린지명'}
             img={'https://avatars.githubusercontent.com/u/96722691?v=5'}
             introduce={'간단소개'}
@@ -135,6 +142,7 @@ export default function Home() {
             participate={0}
           />
           <Challenge
+            id={123}
             title={'챌린지명'}
             img={'https://avatars.githubusercontent.com/u/96722691?v=5'}
             introduce={'간단소개'}
