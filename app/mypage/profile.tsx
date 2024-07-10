@@ -78,7 +78,7 @@ export default function Profile() {
   const profileSubmit = async (data: z.infer<typeof ProfileSchema>) => {
     try {
       // api 소통
-      // data.name, phone, data.email, birth, gender
+      // img, data.name, phone, data.email, birth, gender
     } catch (error) {
       setWarning(true);
     }
@@ -193,7 +193,7 @@ export default function Profile() {
             <div />
           </div>
 
-          <Button type="submit" className="w-full mt-20 rounded-full">
+          <Button type="submit" className="w-full mt-10 rounded-full sm:mt-20">
             수정하기
           </Button>
           {warning ? (

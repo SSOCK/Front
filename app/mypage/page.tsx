@@ -140,7 +140,7 @@ export default function Home() {
         </div>
         <div className="p-2 sm:hidden">
           <div className="font-bold pb-2">마이페이지</div>
-          <div className="flex justify-between" onClick={change}>
+          <div className="flex justify-between pb-2 border-b" onClick={change}>
             <Menu
               base="cursor-pointer hover:text-primary"
               click=" text-primary"
