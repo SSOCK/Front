@@ -31,6 +31,8 @@ export default function Profile() {
   const [birth, setBirth] = useState<string>('');
   const [gender, setGender] = useState<string>('');
   const [imgErrorMsg, setImgErrorMsg] = useState<string>('');
+  const [phoneErrorMsg, setPhoneErrorMsg] = useState<string>('');
+  const [birthErrorMsg, setBirthErrorMsg] = useState<string>('');
   const [warning, setWarning] = useState(false);
   const imgRef = useRef(null);
 
@@ -76,6 +78,20 @@ export default function Profile() {
   };
 
   const profileSubmit = async (data: z.infer<typeof ProfileSchema>) => {
+    const phoneReg = /^\d{2,3}-\d{3,4}-\d{4}$/;
+    if (!phoneReg.test(phone)) {
+      setPhoneErrorMsg('휴대전화가 형식에 맞지 않습니다.');
+      return;
+    }
+
+    const dateReg = /^\d{4}.\d{2}.\d{2}$/;
+    const birthReg =
+      /^(19[0-9][0-9]|20\d{2}).(0[0-9]|1[0-2]).(0[1-9]|[1-2][0-9]|3[0-1])$/;
+    if (!dateReg.test(birth) || !birthReg.test(birth)) {
+      setBirthErrorMsg('생년월일이 형식에 맞지 않습니다.');
+      return;
+    }
+
     try {
       // api 소통
       // img, data.name, phone, data.email, birth, gender
@@ -84,7 +100,12 @@ export default function Profile() {
     }
   };
 
-  const reset = () => setImgErrorMsg('');
+  const reset = () => {
+    setImgErrorMsg('');
+    setPhoneErrorMsg('');
+    setBirthErrorMsg('');
+    setWarning(false);
+  };
 
   return (
     <div className="max-w-xl mx-auto">
@@ -146,7 +167,12 @@ export default function Profile() {
             className="mt-2"
             type="text"
             defaultValue={phone !== '' ? phone : '010-0000-0000'}
+            onChange={(event) => setPhone(event.target.value)}
           />
+          {phoneErrorMsg !== '' ? (
+            <div className="text-red-500 text-sm pt-2">{phoneErrorMsg}</div>
+          ) : null}
+
           <FormField
             control={ProfileForm.control}
             name="email"
@@ -163,12 +189,16 @@ export default function Profile() {
 
           <FormLabel className="text-gray-400">생년월일</FormLabel>
           <Input
-            className="mt-2 mb-5"
+            className="mt-2"
             type="text"
             defaultValue={birth !== '' ? birth : '2000.01.10'}
+            onChange={(event) => setBirth(event.target.value)}
           />
+          {birthErrorMsg !== '' ? (
+            <div className="text-red-500 text-sm pt-2">{birthErrorMsg}</div>
+          ) : null}
 
-          <FormLabel className="text-gray-400">성별</FormLabel>
+          <FormLabel className="text-gray-400 pt-5 block">성별</FormLabel>
           <div className="w-full flex justify-between pt-2">
             <div className="flex items-center">
               <input
