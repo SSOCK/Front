@@ -180,7 +180,7 @@ export default function Home() {
       <div className="pb-20 w-full xl:w-5/6 xl:mx-auto">
         <div className="bg-gray-200 w-full h-52 relative">
           <img
-            className="absolute w-24 rounded-md top-40 right-1/2 translate-x-1/2"
+            className="absolute w-24 h-24 rounded-md top-40 right-1/2 translate-x-1/2"
             src={data.img}
             alt="img"
           />

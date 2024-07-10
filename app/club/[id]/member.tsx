@@ -42,7 +42,7 @@ export default function Member({ club }: { club: string }) {
     return (
       <div className={'border-b w-full flex items-center gap-2 ' + className}>
         <img
-          className="w-10 ml-2 my-2 rounded-full border"
+          className="w-10 h-10 ml-2 my-2 rounded-full border"
           src={img}
           alt="profile"
         />

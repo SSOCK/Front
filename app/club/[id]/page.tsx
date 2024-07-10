@@ -44,7 +44,7 @@ export default function Home() {
         <div className="w-full xl:w-5/6">
           <div className="h-64 relative bg-border">
             <img
-              className="w-28 absolute top-48 ml-5 border rounded-sm"
+              className="w-28 h-28 absolute top-48 ml-5 border rounded-sm"
               src={img}
               alt="clubImg"
             />
