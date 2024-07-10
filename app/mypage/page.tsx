@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef, MouseEvent } from 'react';
 import { HeadBar } from '@components';
+import Profile from './profile';
 
 export default function Home() {
   const [profile, setProfile] = useState(false);
@@ -125,9 +126,9 @@ export default function Home() {
   return (
     <>
       <HeadBar />
-      <div className="w-full sm:flex xl:w-5/6 xl:mx-auto">
+      <div className="w-full max-w-7xl pb-20 sm:flex xl:w-5/6 xl:mx-auto">
         <div
-          className="hidden py-5 px-3 sm:basis-1/6 sm:block"
+          className="hidden pt-10 pb-5 px-3 sm:basis-1/6 sm:block"
           onClick={change}
         >
           <div className="font-bold pb-2">마이페이지</div>
@@ -148,7 +149,9 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="border p-5 sm:basis-5/6">프로필</div>
+        <div className="p-5 sm:basis-5/6 sm:pt-10 lg:ml-5">
+          {profile ? <Profile /> : null}
+        </div>
       </div>
     </>
   );
