@@ -148,7 +148,7 @@ export default function Home() {
           <div className="basis-2/3 relative h-4 rounded-full bg-gray-100">
             <div
               className={
-                'absolute h-4 rounded-full' +
+                'absolute h-4 rounded-full animate-fill' +
                 (progress <= 35
                   ? ' w-1/5 bg-blue-300'
                   : progress <= 70
@@ -202,7 +202,7 @@ export default function Home() {
                     <div className="relative rounded-full bg-gray-100 w-full h-5">
                       <div
                         ref={ddayRef}
-                        className="absolute rounded-full h-5"
+                        className="absolute rounded-full h-5 animate-fill"
                       />
                     </div>
                   </div>
