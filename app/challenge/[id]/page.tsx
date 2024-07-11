@@ -67,12 +67,21 @@ export default function Home() {
   useEffect(() => {
     if (ddayRef.current) {
       const dday = calculateDday(data.endDate);
-      if (dday >= 8) {
-        ddayRef.current.className += ' w-1/5';
+      if (dday >= 30) {
+        ddayRef.current.className += ' w-1/6';
+        ddayRef.current.className += ' bg-blue-200';
+      } else if (dday >= 24) {
+        ddayRef.current.className += ' w-2/6';
         ddayRef.current.className += ' bg-blue-300';
-      } else if (dday >= 4) {
-        ddayRef.current.className += ' w-3/5';
+      } else if (dday >= 12) {
+        ddayRef.current.className += ' w-3/6';
+        ddayRef.current.className += ' bg-blue-400';
+      } else if (dday >= 6) {
+        ddayRef.current.className += ' w-4/6';
         ddayRef.current.className += ' bg-blue-500';
+      } else if (dday > 0) {
+        ddayRef.current.className += ' w-5/6';
+        ddayRef.current.className += ' bg-blue-600';
       } else {
         ddayRef.current.className += ' w-full';
         ddayRef.current.className += ' bg-blue-700';
@@ -149,11 +158,19 @@ export default function Home() {
             <div
               className={
                 'absolute h-4 rounded-full animate-fill' +
-                (progress <= 35
-                  ? ' w-1/5 bg-blue-300'
-                  : progress <= 70
-                    ? ' w-3/5 bg-blue-500'
-                    : ' w-full bg-blue-700')
+                (progress > 0
+                  ? progress <= 20
+                    ? ' w-1/6 bg-blue-200'
+                    : progress <= 40
+                      ? ' w-2/6 bg-blue-300'
+                      : progress <= 60
+                        ? ' w-3/6 bg-blue-400'
+                        : progress <= 80
+                          ? '  w-4/6 bg-blue-500'
+                          : progress < 100
+                            ? '  w-5/6 bg-blue-600'
+                            : ' w-full bg-blue-700'
+                  : '')
               }
             />
           </div>
