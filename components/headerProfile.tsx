@@ -42,29 +42,18 @@ export default function HeaderProfile() {
     }
     aa();
   }, []);
-  // console.log(res);
-  // setAlarm(
-  //
-  // );
 
   return (
     <>
       {profileData ? (
         <div className="flex gap-3 sm:gap-5 sm:pr-4">
           <div className="relative w-6 flex items-center">
-            <Add
-              className="w-full fill-primary cursor-pointer relative"
-              onClick={() => {
-                setBell(false);
-                bellRef.current!.style.display = 'none';
-                setAdd(!add);
-                addRef.current!.style.display = add ? 'none' : 'block';
-              }}
-            />
-            <div
-              ref={addRef}
-              className="hidden w-40 absolute top-9 right-0 border"
-            >
+            <input id="add" type="checkbox" className="hidden peer"></input>
+            <label htmlFor="add">
+              <Add className="w-6 fill-primary cursor-pointer relative peer" />
+            </label>
+
+            <div className="hidden w-40 absolute top-9 right-0 border peer-checked:block">
               <div className={elemClass}>활동 기록</div>
               <div className={elemClass}>코스 등록</div>
               <div className={elemClass}>게시글 작성</div>
@@ -72,19 +61,12 @@ export default function HeaderProfile() {
           </div>
 
           <div className="relative w-5 flex items-center">
-            <Bell
-              className="w-full cursor-pointer hover:fill-primary"
-              onClick={() => {
-                setAdd(false);
-                addRef.current!.style.display = 'none';
-                setBell(!bell);
-                bellRef.current!.style.display = bell ? 'none' : 'block';
-              }}
-            />
-            <div
-              ref={bellRef}
-              className="hidden w-56 absolute top-9 right-0 border"
-            >
+            <input id="bell" type="checkbox" className="hidden peer"></input>
+            <label htmlFor="bell">
+              <Bell className="w-full cursor-pointer hover:fill-primary" />
+            </label>
+
+            <div className="hidden w-56 absolute top-9 right-0 border peer-checked:block">
               {alarmData.map((item, index) => (
                 <div key={index} className={elemClass}>
                   {item}
