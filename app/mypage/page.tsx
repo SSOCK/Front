@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef, MouseEvent } from 'react';
 import { HeadBar } from '@components';
+import Club from './club';
 import Profile from './profile';
 
 export default function Home() {
@@ -45,7 +46,7 @@ export default function Home() {
     border: boolean;
   }) => {
     return (
-      <>
+      <div className={border ? 'flex justify-between' : 'border-b'}>
         <div
           ref={profileRef}
           id="item"
@@ -89,7 +90,7 @@ export default function Home() {
         >
           설정
         </div>
-      </>
+      </div>
     );
   };
 
@@ -133,14 +134,14 @@ export default function Home() {
         >
           <div className="font-bold pb-2">마이페이지</div>
           <Menu
-            base="cursor-pointer border p-2 hover:bg-primary hover:text-white"
+            base="cursor-pointer border border-b-0 p-2 hover:bg-primary hover:text-white"
             click=" bg-primary border-primary text-white"
             border={false}
           />
         </div>
         <div className="p-2 sm:hidden">
           <div className="font-bold pb-2">마이페이지</div>
-          <div className="flex justify-between pb-2 border-b" onClick={change}>
+          <div className="pb-2 border-b" onClick={change}>
             <Menu
               base="cursor-pointer hover:text-primary"
               click=" text-primary"
@@ -151,6 +152,7 @@ export default function Home() {
 
         <div className="p-5 sm:basis-5/6 sm:pt-10 lg:ml-5">
           {profile ? <Profile /> : null}
+          {club ? <Club /> : null}
         </div>
       </div>
     </>
