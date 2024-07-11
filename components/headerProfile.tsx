@@ -47,33 +47,38 @@ export default function HeaderProfile() {
     <>
       {profileData ? (
         <div className="flex gap-3 sm:gap-5 sm:pr-4">
-          <div className="relative w-6 flex items-center">
-            <input id="add" type="checkbox" className="hidden peer"></input>
-            <label htmlFor="add">
+          <details
+            className="relative content-center"
+            onBlur={(e) => {
+              e.currentTarget.open = false;
+            }}
+          >
+            <summary className="text-[0]">
               <Add className="w-6 fill-primary cursor-pointer relative peer" />
-            </label>
-
-            <div className="hidden w-40 absolute top-9 right-0 border peer-checked:block">
+            </summary>
+            <div className=" w-40 absolute top-9 right-0 border ">
               <div className={elemClass}>활동 기록</div>
               <div className={elemClass}>코스 등록</div>
               <div className={elemClass}>게시글 작성</div>
             </div>
-          </div>
-
-          <div className="relative w-5 flex items-center">
-            <input id="bell" type="checkbox" className="hidden peer"></input>
-            <label htmlFor="bell">
-              <Bell className="w-full cursor-pointer hover:fill-primary" />
-            </label>
-
-            <div className="hidden w-56 absolute top-9 right-0 border peer-checked:block">
+          </details>
+          <details
+            className="relative content-center"
+            onBlur={(e) => {
+              e.currentTarget.open = false;
+            }}
+          >
+            <summary className="text-[0]">
+              <Bell className="w-6 cursor-pointer hover:fill-primary" />
+            </summary>
+            <div className="w-56 absolute top-9 right-0 border peer-checked:block">
               {alarmData.map((item, index) => (
                 <div key={index} className={elemClass}>
                   {item}
                 </div>
               ))}
             </div>
-          </div>
+          </details>
 
           <Link href={'/mypage'}>
             <img
