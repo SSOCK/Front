@@ -66,8 +66,6 @@ export default function Club() {
     total: number;
   }) => {
     const [open, setOpen] = useState(false);
-
-    const moveClub = () => router.push(`/club/${id}`);
     const outClub = () => {
       setOpen(false);
       // 탈퇴
@@ -77,7 +75,7 @@ export default function Club() {
       <div className="h-20 py-3 border-b flex">
         <div
           className="h-full basis-2/5 flex items-center cursor-pointer sm:basis-1/2"
-          onClick={moveClub}
+          onClick={() => router.push(`/club/${id}`)}
         >
           <img
             className="h-full aspect-square border rounded-md"
