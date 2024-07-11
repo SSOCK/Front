@@ -120,11 +120,19 @@ export default function Challenge() {
             <div
               className={
                 'absolute h-4 rounded-full animate-fill' +
-                (progress <= 35
-                  ? ' w-1/5 bg-blue-300'
-                  : progress <= 70
-                    ? ' w-3/5 bg-blue-500'
-                    : ' w-full bg-blue-700')
+                (progress > 0
+                  ? progress <= 20
+                    ? ' w-1/6 bg-blue-200'
+                    : progress <= 40
+                      ? ' w-2/6 bg-blue-300'
+                      : progress <= 60
+                        ? ' w-3/6 bg-blue-400'
+                        : progress <= 80
+                          ? ' w-4/6 bg-blue-500'
+                          : progress < 100
+                            ? ' w-5/6 bg-blue-600'
+                            : ' w-full bg-blue-700'
+                  : '')
               }
             />
           </div>
