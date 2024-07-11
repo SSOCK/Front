@@ -60,7 +60,6 @@ export default function SignInPage() {
       });
 
       if (res.status !== 200) throw res.status;
-
       const response: { 'access-token': string; 'refresh-token': string } =
         await res.json();
       console.log('signin Done', response);
