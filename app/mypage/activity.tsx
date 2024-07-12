@@ -68,9 +68,8 @@ export default function Activity() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [day]);
 
-  const days: Array<number> = [];
-  data.forEach(({ date }) =>
-    days.push(Number(date.split('-')[2].substring(0, 2)))
+  const days: Array<number> = data.map(({ date }) =>
+    Number(date.split('-')[2].substring(0, 2))
   );
 
   return (
