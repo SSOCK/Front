@@ -4,6 +4,7 @@ import { useEffect, useState, useRef, MouseEvent } from 'react';
 import { HeadBar } from '@components';
 import Challenge from './challenge';
 import Club from './club';
+import Course from './course';
 import Profile from './profile';
 
 export default function Home() {
@@ -153,6 +154,7 @@ export default function Home() {
 
         <div className="p-5 sm:basis-5/6 sm:pt-10 lg:ml-5">
           {profile ? <Profile /> : null}
+          {course ? <Course /> : null}
           {club ? <Club /> : null}
           {challenge ? <Challenge /> : null}
         </div>
