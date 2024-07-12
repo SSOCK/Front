@@ -18,7 +18,7 @@ export default function Calendar({
   setMonth,
   day,
   setDay,
-  data,
+  days,
 }: {
   year: number;
   setYear: Dispatch<SetStateAction<number>>;
@@ -26,15 +26,11 @@ export default function Calendar({
   setMonth: Dispatch<SetStateAction<number>>;
   day: number;
   setDay: Dispatch<SetStateAction<number>>;
-  data: Array<DataProps>;
+  days: Array<number>;
 }) {
   const nowYear = new Date().getFullYear();
   const nowMonth = new Date().getMonth() + 1;
   const nowDay = new Date().getDate();
-  const days: Array<number> = [];
-  data.forEach(({ date }) =>
-    days.push(Number(date.split('-')[2].substring(0, 2)))
-  );
 
   const makeCalendar = (year: number, month: number) => {
     const weeks = 6;
