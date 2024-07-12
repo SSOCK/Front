@@ -3,14 +3,6 @@
 import { useState, Dispatch, SetStateAction } from 'react';
 import Right from '@/public/icons/right.svg';
 
-interface DataProps {
-  date: string;
-  title: string;
-  distance: number;
-  time: string;
-  altitude: number;
-}
-
 export default function Calendar({
   year,
   setYear,
