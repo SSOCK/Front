@@ -19,6 +19,7 @@ export async function fetchWithRetry(url: string, options: RequestInit) {
   try {
     options.headers = { ...options.headers, Authorization: getAccessToken() };
     const response = await fetch(url, options);
+    console.log(response);
     if (response.status !== 401) return response;
 
     await refreshAccessToken();
@@ -26,7 +27,7 @@ export async function fetchWithRetry(url: string, options: RequestInit) {
     const response2 = await fetch(url, options);
     return response2;
   } catch (error) {
-    logout();
+    // logout(href);
   }
 }
 

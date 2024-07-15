@@ -3,6 +3,9 @@ import Add from '@/public/icons/add.svg';
 import Bell from '@/public/icons/bell.svg';
 import Link from 'next/link';
 import { fetchWithRetry } from '@utils/fetch';
+import { hasCookie } from 'cookies-next';
+import { url } from 'inspector';
+import path from 'path';
 
 interface ProfileData {
   id: number;
@@ -31,6 +34,10 @@ export default function HeaderProfile() {
 
   useEffect(() => {
     async function aa() {
+      // refresh토큰 있는지 검사해서 없으면
+      // console.log(hasCookie('refresh-token'));
+      // console.log(hasCookie('refresh-token', { path: '/api/auth/refresh' }));
+      // console.log(hasCookie('test', { path: '/test' }));
       const res = await fetchWithRetry('/api/member/profile/test', {
         method: 'get',
       });
