@@ -15,7 +15,11 @@ export async function refreshAccessToken() {
   return;
 }
 
-export async function fetchWithRetry(url: string, options: RequestInit) {
+export async function fetchWithRetry(
+  url: string,
+  options: RequestInit,
+  href?: string
+) {
   try {
     options.headers = { ...options.headers, Authorization: getAccessToken() };
     const response = await fetch(url, options);
@@ -27,7 +31,7 @@ export async function fetchWithRetry(url: string, options: RequestInit) {
     const response2 = await fetch(url, options);
     return response2;
   } catch (error) {
-    // logout(href);
+    logout(href);
   }
 }
 
