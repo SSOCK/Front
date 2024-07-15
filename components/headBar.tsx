@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { Button } from './ui/button';
 import HeaderProfile from './headerProfile';
+import { Button } from './ui/button';
 
 const paths = [
   { path: '', category: '홈' },
