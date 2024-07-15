@@ -3,9 +3,6 @@ import Add from '@/public/icons/add.svg';
 import Bell from '@/public/icons/bell.svg';
 import Link from 'next/link';
 import { fetchWithRetry, refreshAccessToken } from '@utils/fetch';
-import { hasCookie } from 'cookies-next';
-import { url } from 'inspector';
-import path from 'path';
 import { getAccessTokenPayload } from '@utils/token';
 
 interface ProfileData {
@@ -17,12 +14,9 @@ interface ProfileData {
 }
 
 export default function HeaderProfile() {
-  const [add, setAdd] = useState(false);
-  const [bell, setBell] = useState(false);
+  const [opendMenu, setOpenMenu] = useState<Number>(0);
   const [alarm, setAlarm] = useState<string[]>([]);
   const [profileData, setProfileData] = useState<ProfileData>();
-  const addRef = useRef<HTMLDivElement>(null);
-  const bellRef = useRef<HTMLDivElement>(null);
 
   const img = 'https://avatars.githubusercontent.com/u/96722691?v=5';
   const elemClass = 'p-2 bg-white cursor-pointer hover:bg-border';
@@ -36,7 +30,7 @@ export default function HeaderProfile() {
   useEffect(() => {
     async function aa() {
       try {
-        const refreshRes = await refreshAccessToken();
+        await refreshAccessToken();
         //토큰 발급 성공 (로그인 되어있거나, refreshtoken이 유효할때) 이제 access-token의 payload를 읽을 수 있음
         const payload = getAccessTokenPayload();
         const username = payload.username;
@@ -62,38 +56,33 @@ export default function HeaderProfile() {
     <>
       {profileData ? (
         <div className="flex gap-3 sm:gap-5 sm:pr-4">
-          <details
-            className="relative content-center"
-            onBlur={(e) => {
-              e.currentTarget.open = false;
-            }}
-          >
-            <summary className="text-[0]">
+          <div className="relative content-center">
+            <div onClick={() => setOpenMenu(opendMenu === 1 ? 0 : 1)}>
               <Add className="w-6 fill-primary cursor-pointer relative peer" />
-            </summary>
-            <div className=" w-40 absolute top-9 right-0 border ">
-              <div className={elemClass}>활동 기록</div>
-              <div className={elemClass}>코스 등록</div>
-              <div className={elemClass}>게시글 작성</div>
             </div>
-          </details>
-          <details
-            className="relative content-center"
-            onBlur={(e) => {
-              e.currentTarget.open = false;
-            }}
-          >
-            <summary className="text-[0]">
+            {opendMenu === 1 && (
+              <div className=" w-40 absolute top-9 right-0 border ">
+                <div className={elemClass}>활동 기록</div>
+                <div className={elemClass}>코스 등록</div>
+                <div className={elemClass}>게시글 작성</div>
+              </div>
+            )}
+          </div>
+          <div className="relative content-center">
+            <div onClick={() => setOpenMenu(opendMenu === 2 ? 0 : 2)}>
               <Bell className="w-6 cursor-pointer hover:fill-primary" />
-            </summary>
-            <div className="w-56 absolute top-9 right-0 border peer-checked:block">
-              {alarmData.map((item, index) => (
-                <div key={index} className={elemClass}>
-                  {item}
-                </div>
-              ))}
             </div>
-          </details>
+
+            {opendMenu === 2 && (
+              <div className="w-56 absolute top-9 right-0 border peer-checked:block">
+                {alarm.map((item, index) => (
+                  <div key={index} className={elemClass}>
+                    {item}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
 
           <Link href={'/mypage'}>
             <img
@@ -105,7 +94,7 @@ export default function HeaderProfile() {
         </div>
       ) : (
         <Link href={'/signin'}>
-          <h1>로그인 먼저 하세요</h1>
+          <h1>로그인 하세요</h1>
         </Link>
       )}
     </>
