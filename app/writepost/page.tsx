@@ -10,7 +10,6 @@ import { Button } from '@components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -36,6 +35,7 @@ export default function WritePost() {
   const [image, setImage] = useState<Array<File>>([]);
   const [preview, setPreview] = useState<Array<Preview>>([]);
   const [errorMsg, setErrorMsg] = useState<string>('');
+  const [posting, setPosting] = useState<boolean>(false);
 
   const contentRef = useRef<HTMLTextAreaElement>(null);
 
@@ -96,14 +96,17 @@ export default function WritePost() {
     };
 
     try {
+      setPosting(true);
       const res = await fetchWithRetry(url, options);
       if (res!.status !== 201) throw res!.status;
       WritePostForm.reset();
       setErrorMsg('');
       setImage([]);
       setPreview([]);
+      setPosting(false);
       window.location.href = '/feed';
     } catch (error) {
+      setPosting(false);
       setErrorMsg('전송을 다시 시도해주십시오.');
     }
   };
@@ -111,7 +114,11 @@ export default function WritePost() {
   return (
     <>
       <HeadBar />
-
+      {posting && (
+        <div className="fixed bg-slate-500 bg-opacity-20 z-50 size-full top-0 left-0 flex items-center justify-center">
+          waiting...
+        </div>
+      )}
       <div className="mainPart bg-gray-100 flex flex-col items-center justify-between">
         <div className="flex flex-col p-5 w-full h-full max-w-5xl">
           <Form {...WritePostForm}>
