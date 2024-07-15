@@ -71,7 +71,9 @@ export default function HeaderProfile() {
               <div className=" w-40 absolute top-9 right-0 border ">
                 <div className={elemClass}>활동 기록</div>
                 <div className={elemClass}>코스 등록</div>
-                <div className={elemClass}>게시글 작성</div>
+                <Link href={'/writepost'}>
+                  <div className={elemClass}>게시글 작성</div>
+                </Link>
               </div>
             )}
           </div>
