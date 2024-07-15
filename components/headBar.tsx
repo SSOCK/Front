@@ -15,22 +15,26 @@ const paths = [
 export default function HeadBar() {
   const nowPath = usePathname().split('/')[1];
   return (
-    <div className="flex justify-between w-full h-16 items-center p-2 z-50 border-b xl:w-5/6 xl:mx-auto xl:p-4">
+    <div className="flex justify-between w-full h-16 items-center p-2 z-50 border-b xl:p-4">
       <div>
-        <Button variant="link" className="text-xl font-bold hidden sm:inline">
-          RunningMate
-        </Button>
-        {paths.map(({ path, category }) => (
-          <Button
-            key={category}
-            variant="link"
-            className={cn([
-              'font-bold p-2 sm:p-4',
-              nowPath !== path && 'text-black',
-            ])}
-          >
-            <Link href={`/${path}`}>{category}</Link>
+        <Link href={'/'}>
+          <Button variant="link" className="text-xl font-bold hidden sm:inline">
+            RunningMate
           </Button>
+        </Link>
+        {paths.map(({ path, category }) => (
+          <Link href={`/${path}`}>
+            <Button
+              key={category}
+              variant="link"
+              className={cn([
+                'font-bold p-2 sm:p-4',
+                nowPath !== path && 'text-black',
+              ])}
+            >
+              {category}
+            </Button>
+          </Link>
         ))}
       </div>
       <HeaderProfile />

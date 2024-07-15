@@ -34,15 +34,13 @@ export default function HeaderProfile() {
 
   useEffect(() => {
     async function aa() {
-      // refresh토큰 있는지 검사해서 없으면
-      // console.log(hasCookie('refresh-token'));
-      // console.log(hasCookie('refresh-token', { path: '/api/auth/refresh' }));
-      // console.log(hasCookie('test', { path: '/test' }));
       const res = await fetchWithRetry('/api/member/profile/test', {
         method: 'get',
       });
+      if (!res?.ok) {
+        return;
+      }
       const data = (await res?.json()) as ProfileData;
-      console.log(data);
       //여기서 알람받아오는 api
       setProfileData(data);
       setAlarm(alarmData);
