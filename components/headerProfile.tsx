@@ -1,9 +1,9 @@
-import { useState, useRef, useEffect } from 'react';
-import Add from '@/public/icons/add.svg';
-import Bell from '@/public/icons/bell.svg';
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 import { fetchWithRetry, refreshAccessToken } from '@utils/fetch';
 import { getAccessTokenPayload } from '@utils/token';
+import Add from '@/public/icons/add.svg';
+import Bell from '@/public/icons/bell.svg';
 
 interface ProfileData {
   id: number;
@@ -50,6 +50,7 @@ export default function HeaderProfile() {
       }
     }
     aa();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
