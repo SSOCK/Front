@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -101,6 +102,7 @@ export default function WritePost() {
       setErrorMsg('');
       setImage([]);
       setPreview([]);
+      window.location.href = '/feed';
     } catch (error) {
       setErrorMsg('전송을 다시 시도해주십시오.');
     }
@@ -110,30 +112,31 @@ export default function WritePost() {
     <>
       <HeadBar />
 
-      <div className="mainPart p-5 flex flex-col items-center justify-between">
-        <div className="flex flex-col bg-slate-300 p-5 rounded-md shadow-xl w-full h-full overflow-y-scroll">
+      <div className="mainPart bg-gray-100 flex flex-col items-center justify-between">
+        <div className="flex flex-col p-5 w-full h-full max-w-5xl">
           <Form {...WritePostForm}>
             <form
               onSubmit={WritePostForm.handleSubmit(writePostSubmit)}
-              className="w-full"
+              className="w-full gap-10 flex flex-col"
             >
+              <h1 className=" font-bold text-xl">게시글 작성</h1>
               <FormField
                 control={WritePostForm.control}
                 name="title"
                 render={({ field: { value, onChange } }) => (
                   <FormItem>
-                    <FormLabel>Title</FormLabel>
+                    <FormLabel>제목</FormLabel>
                     <div className="flex gap-1">
                       <FormControl>
                         <Input
-                          placeholder="Title"
+                          placeholder="제목을 입력해주세요"
                           type="text"
                           value={value}
                           onChange={onChange}
+                          className="rounded-sm border"
                         />
                       </FormControl>
                     </div>
-                    <FormDescription>제목을 입력해주세요</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -145,58 +148,78 @@ export default function WritePost() {
                   name="content"
                   render={({ field: { value, onChange } }) => (
                     <FormItem>
-                      <FormLabel>Content</FormLabel>
+                      <FormLabel className="inline">
+                        내용 <p className="text-primary inline">*</p>
+                      </FormLabel>
                       <div className="flex gap-1">
                         <FormControl>
                           <textarea
                             ref={contentRef}
-                            placeholder="Content"
+                            placeholder="내용을 입력해주세요(필수)"
                             value={value}
                             onChange={(event) => {
                               onChange(event);
                               setErrorMsg('');
-                              handleTextareaHeight(contentRef);
+                              // handleTextareaHeight(contentRef);
                             }}
-                            className="textarea"
+                            className="textarea border rounded-sm resize-none h-32 overflow-y-scroll"
                           />
                         </FormControl>
                       </div>
-                      <FormDescription>내용을 입력해주세요.</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
 
-              <FormLabel>Image</FormLabel>
-              <Input
-                type="file"
-                accept="image/png, image/jpeg, image/gif"
-                multiple
-                onChange={(event) => {
-                  setErrorMsg('');
-                  updateImage(event.target.files);
-                }}
-              />
-              {preview.length > 0 ? (
-                <div className="justify-center">
-                  {preview.map((item, index) => (
-                    <img
-                      key={index}
-                      src={item.src}
-                      alt={item.alt}
-                      className="pb-4"
-                    />
-                  ))}
-                </div>
-              ) : null}
-
+              <div className="flex flex-col gap-3">
+                <FormLabel>사진 첨부</FormLabel>
+                <Input
+                  type="file"
+                  accept="image/png, image/jpeg, image/gif"
+                  id="feed-img"
+                  multiple
+                  onChange={(event) => {
+                    setErrorMsg('');
+                    updateImage(event.target.files);
+                  }}
+                  className="hidden"
+                />
+                <label
+                  htmlFor="feed-img"
+                  className="bg-gray-100 border-dashed rounded-sm cursor-pointer h-32 border border-gray-400 flex justify-center items-center font-semibold underline text-gray-500"
+                >
+                  파일 선택
+                </label>
+                {preview.length > 0 ? (
+                  <div className="justify-center">
+                    {preview.map((item, index) => (
+                      <img
+                        key={index}
+                        src={item.src}
+                        alt={item.alt}
+                        className="pb-4"
+                      />
+                    ))}
+                  </div>
+                ) : null}
+                <h5 className="text-sm text-gray-400">
+                  첨부 파일은 최대5개, 500MB까지 등록 가능합니다.
+                </h5>
+              </div>
               {errorMsg ? (
                 <div className="text-red-500 pb-4">{errorMsg}</div>
               ) : null}
-              <Button type="submit" className="h-12 w-full pt-auto">
-                Submit
-              </Button>
+              <div className="grid grid-cols-2 gap-10 ">
+                <Link href="/feed" className="w-full">
+                  <Button className="bg-white text-gray-700 w-full rounded-[2px] border">
+                    취소
+                  </Button>
+                </Link>
+                <Button type="submit" className="rounded-[2px]">
+                  등록
+                </Button>
+              </div>
             </form>
           </Form>
         </div>
