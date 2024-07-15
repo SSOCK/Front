@@ -23,9 +23,8 @@ export default function HeadBar() {
           </Button>
         </Link>
         {paths.map(({ path, category }) => (
-          <Link href={`/${path}`}>
+          <Link href={`/${path}`} key={category}>
             <Button
-              key={category}
               variant="link"
               className={cn([
                 'font-bold p-2 sm:p-4',
