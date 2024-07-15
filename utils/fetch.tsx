@@ -23,7 +23,6 @@ export async function fetchWithRetry(
   try {
     options.headers = { ...options.headers, Authorization: getAccessToken() };
     const response = await fetch(url, options);
-    console.log(response);
     if (response.status !== 401) return response;
 
     await refreshAccessToken();

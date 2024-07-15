@@ -2,10 +2,11 @@ import { useState, useRef, useEffect } from 'react';
 import Add from '@/public/icons/add.svg';
 import Bell from '@/public/icons/bell.svg';
 import Link from 'next/link';
-import { fetchWithRetry } from '@utils/fetch';
+import { fetchWithRetry, refreshAccessToken } from '@utils/fetch';
 import { hasCookie } from 'cookies-next';
 import { url } from 'inspector';
 import path from 'path';
+import { getAccessTokenPayload } from '@utils/token';
 
 interface ProfileData {
   id: number;
@@ -34,16 +35,25 @@ export default function HeaderProfile() {
 
   useEffect(() => {
     async function aa() {
-      const res = await fetchWithRetry('/api/member/profile/test', {
-        method: 'get',
-      });
-      if (!res?.ok) {
-        return;
+      try {
+        const refreshRes = await refreshAccessToken();
+        //토큰 발급 성공 (로그인 되어있거나, refreshtoken이 유효할때) 이제 access-token의 payload를 읽을 수 있음
+        const payload = getAccessTokenPayload();
+        const username = payload.username;
+
+        const res = await fetchWithRetry(`/api/member/profile/${username}`, {
+          method: 'get',
+        });
+        if (!res?.ok) {
+          return;
+        }
+        const data = (await res?.json()) as ProfileData;
+        //여기서 알람받아오는 api
+        setProfileData(data);
+        setAlarm(alarmData);
+      } catch (error) {
+        console.error(error);
       }
-      const data = (await res?.json()) as ProfileData;
-      //여기서 알람받아오는 api
-      setProfileData(data);
-      setAlarm(alarmData);
     }
     aa();
   }, []);
