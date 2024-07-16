@@ -6,6 +6,7 @@ import Activity from './activity';
 import Challenge from './challenge';
 import Club from './club';
 import Course from './course';
+import Feed from './feed';
 import Profile from './profile';
 
 export default function Home() {
@@ -159,6 +160,7 @@ export default function Home() {
           {course ? <Course /> : null}
           {club ? <Club /> : null}
           {challenge ? <Challenge /> : null}
+          {feed ? <Feed /> : null}
         </div>
       </div>
     </>

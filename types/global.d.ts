@@ -15,6 +15,7 @@ declare global {
     id: number;
     name: string;
     username: string;
+    profilePicture: string;
   };
   type Comment = {
     id: number;
