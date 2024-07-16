@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { fetchWithRetry, refreshAccessToken } from '@utils/fetch';
+import logout from '@utils/logout';
 import { getAccessTokenPayload } from '@utils/token';
 import Add from '@/public/icons/add.svg';
 import Bell from '@/public/icons/bell.svg';
@@ -14,7 +15,12 @@ interface ProfileData {
 }
 
 export default function HeaderProfile() {
-  const [opendMenu, setOpenMenu] = useState<Number>(0);
+  const none = 0;
+  const plus = 1;
+  const bell = 2;
+  const route = 3;
+
+  const [opendMenu, setOpenMenu] = useState<Number>(none);
   const [alarm, setAlarm] = useState<string[]>([]);
   const [profileData, setProfileData] = useState<ProfileData>();
 
@@ -58,10 +64,10 @@ export default function HeaderProfile() {
       {profileData ? (
         <div className="flex gap-3 sm:gap-5 sm:pr-4">
           <div className="relative content-center">
-            <div onClick={() => setOpenMenu(opendMenu === 1 ? 0 : 1)}>
+            <div onClick={() => setOpenMenu(opendMenu === plus ? none : plus)}>
               <Add className="w-6 fill-primary cursor-pointer relative peer" />
             </div>
-            {opendMenu === 1 && (
+            {opendMenu === plus && (
               <div className=" w-40 absolute top-9 right-0 border ">
                 <div className={elemClass}>활동 기록</div>
                 <div className={elemClass}>코스 등록</div>
@@ -70,11 +76,11 @@ export default function HeaderProfile() {
             )}
           </div>
           <div className="relative content-center">
-            <div onClick={() => setOpenMenu(opendMenu === 2 ? 0 : 2)}>
+            <div onClick={() => setOpenMenu(opendMenu === bell ? none : bell)}>
               <Bell className="w-6 cursor-pointer hover:fill-primary" />
             </div>
 
-            {opendMenu === 2 && (
+            {opendMenu === bell && (
               <div className="w-56 absolute top-9 right-0 border peer-checked:block">
                 {alarm.map((item, index) => (
                   <div key={index} className={elemClass}>
@@ -85,13 +91,24 @@ export default function HeaderProfile() {
             )}
           </div>
 
-          <Link href={'/mypage'}>
+          <div className="w-8 h-8 relative">
             <img
-              className="w-8 h-8 rounded-full border bg-slate-400 cursor-pointer"
+              className="w-full h-full rounded-full border bg-slate-400 cursor-pointer"
               src={img}
               alt=""
+              onClick={() => setOpenMenu(opendMenu === route ? none : route)}
             />
-          </Link>
+            {opendMenu === route && (
+              <div className="w-36 absolute top-9 right-0 border">
+                <Link href={'/mypage'}>
+                  <div className={elemClass}>마이페이지</div>
+                </Link>
+                <div className={elemClass} onClick={() => logout('/')}>
+                  로그아웃
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       ) : (
         <Link href={'/signin'}>
