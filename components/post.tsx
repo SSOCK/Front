@@ -147,7 +147,7 @@ export default function Post({ postData, page }: PostProps) {
                 {postData.imageUrls.map((url, index) => (
                   <CarouselItem key={index}>
                     <div className="flex justify-center h-80 w-full">
-                      <img src={url} alt={url} className="object-cover" />
+                      <img src={url} alt={url} className="object-contain" />
                     </div>
                   </CarouselItem>
                 ))}
