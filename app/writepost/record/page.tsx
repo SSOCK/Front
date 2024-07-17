@@ -303,6 +303,7 @@ export default function Record() {
                 onChange={(event) => {
                   setErrorMsg('');
                   updateImage(event.target.files);
+                  event.target.value = '';
                 }}
                 className="hidden"
               />
