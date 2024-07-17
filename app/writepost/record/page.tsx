@@ -315,13 +315,13 @@ export default function Record() {
               </label>
 
               {preview.length > 0 ? (
-                <div className="flex gap-3">
+                <div className="flex gap-3 w-full overflow-x-auto mb-5">
                   {preview.map((item, index) => (
-                    <div key={index} className="relative">
+                    <div key={index} className="relative flex-shrink-0">
                       <img
                         src={item.src}
                         alt={item.alt}
-                        className="h-20 rounded-sm mb-4"
+                        className="h-20 w-auto rounded-sm mb-4"
                       />
                       <div
                         className="absolute border bg-white rounded-sm top-0 right-0 text-sm w-5 text-center cursor-pointer"
