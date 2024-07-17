@@ -29,10 +29,10 @@ const RecordSchema = z.object({
     .string()
     .min(1, { message: '1자이상 100자이하로 입력해주세요.' })
     .max(100, { message: '1자이상 100자이하로 입력해주세요.' }),
-  distance: z.number(),
-  hour: z.number(),
-  minute: z.number(),
-  altitude: z.number(),
+  distance: z.coerce.number({ message: '숫자를 입력해주세요.' }),
+  hour: z.coerce.number({ message: '숫자를 입력해주세요.' }),
+  minute: z.coerce.number({ message: '숫자를 입력해주세요.' }),
+  altitude: z.coerce.number({ message: '숫자를 입력해주세요.' }),
 });
 
 export default function Record() {
