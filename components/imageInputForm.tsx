@@ -117,7 +117,6 @@ export default function ImageInputForm({
               <div
                 className="absolute border bg-white rounded-sm top-0 right-0 text-sm w-5 text-center cursor-pointer"
                 onClick={() => {
-                  console.log(index);
                   deleteImage(index);
                 }}
               >
