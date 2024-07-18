@@ -21,13 +21,23 @@ export default function ImageInputForm({
   const updatePreview = (files: File[]) => {
     setIsLoading(true);
     let cnt = 0;
-    const previews: ImagePreviewType[] = [...preview];
-    files.forEach((file) => {
+    const previews: ImagePreviewType[] = [
+      ...preview,
+      ...Array.from({ length: files.length - preview.length }, () => ({
+        src: '',
+        alt: 'loading',
+      })),
+    ];
+    console.log('!', previews);
+    files.forEach((file, index) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onloadend = () => {
+        previews[preview.length + index] = {
+          src: reader.result as string,
+          alt: file.name,
+        };
         cnt++;
-        previews.push({ src: reader.result as string, alt: file.name });
         if (cnt === files.length) {
           setPreview(previews);
           setIsLoading(false);
@@ -36,9 +46,9 @@ export default function ImageInputForm({
     });
   };
 
-  const updateImage = (fileList: FileList | null) => {
-    const files = Array.from(fileList ?? []);
-    setFileList(files);
+  const updateImage = (newFileList: FileList | null) => {
+    const files = Array.from(newFileList ?? []);
+    setFileList([...fileList, ...files]);
     updatePreview(files);
   };
 
@@ -77,6 +87,7 @@ export default function ImageInputForm({
     updatePreview(newFiles);
     setIsDragging(false);
   };
+  console.log(fileList);
   return (
     <div
       className={props.className}
