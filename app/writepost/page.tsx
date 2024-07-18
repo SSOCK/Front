@@ -17,6 +17,7 @@ import {
 } from '@components/ui/form';
 import { Input } from '@components/ui/input';
 import { fetchWithRetry } from '@utils/fetch';
+import ImageInputForm from '@components/imageInputForm';
 
 interface Preview {
   alt: string;
@@ -32,14 +33,11 @@ const WritePostSchema = z.object({
 });
 
 export default function WritePost() {
-  const [image, setImage] = useState<Array<File>>([]);
-  const [preview, setPreview] = useState<Array<Preview>>([]);
+  const [files, setFiles] = useState<Array<File>>([]);
   const [errorMsg, setErrorMsg] = useState<string>('');
   const [posting, setPosting] = useState<boolean>(false);
 
   const contentRef = useRef<HTMLTextAreaElement>(null);
-
-  const IMG_LIMIT_NUM = 10;
 
   const WritePostForm = useForm<z.infer<typeof WritePostSchema>>({
     resolver: zodResolver(WritePostSchema),
@@ -49,45 +47,11 @@ export default function WritePost() {
     },
   });
 
-  useEffect(() => {
-    const srcs: Preview[] = [];
-    image.forEach((file) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        srcs.push({ src: reader.result as string, alt: file.name });
-        if (srcs.length === image.length) setPreview(srcs);
-        //비동기로 이미지소스 읽어와서 어떤게 마지막에 끝날지 알 수 없음
-      };
-    });
-  }, [image]);
-
-  const updateImage = (files: FileList | null) => {
-    const fileList = Array.from(files ?? []);
-    const reg = /(.*?)\.(jpg|jpeg|png|gif)$/i;
-
-    if (fileList.length > IMG_LIMIT_NUM) {
-      setErrorMsg(`${IMG_LIMIT_NUM}개의 이미지까지만 지원합니다.`);
-      return;
-    }
-    if (fileList.some((file) => !reg.test(file.name))) {
-      setErrorMsg('jpg, jpeg, png, gif형식만 지원합니다.');
-      return;
-    }
-    setImage(fileList);
-  };
-  const handleTextareaHeight = (
-    refName: React.RefObject<HTMLTextAreaElement>
-  ) => {
-    refName.current!.style.height = 'auto';
-    refName.current!.style.height = refName.current!.scrollHeight + 'px';
-  };
-
   const writePostSubmit = async (data: z.infer<typeof WritePostSchema>) => {
     const formData = new FormData();
     formData.append('title', data.title);
     formData.append('content', data.content);
-    image.forEach((item) => formData.append('image', item));
+    files.forEach((item) => formData.append('image', item));
 
     const url = '/api/posts';
     const options = {
@@ -101,8 +65,7 @@ export default function WritePost() {
       if (res!.status !== 201) throw res!.status;
       WritePostForm.reset();
       setErrorMsg('');
-      setImage([]);
-      setPreview([]);
+      setFiles([]);
       setPosting(false);
       window.location.href = '/feed';
     } catch (error) {
@@ -178,42 +141,12 @@ export default function WritePost() {
                   )}
                 />
               </div>
+              <ImageInputForm
+                fileList={files}
+                setFileList={setFiles}
+                className="flex flex-col gap-3"
+              ></ImageInputForm>
 
-              <div className="flex flex-col gap-3">
-                <FormLabel>사진 첨부</FormLabel>
-                <Input
-                  type="file"
-                  accept="image/png, image/jpeg, image/gif"
-                  id="feed-img"
-                  multiple
-                  onChange={(event) => {
-                    setErrorMsg('');
-                    updateImage(event.target.files);
-                  }}
-                  className="hidden"
-                />
-                <label
-                  htmlFor="feed-img"
-                  className="bg-gray-100 border-dashed rounded-sm cursor-pointer h-32 border border-gray-400 flex justify-center items-center font-semibold underline text-gray-500"
-                >
-                  파일 선택
-                </label>
-                {preview.length > 0 ? (
-                  <div className="justify-center">
-                    {preview.map((item, index) => (
-                      <img
-                        key={index}
-                        src={item.src}
-                        alt={item.alt}
-                        className="pb-4"
-                      />
-                    ))}
-                  </div>
-                ) : null}
-                <h5 className="text-sm text-gray-400">
-                  첨부 파일은 최대5개, 500MB까지 등록 가능합니다.
-                </h5>
-              </div>
               {errorMsg ? (
                 <div className="text-red-500 pb-4">{errorMsg}</div>
               ) : null}
