@@ -15,15 +15,22 @@ export default function ImageInputForm({
   ...props
 }: ImageInputFormProps) {
   const [preview, setPreview] = useState<ImagePreviewType[]>([]);
-
+  const [isDragging, setIsDragging] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
+    setIsLoading(true);
     const srcs: ImagePreviewType[] = [];
-    fileList.forEach((file) => {
+    let cnt = 0;
+    fileList.forEach((file, index) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onloadend = () => {
+        cnt++;
         srcs.push({ src: reader.result as string, alt: file.name });
-        if (srcs.length === fileList.length) setPreview(srcs);
+        if (cnt === fileList.length) {
+          setPreview(srcs);
+          setIsLoading(false);
+        }
       };
     });
   }, [fileList]);
@@ -34,15 +41,45 @@ export default function ImageInputForm({
   };
 
   const deleteImage = (index: number) => {
-    const newPreview = [...preview];
     const newFileList = [...fileList];
-    newPreview.splice(index, 1);
     newFileList.splice(index, 1);
-    setPreview(newPreview);
     setFileList(newFileList);
   };
+
+  const onDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+  const onDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+  const onDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.dataTransfer.files) {
+      setIsDragging(true);
+    }
+  };
+  const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const newFiles = Array.from(e.dataTransfer.files);
+    if (!newFiles) return;
+    setFileList([...fileList, ...newFiles]);
+
+    setIsDragging(false);
+  };
   return (
-    <div className={props.className}>
+    <div
+      className={props.className}
+      onDrop={onDrop}
+      onDragEnter={onDragEnter}
+      onDragLeave={onDragLeave}
+      onDragOver={onDragOver}
+    >
       <FormLabel>사진 첨부</FormLabel>
       <Input
         type="file"
@@ -71,6 +108,7 @@ export default function ImageInputForm({
                 alt={item.alt}
                 className="h-20 w-auto rounded-sm mb-4"
               />
+
               <div
                 className="absolute border bg-white rounded-sm top-0 right-0 text-sm w-5 text-center cursor-pointer"
                 onClick={() => {
@@ -82,6 +120,7 @@ export default function ImageInputForm({
               </div>
             </div>
           ))}
+          {isLoading && <div>loading...</div>}
         </div>
       )}
     </div>

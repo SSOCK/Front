@@ -19,11 +19,6 @@ import { Input } from '@components/ui/input';
 import { fetchWithRetry } from '@utils/fetch';
 import ImageInputForm from '@components/imageInputForm';
 
-interface Preview {
-  alt: string;
-  src: string;
-}
-
 const WritePostSchema = z.object({
   title: z
     .string()
