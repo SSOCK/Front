@@ -81,8 +81,11 @@ export default function ImageInputForm({
   const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    const newFiles = Array.from(e.dataTransfer.files);
-    if (!newFiles) return;
+    const reg = /(.*?)\.(jpg|jpeg|png|gif)$/i;
+    const newFiles = Array.from(e.dataTransfer.files).filter((e) =>
+      reg.test(e.name)
+    );
+    if (!newFiles || newFiles.length < 1) return;
     setFileList([...fileList, ...newFiles]);
     updatePreview(newFiles);
     setIsDragging(false);
