@@ -17,33 +17,38 @@ export default function ImageInputForm({
   const [preview, setPreview] = useState<ImagePreviewType[]>([]);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
-  useEffect(() => {
+
+  const updatePreview = (files: File[]) => {
     setIsLoading(true);
-    const srcs: ImagePreviewType[] = [];
     let cnt = 0;
-    fileList.forEach((file, index) => {
+    const previews: ImagePreviewType[] = [...preview];
+    files.forEach((file) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onloadend = () => {
         cnt++;
-        srcs.push({ src: reader.result as string, alt: file.name });
-        if (cnt === fileList.length) {
-          setPreview(srcs);
+        previews.push({ src: reader.result as string, alt: file.name });
+        if (cnt === files.length) {
+          setPreview(previews);
           setIsLoading(false);
         }
       };
     });
-  }, [fileList]);
+  };
 
   const updateImage = (fileList: FileList | null) => {
     const files = Array.from(fileList ?? []);
     setFileList(files);
+    updatePreview(files);
   };
 
   const deleteImage = (index: number) => {
     const newFileList = [...fileList];
+    const newPreview = [...preview];
     newFileList.splice(index, 1);
+    newPreview.splice(index, 1);
     setFileList(newFileList);
+    setPreview(newPreview);
   };
 
   const onDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
@@ -69,7 +74,7 @@ export default function ImageInputForm({
     const newFiles = Array.from(e.dataTransfer.files);
     if (!newFiles) return;
     setFileList([...fileList, ...newFiles]);
-
+    updatePreview(newFiles);
     setIsDragging(false);
   };
   return (
@@ -94,7 +99,7 @@ export default function ImageInputForm({
       />
       <label
         htmlFor="record-img"
-        className="bg-gray-100 border-dashed rounded-sm cursor-pointer h-32 border border-gray-400 flex justify-center items-center font-semibold underline text-gray-500 my-2"
+        className={`bg-gray-100 border-dashed rounded-sm cursor-pointer h-32 border border-gray-400 flex justify-center items-center font-semibold underline text-gray-500 my-2 ${isLoading && 'pointer-events-none border-red-500'}`}
       >
         파일 선택
       </label>
@@ -120,7 +125,6 @@ export default function ImageInputForm({
               </div>
             </div>
           ))}
-          {isLoading && <div>loading...</div>}
         </div>
       )}
     </div>
