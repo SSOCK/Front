@@ -7,8 +7,9 @@ declare global {
     modifiedAt: null | string;
     title: string;
     member: MemberInfo;
+    liked: boolean;
     likes: number;
-    comments: Comment[];
+    comments: PostComment[];
   };
   type MemberInfo = {
     email: string;
@@ -17,7 +18,7 @@ declare global {
     username: string;
     profilePicture: string;
   };
-  type Comment = {
+  type PostComment = {
     id: number;
     content: string;
     username: string;
