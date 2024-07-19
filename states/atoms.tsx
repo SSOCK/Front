@@ -5,6 +5,17 @@ interface MapInfo {
   centerLng: number;
 }
 
+export const ProfileRecoil = atom({
+  key: 'Profile',
+  default: {
+    id: -1,
+    username: '',
+    email: '',
+    name: '',
+    profilePicture: '',
+  },
+});
+
 export const MapRecoil = atom<MapInfo>({
   key: 'MapItem',
   default: {
