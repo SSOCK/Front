@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, ChangeEvent } from 'react';
+import { useState, useRef, ChangeEvent, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import {
   Carousel,
@@ -27,6 +27,7 @@ type PostProps = {
 
 export default function Post({ postData, page }: PostProps) {
   const userData = useRecoilValue(ProfileRecoil);
+  const [like, setLike] = useState(false);
   const [viewComment, setViewComment] = useState(false);
   const [commentDelError, setCommentDelError] = useState(false);
   const [commentError, setCommentError] = useState(false);
@@ -34,6 +35,22 @@ export default function Post({ postData, page }: PostProps) {
   const deleteFeedRef = useRef<HTMLDivElement>(null);
   const commentRef = useRef<HTMLInputElement>(null);
   const ComentLengthLimit = 2000;
+
+  useEffect(() => {
+    // 게시물 좋아야 유무 확인 필요 -> setLike 조절
+  }, []);
+
+  const pushLike = async () => {
+    if (userData.id !== -1) {
+      const url = `/api/posts/${postData.id}/like`;
+      const response = await fetchWithRetry(url, {
+        method: 'POST',
+      });
+
+      if (response!.status !== 201) return;
+      setLike(!like);
+    }
+  };
 
   const changeComment = (event: ChangeEvent<HTMLInputElement>) => {
     setSubmitError(false);
@@ -162,8 +179,8 @@ export default function Post({ postData, page }: PostProps) {
         </div>
 
         <div className="flex-auto flex gap-10 ml-16">
-          <Button variant="ghost" className="p-0" onClick={() => {}}>
-            <Like className="mr-2" />
+          <Button variant="ghost" className="p-0" onClick={pushLike}>
+            <Like className={'mr-2' + (like ? ' fill-blue-500' : '')} />
             <h5>{postData.likes}</h5>
           </Button>
           <Button
