@@ -31,7 +31,8 @@ export default function Post({ postData, page }: PostProps) {
   const userData = useRecoilValue(ProfileRecoil);
 
   const [id, setId] = useState(postData.id);
-  const [like, setLike] = useState(false);
+  const [like, setLike] = useState(postData.liked);
+  const [likeNum, setLikeNum] = useState(postData.likes);
   const [comments, setComments] = useState<PostComment[]>(postData.comments);
   const [viewComment, setViewComment] = useState(false);
   const [commentDelError, setCommentDelError] = useState(false);
@@ -42,12 +43,7 @@ export default function Post({ postData, page }: PostProps) {
   const commentRef = useRef<HTMLInputElement>(null);
   const ComentLengthLimit = 2000;
 
-  useEffect(() => {
-    // 게시물 좋아야 유무 확인 필요 -> setLike 조절
-  }, [like]);
-
   const pushLike = async () => {
-    // api 소통 결과 확인 필요 (api 수정 후)
     if (userData.id === -1) return;
     const url = `/api/posts/${postData.id}/like`;
     const response = await fetchWithRetry(url, {
@@ -56,6 +52,7 @@ export default function Post({ postData, page }: PostProps) {
 
     if (response!.status !== 201) return;
     setLike(!like);
+    like ? setLikeNum(likeNum - 1) : setLikeNum(likeNum + 1);
   };
 
   const changeComment = (event: ChangeEvent<HTMLInputElement>) => {
@@ -208,7 +205,7 @@ export default function Post({ postData, page }: PostProps) {
             disabled={userData.id === -1}
           >
             <Like className={'mr-2' + (like ? ' fill-blue-500' : '')} />
-            <h5>{postData.likes}</h5>
+            <h5>{likeNum}</h5>
           </Button>
           <Button
             variant="ghost"
