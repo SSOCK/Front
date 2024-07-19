@@ -104,7 +104,6 @@ export default function Post({ postid, page }: PostProps) {
       setSubmitError(true);
       return;
     }
-    setViewComment(false);
     setPostData(undefined);
   };
 
