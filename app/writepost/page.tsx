@@ -1,11 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { HeadBar } from '@components';
+import { HeadBar, ImageInputForm } from '@components';
 import { Button } from '@components/ui/button';
 import {
   Form,
@@ -17,7 +17,6 @@ import {
 } from '@components/ui/form';
 import { Input } from '@components/ui/input';
 import { fetchWithRetry } from '@utils/fetch';
-import ImageInputForm from '@components/imageInputForm';
 
 const WritePostSchema = z.object({
   title: z
