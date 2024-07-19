@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, ChangeEvent } from 'react';
+import { useRecoilValue } from 'recoil';
 import {
   Carousel,
   CarouselContent,
@@ -10,6 +11,7 @@ import {
 } from '@components/ui/carousel';
 import { fetchWithRetry } from '@utils/fetch';
 import { getPostTime } from '@utils/time';
+import { ProfileRecoil } from '@atoms';
 import Comment from '@/public/icons/comment.svg';
 import DotMenu from '@/public/icons/dotMenu.svg';
 import Like from '@/public/icons/like.svg';
@@ -24,6 +26,7 @@ type PostProps = {
 };
 
 export default function Post({ postData, page }: PostProps) {
+  const userData = useRecoilValue(ProfileRecoil);
   const [viewComment, setViewComment] = useState(false);
   const [commentDelError, setCommentDelError] = useState(false);
   const [commentError, setCommentError] = useState(false);
@@ -46,8 +49,7 @@ export default function Post({ postData, page }: PostProps) {
   };
 
   const sendComment = async () => {
-    if (false) {
-      // 댓글 달 수 있는지 확인 필요 -> 로그인 유무
+    if (userData.id !== -1) {
       setSubmitError(false);
       if (
         !commentRef.current?.value ||
@@ -77,17 +79,14 @@ export default function Post({ postData, page }: PostProps) {
   };
 
   const deleteComment = async (id: number) => {
-    if (false) {
-      // 삭제할 수 있는지 확인 필요 -> 본인 댓글인지 확인 필요
-      setCommentDelError(false);
-      const url = `/api/comments/${id}`;
-      const response = await fetchWithRetry(url, {
-        method: 'DELETE',
-      });
-      if (response!.status !== 204) {
-        setCommentDelError(true);
-        return;
-      }
+    setCommentDelError(false);
+    const url = `/api/comments/${id}`;
+    const response = await fetchWithRetry(url, {
+      method: 'DELETE',
+    });
+    if (response!.status !== 204) {
+      setCommentDelError(true);
+      return;
     }
   };
 
@@ -224,12 +223,14 @@ export default function Post({ postData, page }: PostProps) {
                   <h1 className="text-xs font-semibold">{comments.username}</h1>
                   <h2 className="text-xs">{getPostTime(comments.createdAt)}</h2>
                 </div>
-                <div
-                  className="ml-auto text-sm cursor-pointer text-red-500"
-                  onClick={() => deleteComment(comments.id)}
-                >
-                  delete
-                </div>
+                {comments.username === userData.username ? (
+                  <div
+                    className="ml-auto text-sm cursor-pointer text-red-500"
+                    onClick={() => deleteComment(comments.id)}
+                  >
+                    delete
+                  </div>
+                ) : null}
               </div>
               {commentDelError ? (
                 <p className="text-right text-red-500">
