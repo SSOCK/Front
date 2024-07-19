@@ -140,11 +140,9 @@ export default function WritePost() {
                 fileList={files}
                 setFileList={setFiles}
                 className="flex flex-col gap-3"
-              ></ImageInputForm>
+              />
 
-              {errorMsg ? (
-                <div className="text-red-500 pb-4">{errorMsg}</div>
-              ) : null}
+              {errorMsg && <div className="text-red-500 pb-4">{errorMsg}</div>}
               <div className="grid grid-cols-2 gap-10 ">
                 <Link href="/feed" className="w-full">
                   <Button className="bg-white text-gray-700 w-full rounded-[2px] border">
