@@ -1,18 +1,11 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { fetchWithRetry, refreshAccessToken } from '@utils/fetch';
+import { useRecoilValue } from 'recoil';
+import useSetProfile from '@hooks/useSetProfile';
 import logout from '@utils/logout';
-import { getAccessTokenPayload } from '@utils/token';
+import { ProfileRecoil } from '@atoms';
 import Add from '@/public/icons/add.svg';
 import Bell from '@/public/icons/bell.svg';
-
-interface ProfileData {
-  id: number;
-  email: string;
-  name: string;
-  profilePicture: string;
-  username: string;
-}
 
 export default function HeaderProfile() {
   const none = 0;
@@ -20,11 +13,12 @@ export default function HeaderProfile() {
   const bell = 2;
   const route = 3;
 
+  const userProfile = useRecoilValue(ProfileRecoil);
+  const setProfile = useSetProfile();
+
   const [opendMenu, setOpenMenu] = useState<Number>(none);
   const [alarm, setAlarm] = useState<string[]>([]);
-  const [profileData, setProfileData] = useState<ProfileData>();
 
-  const img = 'https://avatars.githubusercontent.com/u/96722691?v=5';
   const elemClass = 'p-2 bg-white cursor-pointer hover:bg-border';
   const alarmData = [
     '알람 1입니다.',
@@ -34,34 +28,14 @@ export default function HeaderProfile() {
   ];
 
   useEffect(() => {
-    async function aa() {
-      try {
-        await refreshAccessToken();
-        //토큰 발급 성공 (로그인 되어있거나, refreshtoken이 유효할때) 이제 access-token의 payload를 읽을 수 있음
-        const payload = getAccessTokenPayload();
-        const username = payload.username;
-
-        const res = await fetchWithRetry(`/api/member/profile/${username}`, {
-          method: 'get',
-        });
-        if (!res?.ok) {
-          return;
-        }
-        const data = (await res?.json()) as ProfileData;
-        //여기서 알람받아오는 api
-        setProfileData(data);
-        setAlarm(alarmData);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    aa();
+    if (userProfile.id === -1) setProfile();
+    setAlarm(alarmData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
-      {profileData ? (
+      {userProfile.id !== -1 ? (
         <div className="flex gap-3 sm:gap-5 sm:pr-4">
           <div className="relative content-center">
             <div onClick={() => setOpenMenu(opendMenu === plus ? none : plus)}>
@@ -96,7 +70,7 @@ export default function HeaderProfile() {
           <div className="w-8 h-8 relative">
             <img
               className="w-full h-full rounded-full border bg-slate-400 cursor-pointer"
-              src={img}
+              src={userProfile.profilePicture}
               alt=""
               onClick={() => setOpenMenu(opendMenu === route ? none : route)}
             />
