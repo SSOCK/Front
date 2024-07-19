@@ -109,10 +109,19 @@ export default function Post({ postData, page }: PostProps) {
     }
   };
 
-  const removePost = () => {
+  const viewRemovePost = () => {
     deleteFeedRef.current!.style.display === 'block'
       ? (deleteFeedRef.current!.style.display = 'none')
       : (deleteFeedRef.current!.style.display = 'block');
+  };
+
+  const removePost = async () => {
+    const url = `/api/posts/${postData.id}`;
+    const response = await fetchWithRetry(url, {
+      method: 'DELETE',
+    });
+
+    if (response!.status !== 204) return;
   };
 
   return (
@@ -135,16 +144,17 @@ export default function Post({ postData, page }: PostProps) {
             </h2>
           </div>
 
-          {page ? (
+          {page === 'mypage' ? (
             <div className="w-7 ml-auto relative">
               <DotMenu
                 className="w-full rounded-md hover:bg-border"
-                onClick={removePost}
+                onClick={viewRemovePost}
               />
               <div
                 ref={deleteFeedRef}
-                className="absolute border shadow px-2 py-1 right-0 bg-white w-24"
+                className="absolute border shadow px-2 py-1 right-0 bg-white w-24 hover:text-primary"
                 style={{ display: 'none' }}
+                onClick={removePost}
               >
                 삭제하기
               </div>
