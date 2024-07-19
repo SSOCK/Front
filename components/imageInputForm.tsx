@@ -93,7 +93,7 @@ export default function ImageInputForm({
   console.log(fileList);
   return (
     <div
-      className={props.className}
+      {...props}
       onDrop={onDrop}
       onDragEnter={onDragEnter}
       onDragLeave={onDragLeave}
