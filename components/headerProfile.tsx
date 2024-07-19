@@ -42,7 +42,7 @@ export default function HeaderProfile() {
               <Add className="w-6 fill-primary cursor-pointer relative peer" />
             </div>
             {opendMenu === plus && (
-              <div className=" w-40 absolute top-9 right-0 border ">
+              <div className=" w-40 absolute top-9 right-0 border z-50">
                 <div className={elemClass}>활동 기록</div>
                 <div className={elemClass}>코스 등록</div>
                 <Link href={'/writepost'}>
@@ -57,7 +57,7 @@ export default function HeaderProfile() {
             </div>
 
             {opendMenu === bell && (
-              <div className="w-56 absolute top-9 right-0 border peer-checked:block">
+              <div className="w-56 absolute top-9 right-0 border z-50 peer-checked:block">
                 {alarm.map((item, index) => (
                   <div key={index} className={elemClass}>
                     {item}
@@ -75,7 +75,7 @@ export default function HeaderProfile() {
               onClick={() => setOpenMenu(opendMenu === route ? none : route)}
             />
             {opendMenu === route && (
-              <div className="w-36 absolute top-9 right-0 border">
+              <div className="w-36 absolute top-9 right-0 border z-50">
                 <Link href={'/mypage'}>
                   <div className={elemClass}>마이페이지</div>
                 </Link>
