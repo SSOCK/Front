@@ -1,1 +1,1 @@
-export { DrawLineRecoil, MapRecoil } from './atoms';
+export { ProfileRecoil, DrawLineRecoil, MapRecoil } from './atoms';

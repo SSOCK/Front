@@ -6,7 +6,11 @@ export async function refreshAccessToken() {
     credentials: 'include',
   });
 
-  if (!respones.ok) throw new Error('accessToken 재발급에 실패했습니다.');
+  if (!respones.ok) {
+    logout();
+    throw new Error('accessToken 재발급에 실패했습니다.');
+  }
+
   const data: {
     'access-token': string;
   } = await respones.json();
