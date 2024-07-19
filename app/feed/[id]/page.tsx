@@ -23,7 +23,7 @@ export default function Home() {
     <>
       <HeadBar />
       <div className="flex mx-auto w-full xl:w-5/6">
-        {post !== undefined ? <Post postid={post.id} /> : null}
+        {post !== undefined ? <Post postData={post} /> : null}
       </div>
     </>
   );
