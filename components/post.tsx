@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useState, useRef, ChangeEvent, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import {
@@ -26,6 +27,7 @@ type PostProps = {
 };
 
 export default function Post({ postData, page }: PostProps) {
+  const router = useRouter();
   const userData = useRecoilValue(ProfileRecoil);
   const [like, setLike] = useState(false);
   const [viewComment, setViewComment] = useState(false);
@@ -150,7 +152,10 @@ export default function Post({ postData, page }: PostProps) {
           ) : null}
         </div>
 
-        <div className="flex-auto flex flex-col items-center ml-16">
+        <div
+          className="flex-auto flex flex-col items-center ml-16 cursor-pointer"
+          onClick={() => router.push(`/feed/${postData.id}`)}
+        >
           <div className="w-full pb-2">
             <h6 className="text-lg font-bold">{postData.title}</h6>
           </div>
