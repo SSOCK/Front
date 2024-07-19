@@ -37,7 +37,7 @@ export default function Feed() {
     <>
       <div className="text-xl font-bold">피드</div>
       {data.map((item, index) => (
-        <Post key={index} postData={item} page={'mypage'} />
+        <Post key={index} postid={item.id} page={'mypage'} />
       ))}
       <div ref={triggerRef}>{loading && <h1>loading...</h1>}</div>
     </>

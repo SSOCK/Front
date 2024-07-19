@@ -37,7 +37,7 @@ export default function Posts() {
   return (
     <>
       {data.map((post, index) => (
-        <Post key={index} postData={post} />
+        <Post key={index} postid={post.id} />
       ))}
       <div ref={triggerRef}>{loading && <h1>loading...</h1>}</div>
     </>
