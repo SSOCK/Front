@@ -30,6 +30,7 @@ export default function Post({ postData, page }: PostProps) {
   const router = useRouter();
   const userData = useRecoilValue(ProfileRecoil);
 
+  const [id, setId] = useState(postData.id);
   const [like, setLike] = useState(false);
   const [comments, setComments] = useState<PostComment[]>(postData.comments);
   const [viewComment, setViewComment] = useState(false);
@@ -127,10 +128,11 @@ export default function Post({ postData, page }: PostProps) {
     });
 
     if (response!.status !== 204) return;
+    setId(-1);
   };
 
   return (
-    <div className="w-full p-5">
+    <div className={'w-full p-5' + (id === -1 ? ' hidden' : '')}>
       <div className="flex flex-col bg-white p-5 shadow gap-5">
         <div className="flex flex-row gap-4 flex-auto items-center cursor-pointer">
           <Avatar className="size-12 border">
