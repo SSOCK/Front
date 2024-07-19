@@ -25,7 +25,7 @@ export default function Home() {
         <div className="flex flex-col w-full overflow-scroll hidden-scrollbar">
           <Posts />
         </div>
-        <div className="flex flex-col h-full p-5 pl-0">
+        <div className="flex-col h-full p-5 pl-0 hidden sm:flex">
           <MyCalender />
         </div>
       </div>
