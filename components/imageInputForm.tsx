@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import DragablePreview from './dragablePreview';
 import { FormLabel } from './ui/form';
 import { Input } from './ui/input';
 
@@ -28,7 +29,6 @@ export default function ImageInputForm({
         alt: 'loading',
       })),
     ];
-    console.log('!', previews);
     files.forEach((file, index) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
@@ -50,15 +50,6 @@ export default function ImageInputForm({
     const files = Array.from(newFileList ?? []);
     setFileList([...fileList, ...files]);
     updatePreview(files);
-  };
-
-  const deleteImage = (index: number) => {
-    const newFileList = [...fileList];
-    const newPreview = [...preview];
-    newFileList.splice(index, 1);
-    newPreview.splice(index, 1);
-    setFileList(newFileList);
-    setPreview(newPreview);
   };
 
   const onDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
@@ -90,7 +81,6 @@ export default function ImageInputForm({
     updatePreview(newFiles);
     setIsDragging(false);
   };
-  console.log(fileList);
   return (
     <div
       {...props}
@@ -118,28 +108,12 @@ export default function ImageInputForm({
         파일 선택
       </label>
 
-      {preview.length > 0 && (
-        <div className="flex gap-3 w-full overflow-x-auto mb-5">
-          {preview.map((item, index) => (
-            <div key={index} className="relative flex-shrink-0">
-              <img
-                src={item.src}
-                alt={item.alt}
-                className="h-20 w-auto rounded-sm mb-4"
-              />
-
-              <div
-                className="absolute border bg-white rounded-sm top-0 right-0 text-sm w-5 text-center cursor-pointer"
-                onClick={() => {
-                  deleteImage(index);
-                }}
-              >
-                x
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+      <DragablePreview
+        fileList={fileList}
+        setFileList={setFileList}
+        preview={preview}
+        setPreview={setPreview}
+      />
     </div>
   );
 }
