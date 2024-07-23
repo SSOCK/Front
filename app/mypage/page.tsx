@@ -1,12 +1,10 @@
 'use client';
 
 import { useEffect, useState, useRef, MouseEvent } from 'react';
-import { HeadBar } from '@components';
-import Activity from './activity';
+import { HeadBar, Activity, Feed } from '@components';
 import Challenge from './challenge';
 import Club from './club';
 import Course from './course';
-import Feed from './feed';
 import Profile from './profile';
 
 export default function Home() {
