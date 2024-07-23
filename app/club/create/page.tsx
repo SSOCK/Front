@@ -17,7 +17,6 @@ import {
 import { Input } from '@components/ui/input';
 import { fetchWithRetry } from '@utils/fetch';
 import FillPin from '@/public/icons/fillpin.svg';
-import Location from '@/public/icons/location.svg';
 
 interface Preview {
   alt: string;
@@ -39,28 +38,8 @@ const ClubSchema = z.object({
 export default function Create() {
   const mapRef = useRef<MyMap | undefined>(undefined);
   const [mapIsLoading, setMapIsLoading] = useState(true);
-  const [center, setCenter] = useState(false);
   const [preview, setPreview] = useState<Preview | null>(null);
   const [errorMsg, setErrorMsg] = useState<string>('');
-
-  const checkLocation = () => {
-    if (mapRef.current) mapRef.current.data.drawMode = true;
-  };
-
-  const Select = () => {
-    return (
-      <div className="absolute z-50 top-0 p-3 flex flex-col gap-5 items-center">
-        <FillPin
-          className="w-8 cursor-pointer fill-primary"
-          onClick={checkLocation}
-        />
-        <Location
-          className="w-10 curwor-pointer cursor-pointer"
-          onClick={() => setCenter(true)}
-        />
-      </div>
-    );
-  };
 
   const RecordForm = useForm<z.infer<typeof ClubSchema>>({
     resolver: zodResolver(ClubSchema),
@@ -105,17 +84,20 @@ export default function Create() {
       return;
     }
 
-    const formData = new FormData();
-    const locationCoordinate = JSON.stringify(mapRef.current?.data.dots);
-    formData.append('title', data.title);
-    formData.append('description', data.description);
-    formData.append('locationName', data.locationName);
-    formData.append('locationCoordinate', locationCoordinate);
+    const postData = {
+      title: data.title,
+      description: data.description,
+      locationName: data.locationName,
+      locationCoordinate: mapRef.current?.data.dots[0],
+    };
 
     const url = '/api/club';
     const options = {
       method: 'post',
-      body: formData,
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(postData),
     };
 
     try {
@@ -127,13 +109,16 @@ export default function Create() {
         try {
           const imgOptions = {
             method: 'post',
+            headers: {
+              'Content-type': 'application/json',
+            },
             body: JSON.stringify({ newImageUrl: preview }),
           };
           const res = await fetchWithRetry('/api/image', imgOptions);
           if (res!.status !== 201) throw res!.status;
           setPreview(null);
         } catch (error) {
-          setErrorMsg('전송을 다시 시도해주십시오.');
+          setErrorMsg('전송을 다시 시도해주십시오.?');
         }
       }
     } catch (error) {
@@ -241,7 +226,14 @@ export default function Create() {
                     setMapIsLoading={setMapIsLoading}
                     onePin={true}
                   />
-                  {mapIsLoading ? null : <Select />}
+                  {mapIsLoading ? null : (
+                    <FillPin
+                      className="absolute z-50 top-0 p-3 w-16 cursor-pointer fill-primary"
+                      onClick={() => {
+                        if (mapRef.current) mapRef.current.data.drawMode = true;
+                      }}
+                    />
+                  )}
                 </div>
               </div>
 
