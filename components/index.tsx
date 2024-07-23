@@ -7,3 +7,5 @@ export { default as Challenge } from './challenge';
 export { default as Club } from './club';
 export { default as Calendar } from './calendar';
 export { default as ImageInputForm } from './imageInputForm';
+export { default as Activity } from './activity';
+export { default as Feed } from './feed';
