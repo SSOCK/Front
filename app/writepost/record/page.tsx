@@ -31,7 +31,9 @@ const RecordSchema = z.object({
     .max(100, { message: '1자이상 100자이하로 입력해주세요.' }),
   distance: z.coerce.number({ message: '숫자를 입력해주세요.' }),
   hour: z.coerce.number({ message: '숫자를 입력해주세요.' }),
-  minute: z.coerce.number({ message: '숫자를 입력해주세요.' }),
+  minute: z.coerce
+    .number({ message: '숫자를 입력해주세요.' })
+    .max(59, { message: '유효한 시간이 아닙니다.' }),
   altitude: z.coerce.number({ message: '숫자를 입력해주세요.' }),
 });
 
