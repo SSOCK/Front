@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { MyMap } from '@components';
 import Find from '@/public/icons/find.svg';
 import Pencil from '@/public/icons/pencil.svg';
 import Save from '@/public/icons/save.svg';
@@ -8,7 +9,6 @@ import FindCourse from './(findMenu)/findCourse';
 import AddCourse from './addCourse';
 import MenuNavigations from './menuNavigation';
 import MyCourse from './myCourse';
-import { MyMap } from './page';
 
 interface MenuProps {
   mapRef: React.MutableRefObject<MyMap | undefined>;

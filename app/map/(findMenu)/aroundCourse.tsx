@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { MyMap, LatLng } from '@components';
 import { fetchWithRetry } from '@utils/fetch';
-import { MyMap, LatLng } from '@/app/map/page';
 
 interface ArroundCourseProps {
   mapRef: React.MutableRefObject<MyMap | undefined>;

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { MyMap } from '@/app/map/page';
+import { MyMap } from '@components';
 import AroundCourse from './aroundCourse';
 import SearchInput from './searchInput';
 

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { LatLng, MyMap } from '@components';
 import { Button } from '@components/ui/button';
 import {
   Form,
@@ -15,7 +16,6 @@ import {
 } from '@components/ui/form';
 import { Input } from '@components/ui/input';
 import { fetchWithRetry } from '@utils/fetch';
-import { LatLng, MyMap } from './page';
 
 const CourseFormSchema = z.object({
   title: z.string().min(2, '2글자 이상').max(20),
