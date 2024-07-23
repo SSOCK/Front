@@ -40,8 +40,6 @@ export default function Create() {
   const mapRef = useRef<MyMap | undefined>(undefined);
   const [mapIsLoading, setMapIsLoading] = useState(true);
   const [center, setCenter] = useState(false);
-  const [la, setLa] = useState(0);
-  const [ma, setMa] = useState(0);
   const [preview, setPreview] = useState<Preview | null>(null);
   const [errorMsg, setErrorMsg] = useState<string>('');
 
@@ -102,13 +100,13 @@ export default function Create() {
   };
 
   const recordSubmit = async (data: z.infer<typeof ClubSchema>) => {
-    if (la === 0 || ma === 0) {
+    if (!mapRef.current?.data.dots.length) {
       setErrorMsg('위치를 다시 선택해주세요.');
       return;
     }
 
     const formData = new FormData();
-    const locationCoordinate = JSON.stringify({ La: la, Ma: ma });
+    const locationCoordinate = JSON.stringify(mapRef.current?.data.dots);
     formData.append('title', data.title);
     formData.append('description', data.description);
     formData.append('locationName', data.locationName);
