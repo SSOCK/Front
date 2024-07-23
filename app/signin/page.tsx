@@ -85,7 +85,7 @@ export default function SignInPage() {
   const reset = () => setWarning(false);
 
   return (
-    <div className="flex flex-col p-8 gap-4 items-center">
+    <div className="flex flex-col p-8 gap-4 items-center w-full max-w-2xl mx-auto">
       <Image src="/img/testPhoto.jpg" alt="logo" width={150} height={150} />
       <h2 className="text-2xl font-bold">Sign in</h2>
 
