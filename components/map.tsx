@@ -1,7 +1,22 @@
 'use client';
 
 import { useEffect } from 'react';
-import { MyMap, LatLng } from '@/app/map/page';
+
+export interface LatLng {
+  La: number;
+  Ma: number;
+}
+
+export interface MyMap {
+  maps: any;
+  map: any;
+  data: {
+    drawMode: boolean;
+    dots: LatLng[];
+    dotMarkers: any[];
+    polyLine: any;
+  };
+}
 
 declare global {
   interface Window {
