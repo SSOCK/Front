@@ -175,8 +175,8 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="flex flex-col p-8 gap-4 items-center">
-      <h2 className="text-2xl font-bold">Sign Up</h2>
+    <div className="flex flex-col p-8 gap-4 items-center w-full max-w-2xl mx-auto">
+      <h2 className="text-2xl font-bold pt-10">Sign Up</h2>
       <Form {...EmailForm}>
         <form
           onSubmit={EmailForm.handleSubmit(emailSubmit)}
