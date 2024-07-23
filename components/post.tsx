@@ -129,7 +129,7 @@ export default function Post({ postData, page }: PostProps) {
   };
 
   return (
-    <div className={'w-full p-5' + (id === -1 ? ' hidden' : '')}>
+    <div className={'w-full py-5 sm:p-5' + (id === -1 ? ' hidden' : '')}>
       <div className="flex flex-col bg-white p-5 shadow gap-5">
         <div className="flex flex-row gap-4 flex-auto items-center cursor-pointer">
           <Avatar className="size-12 border">
