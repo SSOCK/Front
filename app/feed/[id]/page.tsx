@@ -1,23 +1,23 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { HeadBar, Post } from '@components';
 
 export default function Home() {
-  const postid = usePathname().split('/').pop();
+  const { id } = useParams();
   const [post, setPost] = useState<PostType>();
 
   useEffect(() => {
     const getPost = async () => {
-      const res = await fetch(`/api/posts/${postid}`, {
+      const res = await fetch(`/api/posts/${id}`, {
         method: 'get',
       });
       if (res.status !== 200) throw res.status;
       setPost(await res.json());
     };
     getPost();
-  }, [postid]);
+  }, [id]);
 
   return (
     <>
