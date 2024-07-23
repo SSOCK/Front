@@ -89,8 +89,6 @@ export default function Create() {
     formData.append('description', data.description);
     formData.append('location_string', data.location_string);
     formData.append('location_coordinate', location_coordinate);
-    if (preview) {
-    } // img 전송
 
     const url = '/api/club';
     const options = {
@@ -103,7 +101,19 @@ export default function Create() {
       if (res!.status !== 201) throw res!.status;
       RecordForm.reset();
       setErrorMsg('');
-      setPreview(null);
+      if (preview) {
+        try {
+          const imgOptions = {
+            method: 'post',
+            body: JSON.stringify({ newImageUrl: preview }),
+          };
+          const res = await fetchWithRetry('/api/image', imgOptions);
+          if (res!.status !== 201) throw res!.status;
+          setPreview(null);
+        } catch (error) {
+          setErrorMsg('전송을 다시 시도해주십시오.');
+        }
+      }
     } catch (error) {
       setErrorMsg('전송을 다시 시도해주십시오.');
     }
