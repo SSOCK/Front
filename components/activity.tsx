@@ -10,7 +10,7 @@ interface DataProps {
   altitude: number;
 }
 
-export default function Activity() {
+export default function Activity({ userid }: { userid: number }) {
   const date = new Date();
   const [year, setYear] = useState<number>(date.getFullYear());
   const [month, setMonth] = useState<number>(date.getMonth() + 1);
