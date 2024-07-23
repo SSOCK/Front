@@ -43,7 +43,9 @@ export default function HeaderProfile() {
             </div>
             {opendMenu === plus && (
               <div className=" w-40 absolute top-9 right-0 border z-50">
-                <div className={elemClass}>활동 기록</div>
+                <Link href={'/writepost/record'}>
+                  <div className={elemClass}>활동 기록</div>
+                </Link>
                 <div className={elemClass}>코스 등록</div>
                 <Link href={'/writepost'}>
                   <div className={elemClass}>게시글 작성</div>
