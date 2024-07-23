@@ -180,7 +180,10 @@ export default function Record() {
                           placeholder="ex. 퇴근 후 러닝"
                           type="text"
                           value={value}
-                          onChange={onChange}
+                          onChange={(event) => {
+                            onChange(event);
+                            setErrorMsg('');
+                          }}
                         />
                       </FormControl>
                     </div>
