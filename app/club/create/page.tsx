@@ -130,7 +130,7 @@ export default function Create() {
     <>
       <HeadBar />
 
-      <div className="bg-gray-100 w-full h-full">
+      <div className="bg-gray-100 w-full h-auto">
         <div className="mx-auto p-5 max-w-5xl">
           <div className="font-bold text-2xl pt-10">클럽 생성</div>
           <Form {...RecordForm}>
