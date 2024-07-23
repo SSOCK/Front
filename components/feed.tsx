@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { Post } from '@components';
 import { loadPost } from '@utils/post';
 
-export default function Feed() {
+export default function Feed({ userid }: { userid: number }) {
   const [data, setData] = useState<PostType[]>([]);
   const [lastPostId, setLastPostId] = useState(-1);
   const [loading, setLoading] = useState(false);

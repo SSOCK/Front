@@ -1,13 +1,16 @@
 'use client';
 
 import { useEffect, useState, useRef, MouseEvent } from 'react';
+import { useRecoilValue } from 'recoil';
 import { HeadBar, Activity, Feed } from '@components';
+import { ProfileRecoil } from '@atoms';
 import Challenge from './challenge';
 import Club from './club';
 import Course from './course';
 import Profile from './profile';
 
 export default function Home() {
+  const { id } = useRecoilValue(ProfileRecoil);
   const [profile, setProfile] = useState(false);
   const [activity, setActivity] = useState(false);
   const [course, setCourse] = useState(false);
@@ -154,11 +157,11 @@ export default function Home() {
 
         <div className="p-5 sm:basis-5/6 sm:pt-10 lg:ml-5">
           {profile ? <Profile /> : null}
-          {activity ? <Activity /> : null}
+          {activity ? <Activity userid={id} /> : null}
           {course ? <Course /> : null}
           {club ? <Club /> : null}
           {challenge ? <Challenge /> : null}
-          {feed ? <Feed /> : null}
+          {feed ? <Feed userid={id} /> : null}
         </div>
       </div>
     </>
