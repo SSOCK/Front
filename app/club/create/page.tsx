@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { HeadBar } from '@components';
+import { HeadBar, Map, MyMap } from '@components';
 import { Button } from '@components/ui/button';
 import {
   Form,
@@ -16,6 +16,8 @@ import {
 } from '@components/ui/form';
 import { Input } from '@components/ui/input';
 import { fetchWithRetry } from '@utils/fetch';
+import FillPin from '@/public/icons/fillpin.svg';
+import Location from '@/public/icons/location.svg';
 
 interface Preview {
   alt: string;
@@ -28,24 +30,46 @@ const ClubSchema = z.object({
     .min(1, { message: '1자이상 100자이하로 입력해주세요.' })
     .max(100, { message: '1자이상 100자이하로 입력해주세요.' }),
   description: z.string(),
-  location_string: z
+  locationName: z
     .string()
     .min(1, { message: '1자이상 100자이하로 입력해주세요.' })
     .max(100, { message: '1자이상 100자이하로 입력해주세요.' }),
 });
 
 export default function Create() {
+  const mapRef = useRef<MyMap | undefined>(undefined);
+  const [mapIsLoading, setMapIsLoading] = useState(true);
+  const [center, setCenter] = useState(false);
   const [la, setLa] = useState(0);
   const [ma, setMa] = useState(0);
   const [preview, setPreview] = useState<Preview | null>(null);
   const [errorMsg, setErrorMsg] = useState<string>('');
+
+  const checkLocation = () => {
+    if (mapRef.current) mapRef.current.data.drawMode = true;
+  };
+
+  const Select = () => {
+    return (
+      <div className="absolute z-50 top-0 p-3 flex flex-col gap-5 items-center">
+        <FillPin
+          className="w-8 cursor-pointer fill-primary"
+          onClick={checkLocation}
+        />
+        <Location
+          className="w-10 curwor-pointer cursor-pointer"
+          onClick={() => setCenter(true)}
+        />
+      </div>
+    );
+  };
 
   const RecordForm = useForm<z.infer<typeof ClubSchema>>({
     resolver: zodResolver(ClubSchema),
     defaultValues: {
       title: '',
       description: '',
-      location_string: '',
+      locationName: '',
     },
   });
 
@@ -84,11 +108,11 @@ export default function Create() {
     }
 
     const formData = new FormData();
-    const location_coordinate = JSON.stringify({ La: la, Ma: ma });
+    const locationCoordinate = JSON.stringify({ La: la, Ma: ma });
     formData.append('title', data.title);
     formData.append('description', data.description);
-    formData.append('location_string', data.location_string);
-    formData.append('location_coordinate', location_coordinate);
+    formData.append('locationName', data.locationName);
+    formData.append('locationCoordinate', locationCoordinate);
 
     const url = '/api/club';
     const options = {
@@ -182,7 +206,7 @@ export default function Create() {
 
               <FormField
                 control={RecordForm.control}
-                name="location_string"
+                name="locationName"
                 render={({ field: { value, onChange } }) => (
                   <FormItem className="basis-1/4 sm:basis-1/3">
                     <FormLabel>
@@ -210,7 +234,17 @@ export default function Create() {
                 <FormLabel>
                   위치 선택 <span className="text-red-500">*</span>
                 </FormLabel>
-                <div>지도 choose</div>
+                <div className="font-sm text-gray-500">
+                  핀을 선택 후 지도를 클릭하세요.
+                </div>
+                <div className="relative w-full h-96">
+                  <Map
+                    mapRef={mapRef}
+                    setMapIsLoading={setMapIsLoading}
+                    onePin={true}
+                  />
+                  {mapIsLoading ? null : <Select />}
+                </div>
               </div>
 
               <div>

@@ -32,14 +32,14 @@ interface clickEvent {
 interface MapProps {
   mapRef: React.MutableRefObject<MyMap | undefined>;
   setMapIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  onePin?: boolean;
 }
 
-export default function Map({ mapRef, setMapIsLoading }: MapProps) {
+export default function Map({ mapRef, setMapIsLoading, onePin }: MapProps) {
   useEffect(() => {
     const kakaoMap = window.kakao.maps;
     kakaoMap.load(function () {
       let now = new kakaoMap.LatLng(33.450701, 126.570667);
-      console.log(now, 'now');
       const container = document.getElementById('map');
       const mapOptions = {
         center: now,
@@ -78,12 +78,23 @@ export default function Map({ mapRef, setMapIsLoading }: MapProps) {
         strokeStyle: 'solid',
       });
       myMap.data.polyLine = polyline;
-      const addMarker = (latLng: LatLng) => {
+
+      const addMarker = (latLng: LatLng, onePin?: boolean) => {
+        if (onePin && dotMarkers) {
+          myMap.data.dotMarkers.forEach((marker) => marker.setMap(null));
+        }
+
         const marker = new kakaoMap.Marker({
           map: map,
           position: latLng,
           draggable: true,
         });
+
+        if (onePin) {
+          myMap.data.dots = [latLng];
+          myMap.data.dotMarkers = [marker];
+          return;
+        }
 
         marker.index = dots.length;
         kakaoMap.event.addListener(marker, 'dragend', () => {
@@ -98,9 +109,8 @@ export default function Map({ mapRef, setMapIsLoading }: MapProps) {
       };
 
       kakaoMap.event.addListener(map, 'click', ({ latLng }: clickEvent) => {
-        if (myMap.data.drawMode) addMarker(latLng);
+        if (myMap.data.drawMode) addMarker(latLng, onePin);
       });
-
       setMapIsLoading(false);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
