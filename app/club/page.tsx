@@ -1,14 +1,18 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState, useRef, MouseEvent } from 'react';
+import { useRecoilValue } from 'recoil';
 import { Club, HeadBar } from '@components';
 import { Button } from '@components/ui/button';
 import { Input } from '@components/ui/input';
+import { ProfileRecoil } from '@atoms';
 import Check from '@/public/icons/check.svg';
 import Pin from '@/public/icons/pin.svg';
 import Search from '@/public/icons/search.svg';
 
 export default function Home() {
+  const { id } = useRecoilValue(ProfileRecoil);
   const [people, setPeople] = useState(false);
   const [close, setClose] = useState(false);
   const [participate, setParticipate] = useState(false);
@@ -79,6 +83,12 @@ export default function Home() {
           <Button className="h-8 px-2">검색</Button>
         </div>
       </div>
+
+      {id !== -1 ? (
+        <Link href={'/club/create'} className="mx-auto mt-10">
+          <Button>새로운 클럽 생성하기</Button>
+        </Link>
+      ) : null}
 
       <div className="m-auto w-full pb-20 lg:w-4/5">
         <div className="flex justify-between pt-10 mb-5 w-fit">
