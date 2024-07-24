@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { Button } from './Button';
 import './header.css';
 
@@ -22,7 +21,7 @@ export const Header = ({
 }: HeaderProps) => (
   <header>
     <div className="storybook-header">
-      <div>
+      <div className="text-accent-foreground bg-none bg-">
         <svg
           width="32"
           height="32"
@@ -52,17 +51,12 @@ export const Header = ({
             <span className="welcome">
               Welcome, <b>{user.name}</b>!
             </span>
-            <Button size="small" onClick={onLogout} label="Log out" />
+            <Button onClick={onLogout} label="Log out" />
           </>
         ) : (
           <>
-            <Button size="small" onClick={onLogin} label="Log in" />
-            <Button
-              primary
-              size="small"
-              onClick={onCreateAccount}
-              label="Sign up"
-            />
+            <Button onClick={onLogin} label="Log in" />
+            <Button onClick={onCreateAccount} label="Sign up" />
           </>
         )}
       </div>
