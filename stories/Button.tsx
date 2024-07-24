@@ -1,56 +1,41 @@
 import React from 'react';
-import './button.css';
 
 export interface ButtonProps {
-  /**
-   * Is this the principal call to action on the page?
-   */
-  primary?: boolean;
-  /**
-   * What background color to use
-   */
-  backgroundColor?: string;
-  /**
-   * How large should the button be?
-   */
-  size?: 'small' | 'medium' | 'large';
-  /**
-   * Button contents
-   */
   label: string;
-  /**
-   * Optional click handler
-   */
+  variant?: 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
+  className?: string;
   onClick?: () => void;
 }
 
-/**
- * Primary UI component for user interaction
- */
 export const Button = ({
-  primary = false,
-  size = 'medium',
-  backgroundColor,
   label,
+  variant,
+  className,
   ...props
 }: ButtonProps) => {
-  const mode = primary
-    ? 'storybook-button--primary'
-    : 'storybook-button--secondary';
+  const baseStyle =
+    'py-1 px-2 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50';
+
+  const mode =
+    variant === 'destructive'
+      ? 'bg-destructive text-destructive-foreground hover:bg-destructive/90'
+      : variant === 'outline'
+        ? 'border border-primary bg-accent text-primary hover:font-bold hover:p-6'
+        : variant === 'secondary'
+          ? 'bg-secondary text-secondary-foreground'
+          : variant === 'ghost'
+            ? 'hover:bg-accent hover:text-accent-foreground'
+            : variant === 'link'
+              ? 'text-primary underline-offset-4 hover:underline'
+              : 'bg-primary text-primary-foreground hover:bg-primary/90';
+
   return (
     <button
       type="button"
-      className={['storybook-button', `storybook-button--${size}`, mode].join(
-        ' '
-      )}
+      className={[baseStyle, mode, className].join(' ')}
       {...props}
     >
       {label}
-      <style jsx>{`
-        button {
-          background-color: ${backgroundColor};
-        }
-      `}</style>
     </button>
   );
 };
