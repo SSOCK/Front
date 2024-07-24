@@ -5,7 +5,11 @@ const config = {
     hoverOnlyWhenSupported: true,
   },
   darkMode: ['class'],
-  content: ['./app/**/*.{ts,tsx}', './components/**/*.{ts,tsx}'],
+  content: [
+    './app/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './stories/**/*.{ts,tsx}',
+  ],
   prefix: '',
   theme: {
     container: {
