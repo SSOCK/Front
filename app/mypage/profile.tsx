@@ -2,7 +2,6 @@ import { useEffect, useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Button } from '@components/ui/button';
 import {
   Form,
   FormControl,
@@ -12,6 +11,7 @@ import {
   FormMessage,
 } from '@components/ui/form';
 import { Input } from '@components/ui/input';
+import { Button } from '@stories/Button';
 import Upload from '@/public/icons/upload.svg';
 
 const ProfileSchema = z.object({
@@ -135,9 +135,11 @@ export default function Profile() {
       </div>
 
       {img !== '' ? (
-        <Button className="w-20 mt-2 p-0" onClick={() => setImg('')}>
-          사진 취소
-        </Button>
+        <Button
+          label="사진 취소"
+          className="w-20 mt-2 p-0"
+          onClick={() => setImg('')}
+        />
       ) : null}
       {imgErrorMsg !== '' ? (
         <div className="pt-5 text-red-500">{imgErrorMsg}</div>
@@ -223,9 +225,11 @@ export default function Profile() {
             <div />
           </div>
 
-          <Button type="submit" className="w-full mt-10 rounded-full sm:mt-20">
-            수정하기
-          </Button>
+          <Button
+            type="submit"
+            label="수정하기"
+            className="w-full mt-10 rounded-full sm:mt-20"
+          />
           {warning ? (
             <div className="text-red-500 text-center pt-5 font-bold">
               다시 시도해주십시오.
