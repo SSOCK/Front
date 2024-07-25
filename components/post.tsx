@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState, useRef, ChangeEvent, useEffect } from 'react';
+import { useState, useRef, ChangeEvent } from 'react';
 import { useRecoilValue } from 'recoil';
 import {
   Carousel,
@@ -10,6 +10,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@components/ui/carousel';
+import { Button } from '@stories/Button';
 import { fetchWithRetry } from '@utils/fetch';
 import { getPostTime } from '@utils/time';
 import { ProfileRecoil } from '@atoms';
@@ -18,7 +19,6 @@ import DotMenu from '@/public/icons/dotMenu.svg';
 import Like from '@/public/icons/like.svg';
 import Share from '@/public/icons/share.svg';
 import { Avatar, AvatarImage, AvatarFallback } from './ui/avatar';
-import { Button } from './ui/button';
 import { Input } from './ui/input';
 
 type PostProps = {
@@ -199,42 +199,50 @@ export default function Post({ postData, page }: PostProps) {
 
         <div className="flex-auto flex gap-10 ml-16">
           <Button
+            label={
+              <>
+                <Like className={'mr-2' + (like ? ' fill-blue-500' : '')} />
+                <h5>{likeNum}</h5>
+              </>
+            }
             variant="ghost"
             className="p-0"
             onClick={pushLike}
             disabled={userData.id === -1}
-          >
-            <Like className={'mr-2' + (like ? ' fill-blue-500' : '')} />
-            <h5>{likeNum}</h5>
-          </Button>
+          />
           <Button
+            label={
+              <>
+                <CommentIcon className="mr-2 stroke-blue-500" />
+                <h5>{comments.length}</h5>
+              </>
+            }
             variant="ghost"
             className="p-0"
             onClick={() => setViewComment(!viewComment)}
-          >
-            <CommentIcon className="mr-2 stroke-blue-500" />
-            <h5>{comments.length}</h5>
-          </Button>
+          />
           <Button
+            label={
+              <>
+                <Share className="mr-2 w-6" />
+                <h5>{postData.comments.length}</h5>
+              </>
+            }
             variant="ghost"
             className="p-0"
             onClick={() => {}}
             disabled={userData.id === -1}
-          >
-            <Share className="mr-2 w-6" />
-            <h5>{postData.comments.length}</h5>
-          </Button>
+          />
         </div>
       </div>
 
       {viewComment ? (
         <div className="border rounded-sm p-5 pb-3">
           <Button
-            className="pl-auto mb-2"
+            label="X"
+            className="py-0 px-3 mb-2"
             onClick={() => setViewComment(false)}
-          >
-            x
-          </Button>
+          />
           <div className="flex pb-5">
             <Input
               ref={commentRef}
@@ -242,9 +250,11 @@ export default function Post({ postData, page }: PostProps) {
               className="mr-2"
               onChange={changeComment}
             />
-            <Button onClick={sendComment} disabled={userData.id === -1}>
-              전송
-            </Button>
+            <Button
+              label="전송"
+              onClick={sendComment}
+              disabled={userData.id === -1}
+            />
           </div>
 
           {commentError ? (
@@ -276,12 +286,12 @@ export default function Post({ postData, page }: PostProps) {
                   </h2>
                 </div>
                 {commentItem.username === userData.username ? (
-                  <div
-                    className="ml-auto text-sm cursor-pointer text-red-500"
+                  <Button
+                    label="delete"
+                    variant="ghost"
+                    className="ml-auto text-sm text-red-500 hover:text-red-500"
                     onClick={() => deleteComment(commentItem.id, index)}
-                  >
-                    delete
-                  </div>
+                  />
                 ) : null}
               </div>
               {commentDelError ? (
