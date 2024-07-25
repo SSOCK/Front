@@ -76,12 +76,12 @@
             "position": "before"
           },
           {
-            "pattern": "@storybook",
+            "pattern": "@stories",
             "group": "internal",
             "position": "before"
           },
           {
-            "pattern": "@storybook*",
+            "pattern": "@stories/*",
             "group": "internal",
             "position": "before"
           },
