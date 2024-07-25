@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef, MouseEvent } from 'react';
 import { Challenge, HeadBar } from '@components';
-import { Button } from '@components/ui/button';
+import { Button } from '@stories/Button';
 
 export default function Home() {
   const [month, setMonth] = useState(6);
@@ -60,7 +60,7 @@ export default function Home() {
             <div className="">간단소개(ex. 매일 5km 달리기)</div>
             <div className="">기간</div>
             <div className="">00명 참여중</div>
-            <Button className="w-full mt-10">참여하기</Button>
+            <Button label="참여하기" className="w-full mt-10" />
           </div>
 
           <div className="bg p-8 bg-zinc-300 hidden basis-1/2 sm:block lg:basis-2/3">

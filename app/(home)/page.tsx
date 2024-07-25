@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { Challenge, Club, HeadBar } from '@components';
-import { Button } from '@components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
 import { Input } from '@components/ui/input';
+import { Button } from '@stories/Button';
 import Pin from '@/public/icons/pin.svg';
 import Search from '@/public/icons/search.svg';
 
@@ -37,11 +37,10 @@ export default function Home() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
-                  variant="outline"
-                  className="p-0 h-8 border-0 text-primary font-bold"
-                >
-                  {position} ↓
-                </Button>
+                  label={position + ' ↓'}
+                  variant="ghost"
+                  className="p-0 text-primary font-bold hover:text-primary"
+                />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56">
                 <DropdownMenuLabel>Sort By</DropdownMenuLabel>
@@ -75,7 +74,7 @@ export default function Home() {
                 />
               </div>
             </div>
-            <Button className="h-8 px-2">검색</Button>
+            <Button label="검색" className="h-8" />
           </div>
         </div>
       </div>
