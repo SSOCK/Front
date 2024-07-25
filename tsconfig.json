@@ -21,6 +21,7 @@
     "paths": {
       "@components": ["components/index"],
       "@components/*": ["components/*"],
+      "@stories/*": ["stories/*"],
       "@hooks/*": ["hooks/*"],
       "@utils/*": ["utils/*"],
       "@atoms": ["states/index"],
