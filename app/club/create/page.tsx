@@ -1,11 +1,11 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { HeadBar, Map, MyMap } from '@components';
-import { Button } from '@components/ui/button';
 import {
   Form,
   FormControl,
@@ -15,6 +15,7 @@ import {
   FormMessage,
 } from '@components/ui/form';
 import { Input } from '@components/ui/input';
+import { Button } from '@stories/Button';
 import { fetchWithRetry } from '@utils/fetch';
 import FillPin from '@/public/icons/fillpin.svg';
 
@@ -36,6 +37,7 @@ const ClubSchema = z.object({
 });
 
 export default function Create() {
+  const router = useRouter();
   const mapRef = useRef<MyMap | undefined>(undefined);
   const [mapIsLoading, setMapIsLoading] = useState(true);
   const [preview, setPreview] = useState<Preview | null>(null);
@@ -116,11 +118,12 @@ export default function Create() {
           };
           const res = await fetchWithRetry('/api/image', imgOptions);
           if (res!.status !== 201) throw res!.status;
+          router.push('/club');
           setPreview(null);
         } catch (error) {
           setErrorMsg('전송을 다시 시도해주십시오.?');
         }
-      }
+      } else router.push('/club');
     } catch (error) {
       setErrorMsg('전송을 다시 시도해주십시오.');
     }
@@ -280,9 +283,11 @@ export default function Create() {
                 <div className="text-red-500 pb-4">{errorMsg}</div>
               ) : null}
 
-              <Button type="submit" className="h-12 w-full pt-auto">
-                Submit
-              </Button>
+              <Button
+                type="submit"
+                label="submit"
+                className="h-12 w-full pt-auto"
+              />
             </form>
           </Form>
         </div>
