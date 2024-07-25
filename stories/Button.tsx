@@ -5,13 +5,22 @@ import { twMerge } from 'tailwind-merge';
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label: string | React.ReactNode;
-  variant?: 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
+  variant?:
+    | 'default'
+    | 'destructive'
+    | 'outline'
+    | 'secondary'
+    | 'ghost'
+    | 'link';
   className?: string;
   asChild?: boolean;
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ label, variant, className, asChild = false, ...props }, ref) => {
+  (
+    { label, variant = 'default', className, asChild = false, ...props },
+    ref
+  ) => {
     const baseStyle =
       'h-10 py-1 px-2 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50';
 

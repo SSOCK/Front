@@ -7,6 +7,26 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
+  args: {
+    className: '',
+  },
+  argTypes: {
+    label: { control: 'text' },
+    variant: {
+      control: 'radio',
+      options: [
+        'default',
+        'destructive',
+        'outline',
+        'secondary',
+        'ghost',
+        'link',
+      ],
+    },
+    asChild: {
+      table: { disable: true },
+    },
+  },
   tags: ['autodocs'],
 } satisfies Meta<typeof Button>;
 
