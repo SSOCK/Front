@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { HeadBar } from '@components';
-import { Button } from '@components/ui/button';
 import {
   Form,
   FormControl,
@@ -15,6 +14,7 @@ import {
   FormMessage,
 } from '@components/ui/form';
 import { Input } from '@components/ui/input';
+import { Button } from '@stories/Button';
 // import { fetchWithRetry } from '@utils/fetch';
 
 interface Preview {
@@ -343,9 +343,11 @@ export default function Record() {
                 <div className="text-red-500 pb-4">{errorMsg}</div>
               ) : null}
 
-              <Button type="submit" className="h-12 w-full pt-auto">
-                Submit
-              </Button>
+              <Button
+                type="submit"
+                label="Submit"
+                className="h-12 w-full pt-auto"
+              />
             </form>
           </Form>
         </div>

@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { HeadBar, ImageInputForm } from '@components';
-import { Button } from '@components/ui/button';
 import {
   Form,
   FormControl,
@@ -16,6 +15,7 @@ import {
   FormMessage,
 } from '@components/ui/form';
 import { Input } from '@components/ui/input';
+import { Button } from '@stories/Button';
 import { fetchWithRetry } from '@utils/fetch';
 
 const WritePostSchema = z.object({
@@ -144,13 +144,13 @@ export default function WritePost() {
               {errorMsg && <div className="text-red-500 pb-4">{errorMsg}</div>}
               <div className="grid grid-cols-2 gap-10 ">
                 <Link href="/feed" className="w-full">
-                  <Button className="bg-white text-gray-700 w-full rounded-[2px] border">
-                    취소
-                  </Button>
+                  <Button
+                    label="취소"
+                    variant="ghost"
+                    className="text-gray-700 w-full rounded-[2px] border"
+                  />
                 </Link>
-                <Button type="submit" className="rounded-[2px]">
-                  등록
-                </Button>
+                <Button type="submit" label="등록" className="rounded-[2px]" />
               </div>
             </form>
           </Form>

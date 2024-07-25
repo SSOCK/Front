@@ -8,7 +8,6 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { setCookie } from 'cookies-next';
 import { z } from 'zod';
-import { Button } from '@components/ui/button';
 import { Checkbox } from '@components/ui/checkbox';
 import {
   Form,
@@ -21,6 +20,7 @@ import {
 } from '@components/ui/form';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
+import { Button } from '@stories/Button';
 
 const SignInFormSchema = z.object({
   email: z
@@ -146,9 +146,7 @@ export default function SignInPage() {
             <Label htmlFor="rememberLogin">Remember me</Label>
           </div>
 
-          <Button type="submit" className="h-12 w-full">
-            Sign in
-          </Button>
+          <Button type="submit" label="Sign in" className="h-12 w-full" />
         </form>
       </Form>
 
