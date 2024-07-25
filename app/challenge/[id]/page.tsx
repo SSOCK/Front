@@ -2,7 +2,7 @@
 
 import { useRef, useEffect } from 'react';
 import { HeadBar } from '@components';
-import { Button } from '@components/ui/button';
+import { Button } from '@stories/Button';
 import Calendar from '@/public/icons/calendar.svg';
 import Text from '@/public/icons/text.svg';
 
@@ -113,17 +113,21 @@ export default function Home() {
       <>
         {data.join ? (
           <>
-            <Button className="font-bold bg-white border border-primary text-primary hover:bg-border">
-              챌린지 참여 중단하기
-            </Button>
-            <Button className="font-bold">친구 초대하기</Button>
+            <Button
+              label="챌린지 참여 중단하기"
+              variant="outline"
+              className="font-bold"
+            />
+            <Button label="친구 초대하기" className="font-bold" />
           </>
         ) : (
           <>
-            <Button className="font-bold">챌린지 참여하기</Button>
-            <Button className="font-bold bg-white border border-primary text-primary hover:bg-border">
-              친구 초대하기
-            </Button>
+            <Button label="챌린지 참여하기" className="font-bold" />
+            <Button
+              label="친구 초대하기"
+              variant="outline"
+              className="font-bold bg-white border border-primary text-primary hover:bg-border"
+            />
           </>
         )}
         <div className="mx-auto pt-8">

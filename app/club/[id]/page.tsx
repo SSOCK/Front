@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { HeadBar } from '@components';
-import { Button } from '@components/ui/button';
+import { Button } from '@stories/Button';
 import Board from './board';
 import Chat from './chat';
 import Member from './member';
@@ -64,10 +64,12 @@ export default function Home() {
                 </div>
 
                 <div className="flex flex-col gap-2 lg:hidden">
-                  <Button className="font-bold">클럽 가입하기</Button>
-                  <Button className="font-bold bg-white border border-primary text-primary hover:bg-border">
-                    친구 초대하기
-                  </Button>
+                  <Button label="클럽 가입하기" className="font-bold" />
+                  <Button
+                    label="친구 초대하기"
+                    variant="outline"
+                    className="font-bold"
+                  />
                 </div>
               </div>
 
@@ -124,10 +126,12 @@ export default function Home() {
             </div>
 
             <div className="basis-1/3 mr-5 flex-col gap-4 hidden lg:flex">
-              <Button className="font-bold">클럽 가입하기</Button>
-              <Button className="font-bold bg-white border border-primary text-primary hover:bg-border">
-                친구 초대하기
-              </Button>
+              <Button label="클럽 가입하기" className="font-bold" />
+              <Button
+                label="친구 초대하기"
+                variant="outline"
+                className="font-bold"
+              />
             </div>
           </div>
         </div>

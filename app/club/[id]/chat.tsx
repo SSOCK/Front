@@ -1,4 +1,4 @@
-import { Button } from '@components/ui/button';
+import { Button } from '@stories/Button';
 import { getPostTime } from '@utils/time';
 
 export default function Chat({ club }: { club: string }) {
@@ -50,7 +50,7 @@ export default function Chat({ club }: { club: string }) {
               {getPostTime(lastChat)} 새로운 대화
             </div>
           </div>
-          <Button>채팅방 입장</Button>
+          <Button label="채팅방 입장" />
         </div>
       </div>
     );
