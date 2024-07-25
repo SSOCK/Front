@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { MyMap } from '@components';
+import { Button } from '@stories/Button';
 import Find from '@/public/icons/find.svg';
 import Pencil from '@/public/icons/pencil.svg';
 import Save from '@/public/icons/save.svg';
@@ -48,12 +49,12 @@ export default function Menu({ mapRef }: MenuProps) {
         <div className="flex-grow">{MAP_NAV_LIST[nowMenu].component}</div>
       </div>
 
-      <button
-        className="absolute right-0 translate-x-full top-1/2 -translate-y-1/2 bg-white h-12 border border-l-0 p-1 rounded-r font-bold "
+      <Button
+        label={isOpen ? `>` : '<'}
+        variant="ghost"
+        className="absolute right-0 translate-x-full top-1/2 -translate-y-1/2 bg-white h-12 border border-l-0 rounded-l-none font-bold p-1"
         onClick={toggleIsOpen}
-      >
-        {isOpen ? `>` : '<'}
-      </button>
+      />
     </div>
   );
 }

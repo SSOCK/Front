@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { LatLng, MyMap } from '@components';
-import { Button } from '@components/ui/button';
 import {
   Form,
   FormControl,
@@ -15,6 +14,7 @@ import {
   FormMessage,
 } from '@components/ui/form';
 import { Input } from '@components/ui/input';
+import { Button } from '@stories/Button';
 import { fetchWithRetry } from '@utils/fetch';
 
 const CourseFormSchema = z.object({
@@ -81,9 +81,10 @@ export default function AddCourse({
   return (
     <div>
       <div>
-        <Button onClick={toggleMode}>
-          {drawMode ? '확정' : '그리기/수정'}
-        </Button>
+        <Button
+          label={drawMode ? '확정' : '그리기/수정'}
+          onClick={toggleMode}
+        />
       </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(submit)}>
@@ -137,7 +138,7 @@ export default function AddCourse({
             )}
           />
 
-          <Button type="submit">완료</Button>
+          <Button type="submit" label="완료" />
         </form>
       </Form>
     </div>
