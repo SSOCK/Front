@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { Button } from '@stories/Button';
 import { cn } from '@/lib/utils';
 import HeaderProfile from './headerProfile';
-import { Button } from './ui/button';
 
 const paths = [
   { path: '', category: '홈' },
@@ -20,23 +20,21 @@ export default function HeadBar() {
         <div>
           <Link href={'/'}>
             <Button
+              label="RunningMate"
               variant="link"
               className="text-xl font-bold hidden sm:inline"
-            >
-              RunningMate
-            </Button>
+            />
           </Link>
           {paths.map(({ path, category }) => (
             <Link href={`/${path}`} key={category}>
               <Button
+                label={category}
                 variant="link"
                 className={cn([
                   'font-bold p-2 sm:p-4',
                   nowPath !== path && 'text-black',
                 ])}
-              >
-                {category}
-              </Button>
+              />
             </Link>
           ))}
         </div>
