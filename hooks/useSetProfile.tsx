@@ -15,22 +15,26 @@ interface Profile {
 export default function useSetProfile() {
   const setData = useSetRecoilState(ProfileRecoil);
   const setProfile = async () => {
-    await refreshAccessToken();
+    try {
+      await refreshAccessToken();
 
-    const payload = getAccessTokenPayload();
-    const username = payload.username;
+      const payload = getAccessTokenPayload();
+      const username = payload.username;
 
-    const responses = await fetch(`/api/member/profile/${username}`, {
-      method: 'get',
-      headers: { Authorization: getAccessToken() },
-    });
-    if (!responses.ok) {
+      const responses = await fetch(`/api/member/profile/${username}`, {
+        method: 'get',
+        headers: { Authorization: getAccessToken() },
+      });
+      if (!responses.ok) {
+        logout();
+        throw new Error('profile 정보 불러오기에 실패했습니다.');
+      }
+
+      const data: Profile = await responses.json();
+      setData(data);
+    } catch (error) {
       logout();
-      throw new Error('profile 정보 불러오기에 실패했습니다.');
     }
-
-    const data: Profile = await responses.json();
-    setData(data);
   };
 
   return setProfile;
