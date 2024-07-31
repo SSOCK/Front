@@ -2,6 +2,7 @@ import { RecoilRoot } from 'recoil';
 import { render, screen } from '@testing-library/react';
 import { ProfileRecoil } from '@atoms/atoms';
 import HeadBar from '@components/headBar';
+import HeaderProfile from '@components/headerProfile';
 
 const mockUsePathname = jest.fn();
 jest.mock('next/navigation', () => ({
@@ -9,6 +10,15 @@ jest.mock('next/navigation', () => ({
     return mockUsePathname();
   },
 }));
+
+const mockFetch = (flag: boolean, data: any) => {
+  return jest.fn().mockImplementation(() =>
+    Promise.resolve({
+      ok: flag,
+      json: () => data,
+    })
+  );
+};
 
 const mockedProfile = {
   id: 1,
@@ -32,5 +42,33 @@ describe('HeadBar', () => {
     );
     const text = screen.getByText('RunningMate');
     expect(text).toBeInTheDocument();
+  });
+});
+
+describe('HeaderProfile', () => {
+  it('Login Test', async () => {
+    window.fetch = mockFetch(false, '');
+    render(
+      <RecoilRoot>
+        <HeaderProfile />
+      </RecoilRoot>
+    );
+    const text = screen.getByText('로그인 하세요');
+    expect(text).toBeInTheDocument();
+  });
+
+  it('Non Login Test', async () => {
+    window.fetch = mockFetch(false, '');
+    render(
+      <RecoilRoot
+        initializeState={(snapshot) =>
+          snapshot.set(ProfileRecoil, mockedProfile)
+        }
+      >
+        <HeaderProfile />
+      </RecoilRoot>
+    );
+    const text = screen.queryByText('로그인 하세요');
+    expect(text).toBeNull();
   });
 });
