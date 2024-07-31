@@ -1,27 +1,14 @@
 {
-  "extends": [
-    "next/core-web-vitals",
-    "plugin:storybook/recommended"
-  ],
-  "plugins": [
-    "import",
-    "no-relative-import-paths"
-  ],
+  "extends": ["next/core-web-vitals", "plugin:storybook/recommended"],
+  "plugins": ["import", "no-relative-import-paths"],
   "rules": {
     "import/order": [
       "error",
       {
         "groups": [
-          [
-            "builtin",
-            "external"
-          ],
+          ["builtin", "external"],
           "internal",
-          [
-            "parent",
-            "sibling",
-            "index"
-          ],
+          ["parent", "sibling", "index"],
           "type"
         ],
         "pathGroups": [
@@ -71,6 +58,11 @@
             "position": "before"
           },
           {
+            "pattern": "@components/*",
+            "group": "internal",
+            "position": "before"
+          },
+          {
             "pattern": "@components*",
             "group": "internal",
             "position": "before"
@@ -101,6 +93,11 @@
             "position": "before"
           },
           {
+            "pattern": "@atoms/*",
+            "group": "internal",
+            "position": "before"
+          },
+          {
             "pattern": "@atoms*",
             "group": "internal",
             "position": "before"
@@ -115,9 +112,7 @@
             "group": "internal"
           }
         ],
-        "pathGroupsExcludedImportTypes": [
-          "object"
-        ],
+        "pathGroupsExcludedImportTypes": ["object"],
         "alphabetize": {
           "order": "asc",
           "caseInsensitive": true
