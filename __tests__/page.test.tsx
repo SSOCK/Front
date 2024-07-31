@@ -1,8 +1,8 @@
 import { RecoilRoot } from 'recoil';
 import { render, screen } from '@testing-library/react';
-import { ProfileRecoil } from '@atoms/atoms';
 import HeadBar from '@components/headBar';
 import HeaderProfile from '@components/headerProfile';
+import { ProfileRecoil } from '@atoms/atoms';
 
 const mockUsePathname = jest.fn();
 jest.mock('next/navigation', () => ({
