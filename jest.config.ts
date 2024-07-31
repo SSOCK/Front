@@ -18,6 +18,7 @@ const config: Config = {
     '^@utils/(.*)$': '<rootDir>/utils/$1',
     '^@atoms/(.*)$': '<rootDir>/atoms/$1',
     '^@/(.*)$': '<rootDir>/$1',
+    '^.+\\.(svg)$': '<rootDir>/lib/svgrMock.ts',
   },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
 };
