@@ -25,6 +25,7 @@
       "@hooks/*": ["hooks/*"],
       "@utils/*": ["utils/*"],
       "@atoms": ["states/index"],
+      "@atoms/*": ["states/*"],
       "@/*": ["./*"]
     }
   },
