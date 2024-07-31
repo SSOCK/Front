@@ -20,16 +20,16 @@ export default function useSetProfile() {
     const payload = getAccessTokenPayload();
     const username = payload.username;
 
-    const respones = await fetch(`/api/member/profile/${username}`, {
+    const responses = await fetch(`/api/member/profile/${username}`, {
       method: 'get',
       headers: { Authorization: getAccessToken() },
     });
-    if (!respones.ok) {
+    if (!responses.ok) {
       logout();
       throw new Error('profile 정보 불러오기에 실패했습니다.');
     }
 
-    const data: Profile = await respones.json();
+    const data: Profile = await responses.json();
     setData(data);
   };
 
