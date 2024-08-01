@@ -1,5 +1,7 @@
+import mockRouter from 'next-router-mock';
 import { RecoilRoot } from 'recoil';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { MemoryRouterProvider } from 'next-router-mock/MemoryRouterProvider';
 import HeadBar from '@components/headBar';
 import HeaderProfile from '@components/headerProfile';
 import { ProfileRecoil } from '@atoms/atoms';
@@ -29,7 +31,7 @@ const mockedProfile = {
 };
 
 describe('HeadBar', () => {
-  it('Check RunningMate Text with Login', () => {
+  it('RunningMate Text with Login', () => {
     mockUsePathname.mockImplementation(() => '/');
     render(
       <RecoilRoot
@@ -42,6 +44,23 @@ describe('HeadBar', () => {
     );
     const text = screen.getByText('RunningMate');
     expect(text).toBeInTheDocument();
+  });
+
+  it('Click Test for Club', () => {
+    mockUsePathname.mockImplementation(() => '/');
+    render(
+      <RecoilRoot
+        initializeState={(snapshot) =>
+          snapshot.set(ProfileRecoil, mockedProfile)
+        }
+      >
+        <HeadBar />
+      </RecoilRoot>,
+      { wrapper: MemoryRouterProvider }
+    );
+    const clubBtn = screen.getByRole('button', { name: '클럽' });
+    fireEvent.click(clubBtn);
+    expect(mockRouter.pathname).toEqual('/club');
   });
 });
 
