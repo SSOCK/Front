@@ -104,6 +104,7 @@ export default function SignInPage() {
                 <div className="flex gap-1">
                   <FormControl>
                     <Input
+                      id="email"
                       placeholder="Email"
                       value={value}
                       onChange={onChange}
@@ -128,6 +129,7 @@ export default function SignInPage() {
                 <div className="flex gap-1">
                   <FormControl>
                     <Input
+                      id="password"
                       type="password"
                       placeholder="Password"
                       value={value}
@@ -146,7 +148,12 @@ export default function SignInPage() {
             <Label htmlFor="rememberLogin">Remember me</Label>
           </div>
 
-          <Button type="submit" label="Sign in" className="h-12 w-full" />
+          <Button
+            id="signin"
+            type="submit"
+            label="Sign in"
+            className="h-12 w-full"
+          />
         </form>
       </Form>
 
